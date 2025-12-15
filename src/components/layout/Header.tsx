@@ -1,8 +1,16 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingBag, Search, User } from 'lucide-react';
+import { Menu, X, ShoppingBag, Search, User, LogOut, UserCircle, Package } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -16,6 +24,7 @@ const navLinks = [
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
+  const { user, profile, signOut } = useAuth();
   const location = useLocation();
 
   return (
@@ -67,9 +76,51 @@ export const Header = () => {
             <button className="p-2 hover:text-accent transition-colors" aria-label="Buscar">
               <Search size={20} />
             </button>
-            <button className="p-2 hover:text-accent transition-colors hidden md:block" aria-label="Conta">
-              <User size={20} />
-            </button>
+
+            {/* User Menu */}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="p-2 hover:text-accent transition-colors hidden md:flex items-center gap-2" aria-label="Conta">
+                    <User size={20} />
+                    {profile?.full_name && (
+                      <span className="text-sm font-medium hidden lg:inline">
+                        {profile.full_name.split(' ')[0]}
+                      </span>
+                    )}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-2 py-1.5">
+                    <p className="text-sm font-semibold">{profile?.full_name}</p>
+                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/minha-conta" className="cursor-pointer">
+                      <UserCircle size={16} className="mr-2" />
+                      Minha Conta
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/minha-conta/pedidos" className="cursor-pointer">
+                      <Package size={16} className="mr-2" />
+                      Meus Pedidos
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer text-destructive">
+                    <LogOut size={16} className="mr-2" />
+                    Sair
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/login" className="p-2 hover:text-accent transition-colors hidden md:block" aria-label="Entrar">
+                <User size={20} />
+              </Link>
+            )}
+
             <button
               onClick={() => setIsOpen(true)}
               className="relative p-2 hover:text-accent transition-colors"
