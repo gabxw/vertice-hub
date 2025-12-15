@@ -23,7 +23,7 @@ const CategoryPage = () => {
   return (
     <>
       <Helmet>
-        <title>{category.name} | Urban Style</title>
+        <title>{category.name} | VÉRTICE</title>
         <meta name="description" content={`${category.description}. Confira nossa coleção de ${category.name.toLowerCase()} com estilo urbano.`} />
       </Helmet>
 
