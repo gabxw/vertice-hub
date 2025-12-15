@@ -1,0 +1,66 @@
+{
+  "name": "@vertice/backend",
+  "version": "1.0.0",
+  "description": "Back-end completo para e-commerce de dropshipping da marca VÉRTICE",
+  "main": "dist/server.js",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "lint": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecommerce",
+    "dropshipping",
+    "vertice",
+    "express",
+    "typescript",
+    "prisma"
+  ],
+  "author": "VÉRTICE",
+  "license": "ISC",
+  "packageManager": "pnpm@10.25.0",
+  "dependencies": {
+    "@prisma/client": "6.19.1",
+    "@supabase/supabase-js": "^2.87.3",
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mercadopago": "^2.11.0",
+    "multer": "^2.0.2",
+    "node-cache": "^5.1.2",
+    "nodemailer": "^7.0.11",
+    "uuid": "^13.0.0",
+    "winston": "^3.19.0",
+    "zod": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^25.0.2",
+    "@types/nodemailer": "^7.0.4",
+    "@types/uuid": "^11.0.0",
+    "nodemon": "^3.1.11",
+    "prisma": "^6.19.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
