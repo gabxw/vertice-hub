@@ -31,7 +31,7 @@ export const Footer = () => {
           {/* Brand */}
           <div>
             <h2 className="font-display text-2xl font-bold mb-4">
-              URBAN<span className="text-accent">.</span>STYLE
+              VÉRTICE
             </h2>
             <p className="text-sm text-primary-foreground/70 mb-6">
               Moda urbana para quem não aceita o comum. Estilo, conforto e atitude em cada peça.
@@ -77,7 +77,7 @@ export const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm text-primary-foreground/70">
                 <Mail size={16} />
-                contato@urbanstyle.com.br
+                contato@vertice.com.br
               </li>
               <li className="flex items-center gap-2 text-sm text-primary-foreground/70">
                 <Phone size={16} />
@@ -97,7 +97,7 @@ export const Footer = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-xs text-primary-foreground/50">
-              © 2024 Urban Style. Todos os direitos reservados.
+              © 2024 VÉRTICE. Todos os direitos reservados.
             </p>
             <div className="flex items-center gap-4">
               <img src="https://cdn-icons-png.flaticon.com/128/349/349221.png" alt="Visa" className="h-6 opacity-70" />

@@ -28,8 +28,8 @@ const AboutPage = () => {
   return (
     <>
       <Helmet>
-        <title>Quem Somos | Urban Style</title>
-        <meta name="description" content="Conheça a história da Urban Style. Moda urbana para quem não aceita o comum." />
+        <title>Quem Somos | VÉRTICE</title>
+        <meta name="description" content="Conheça a história da VÉRTICE. Moda urbana para quem não aceita o comum." />
       </Helmet>
 
       <main>
@@ -38,7 +38,7 @@ const AboutPage = () => {
           <div className="absolute inset-0">
             <img 
               src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1920"
-              alt="Urban Style"
+              alt="VÉRTICE"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-primary/80" />
@@ -61,7 +61,7 @@ const AboutPage = () => {
                 De sonho a <span className="text-accent">realidade</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                A Urban Style nasceu em 2020, em plena pandemia, de dois amigos apaixonados por moda streetwear. 
+                A VÉRTICE nasceu em 2020, em plena pandemia, de dois amigos apaixonados por moda streetwear. 
                 Cansados de não encontrar peças que expressassem nossa identidade, decidimos criar nossa própria marca.
               </p>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
@@ -107,11 +107,11 @@ const AboutPage = () => {
               Faça parte da nossa comunidade
             </h2>
             <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-              Junte-se a milhares de pessoas que já encontraram seu estilo com a Urban Style
+              Junte-se a milhares de pessoas que já encontraram seu estilo com a VÉRTICE
             </p>
             <div className="flex justify-center gap-6">
               <a href="#" className="text-accent hover:text-accent/80 transition-colors text-lg">
-                @urbanstyle
+                @vertice
               </a>
             </div>
           </div>

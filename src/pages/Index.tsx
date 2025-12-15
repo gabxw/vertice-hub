@@ -9,13 +9,13 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Urban Style | Moda Urbana e Streetwear</title>
+        <title>VÉRTICE | Moda Urbana e Streetwear</title>
         <meta 
           name="description" 
           content="Descubra tênis, calças e blusas com estilo urbano único. Frete grátis acima de R$299. Moda streetwear para quem não aceita o comum." 
         />
         <meta name="keywords" content="tênis, calças, blusas, streetwear, moda urbana, moda masculina, moda feminina" />
-        <link rel="canonical" href="https://urbanstyle.com.br" />
+        <link rel="canonical" href="https://vertice.com.br" />
       </Helmet>
 
       <main>

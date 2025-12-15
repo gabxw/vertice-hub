@@ -36,7 +36,7 @@ const OffersPage = () => {
   return (
     <>
       <Helmet>
-        <title>Ofertas Imperdíveis | Urban Style</title>
+        <title>Ofertas Imperdíveis | VÉRTICE</title>
         <meta name="description" content="Aproveite descontos incríveis em tênis, calças e blusas. Ofertas por tempo limitado!" />
       </Helmet>
 

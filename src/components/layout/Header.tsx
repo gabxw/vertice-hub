@@ -41,7 +41,7 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <h1 className="font-display text-2xl md:text-3xl font-bold tracking-wider">
-              URBAN<span className="text-accent">.</span>STYLE
+              VÉRTICE
             </h1>
           </Link>
 
