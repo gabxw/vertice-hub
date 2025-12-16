@@ -139,8 +139,13 @@ export const CartDrawer = () => {
               <span className="text-muted-foreground">Subtotal</span>
               <span className="font-bold text-xl">R$ {totalPrice.toFixed(2)}</span>
             </div>
-            <Button className="w-full h-12 text-base font-semibold btn-glow" size="lg">
-              Finalizar Compra
+            <Button 
+              asChild 
+              className="w-full h-12 text-base font-semibold btn-glow" 
+              size="lg"
+              onClick={() => setIsOpen(false)}
+            >
+              <Link to="/checkout">Finalizar Compra</Link>
             </Button>
             <button
               onClick={() => setIsOpen(false)}

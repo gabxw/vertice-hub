@@ -30,6 +30,10 @@ import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import ProfilePage from "./pages/account/ProfilePage";
 import OrdersPage from "./pages/account/OrdersPage";
 
+// Checkout pages
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -64,6 +68,24 @@ const App = () => (
                     <Route path="/cadastro" element={<SignupPage />} />
                     <Route path="/recuperar-senha" element={<ForgotPasswordPage />} />
                     <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
+
+                    {/* Checkout routes */}
+                    <Route
+                      path="/checkout"
+                      element={
+                        <PrivateRoute>
+                          <CheckoutPage />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/pedido-confirmado"
+                      element={
+                        <PrivateRoute>
+                          <OrderConfirmationPage />
+                        </PrivateRoute>
+                      }
+                    />
 
                     {/* Protected routes */}
                     <Route
