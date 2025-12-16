@@ -25,13 +25,14 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <Link to={`/produto/${product.slug}`} className="block relative aspect-square overflow-hidden rounded-xl bg-muted">
+      <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-secondary">
+        {/* Main Image */}
         <img
           src={product.images[0]}
           alt={product.name}
           className={cn(
-            'w-full h-full object-cover transition-all duration-500',
-            isHovered && 'scale-110'
+            'w-full h-full object-cover transition-all duration-700',
+            isHovered && 'scale-110 opacity-0'
           )}
         />
         
@@ -41,27 +42,27 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             src={product.images[1]}
             alt={product.name}
             className={cn(
-              'absolute inset-0 w-full h-full object-cover transition-opacity duration-500',
-              isHovered ? 'opacity-100' : 'opacity-0'
+              'absolute inset-0 w-full h-full object-cover transition-all duration-700 scale-110',
+              isHovered ? 'opacity-100 scale-100' : 'opacity-0'
             )}
           />
         )}
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className="absolute top-0 left-0 flex flex-col">
           {product.isNew && (
-            <span className="bg-accent text-accent-foreground text-xs font-bold px-2 py-1 rounded">
-              NOVO
+            <span className="bg-neon text-neon-foreground text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
+              Novo
             </span>
           )}
           {discountPercentage > 0 && (
-            <span className="bg-destructive text-destructive-foreground text-xs font-bold px-2 py-1 rounded">
+            <span className="bg-accent text-accent-foreground text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
               -{discountPercentage}%
             </span>
           )}
           {product.stock <= 5 && product.stock > 0 && (
-            <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
-              ÚLTIMAS {product.stock}!
+            <span className="bg-hot text-hot-foreground text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
+              Últimas {product.stock}
             </span>
           )}
         </div>
@@ -73,10 +74,10 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             setIsWishlisted(!isWishlisted);
           }}
           className={cn(
-            'absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-all',
+            'absolute top-3 right-3 w-10 h-10 flex items-center justify-center transition-all',
             isWishlisted
-              ? 'bg-destructive text-destructive-foreground'
-              : 'bg-background/80 text-foreground hover:bg-background'
+              ? 'bg-accent text-accent-foreground'
+              : 'bg-background/90 text-foreground hover:bg-accent hover:text-accent-foreground'
           )}
           aria-label="Adicionar aos favoritos"
         >
@@ -86,17 +87,17 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         {/* Quick Actions */}
         <div
           className={cn(
-            'absolute bottom-3 left-3 right-3 flex gap-2 transition-all duration-300',
-            isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            'absolute bottom-0 left-0 right-0 flex transition-all duration-300',
+            isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
           )}
         >
-          <button className="flex-1 bg-primary text-primary-foreground h-10 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors">
+          <button className="flex-1 bg-primary text-primary-foreground h-12 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-accent transition-colors">
             <ShoppingBag size={16} />
-            Comprar
+            Adicionar
           </button>
           <Link
             to={`/produto/${product.slug}`}
-            className="w-10 h-10 bg-background text-foreground rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
+            className="w-12 h-12 bg-secondary text-secondary-foreground flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             <Eye size={16} />
           </Link>
@@ -104,46 +105,37 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       </Link>
 
       {/* Info */}
-      <div className="mt-4">
+      <div className="mt-4 space-y-2">
+        {/* Category */}
+        <span className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
+          {product.category}
+        </span>
+
+        {/* Name */}
         <Link to={`/produto/${product.slug}`}>
-          <h3 className="font-semibold text-sm md:text-base line-clamp-2 hover:text-accent transition-colors">
+          <h3 className="font-display text-lg uppercase leading-tight hover:text-accent transition-colors line-clamp-1">
             {product.name}
           </h3>
         </Link>
-        
-        {/* Rating */}
-        <div className="flex items-center gap-1 mt-1">
-          <div className="flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span
-                key={star}
-                className={star <= Math.round(product.rating) ? 'text-accent' : 'text-muted'}
-              >
-                ★
-              </span>
-            ))}
-          </div>
-          <span className="text-xs text-muted-foreground">({product.reviews})</span>
-        </div>
 
         {/* Price */}
-        <div className="flex items-center gap-2 mt-2">
+        <div className="flex items-center gap-3">
           <span className="font-bold text-lg">
-            R$ {product.price.toFixed(2)}
+            R$ {product.price.toFixed(2).replace('.', ',')}
           </span>
           {product.originalPrice && (
             <span className="text-sm text-muted-foreground line-through">
-              R$ {product.originalPrice.toFixed(2)}
+              R$ {product.originalPrice.toFixed(2).replace('.', ',')}
             </span>
           )}
         </div>
 
         {/* Colors */}
-        <div className="flex gap-1 mt-2">
+        <div className="flex gap-1.5 pt-1">
           {product.colors.slice(0, 4).map((color) => (
             <div
               key={color.name}
-              className="w-4 h-4 rounded-full border border-border"
+              className="w-4 h-4 border border-border hover:scale-125 transition-transform cursor-pointer"
               style={{ backgroundColor: color.hex }}
               title={color.name}
             />
