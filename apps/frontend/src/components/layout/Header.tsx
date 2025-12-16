@@ -19,7 +19,7 @@ const navLinks = [
   { href: '/categoria/tenis', label: 'Tênis' },
   { href: '/categoria/calcas', label: 'Calças' },
   { href: '/categoria/blusas', label: 'Blusas' },
-  { href: '/ofertas', label: 'Ofertas', highlight: true },
+  { href: '/ofertas', label: 'Drops', highlight: true },
 ];
 
 export const Header = () => {
@@ -50,11 +50,11 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full bg-primary text-primary-foreground">
       {/* Top bar - Promotional */}
-      <div className="bg-primary text-primary-foreground text-center py-2 px-4">
-        <p className="text-xs md:text-sm font-medium animate-pulse-slow">
-          🔥 FRETE GRÁTIS em compras acima de R$ 299 | Use o cupom: <span className="font-bold">PRIMEIRA10</span>
+      <div className="bg-accent text-accent-foreground text-center py-2 px-4">
+        <p className="text-xs font-bold uppercase tracking-[0.15em]">
+          Frete Grátis acima de R$ 299 | Cupom: <span className="underline">PRIMEIRA10</span>
         </p>
       </div>
 
@@ -63,7 +63,7 @@ export const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 -ml-2"
+            className="lg:hidden p-2 -ml-2 hover:text-accent transition-colors"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -71,7 +71,7 @@ export const Header = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <h1 className="font-display text-2xl md:text-3xl font-bold tracking-wider">
+            <h1 className="font-display text-3xl md:text-4xl tracking-[0.1em]">
               VÉRTICE
             </h1>
           </Link>
@@ -83,22 +83,26 @@ export const Header = () => {
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  'font-medium text-sm uppercase tracking-wide transition-colors hover:text-accent',
+                  'text-sm font-medium uppercase tracking-[0.15em] transition-colors relative py-2',
+                  'hover:text-accent',
                   location.pathname === link.href && 'text-accent',
-                  link.highlight && 'text-destructive font-semibold'
+                  link.highlight && 'text-neon'
                 )}
               >
                 {link.label}
+                {location.pathname === link.href && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
+                )}
               </Link>
             ))}
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-1 md:gap-2">
             {/* Search Button */}
             <button 
               onClick={() => setShowSearch(!showSearch)}
-              className="p-2 hover:text-accent transition-colors" 
+              className="p-2.5 hover:text-accent transition-colors" 
               aria-label="Buscar"
             >
               <Search size={20} />
@@ -108,7 +112,7 @@ export const Header = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="p-2 hover:text-accent transition-colors hidden md:block" aria-label="Conta">
+                  <button className="p-2.5 hover:text-accent transition-colors hidden md:block" aria-label="Conta">
                     <User size={20} />
                   </button>
                 </DropdownMenuTrigger>
@@ -116,7 +120,7 @@ export const Header = () => {
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium">{user.user_metadata?.name || 'Usuário'}</p>
-                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -140,18 +144,20 @@ export const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link to="/login" className="p-2 hover:text-accent transition-colors hidden md:block" aria-label="Entrar">
+              <Link to="/login" className="p-2.5 hover:text-accent transition-colors hidden md:block" aria-label="Entrar">
                 <User size={20} />
               </Link>
             )}
+            
+            {/* Cart Button */}
             <button
               onClick={() => setIsOpen(true)}
-              className="relative p-2 hover:text-accent transition-colors"
+              className="relative p-2.5 hover:text-accent transition-colors"
               aria-label="Carrinho"
             >
               <ShoppingBag size={20} />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center animate-scale-in">
+                <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-bold w-5 h-5 flex items-center justify-center animate-scale-in">
                   {totalItems}
                 </span>
               )}
@@ -162,22 +168,25 @@ export const Header = () => {
 
       {/* Search Bar */}
       {showSearch && (
-        <div className="border-t border-border bg-background">
+        <div className="border-t border-primary-foreground/10 bg-primary">
           <div className="container mx-auto px-4 py-4">
             <form onSubmit={handleSearch} className="flex gap-2">
               <input
                 type="text"
-                placeholder="Buscar produtos..."
+                placeholder="O que você procura?"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className="flex-1 px-4 py-3 bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent border-none"
                 autoFocus
               />
-              <Button type="submit">Buscar</Button>
+              <Button type="submit" className="px-6 bg-accent hover:bg-accent/90 text-accent-foreground uppercase tracking-wider font-bold">
+                Buscar
+              </Button>
               <Button 
                 type="button" 
                 variant="outline" 
                 onClick={() => setShowSearch(false)}
+                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <X size={20} />
               </Button>
@@ -189,25 +198,60 @@ export const Header = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          'lg:hidden absolute top-full left-0 right-0 bg-background border-b border-border transition-all duration-300 overflow-hidden',
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          'lg:hidden fixed inset-0 top-[104px] bg-primary z-40 transition-all duration-300',
+          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         )}
       >
-        <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
+        <nav className="container mx-auto px-4 py-8 flex flex-col gap-2">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
               onClick={() => setIsMenuOpen(false)}
               className={cn(
-                'font-medium text-lg py-2 border-b border-border/50 transition-colors hover:text-accent',
+                'font-display text-3xl uppercase py-3 border-b border-primary-foreground/10 transition-colors hover:text-accent',
                 location.pathname === link.href && 'text-accent',
-                link.highlight && 'text-destructive font-semibold'
+                link.highlight && 'text-neon'
               )}
             >
               {link.label}
             </Link>
           ))}
+          
+          {/* Mobile Auth Links */}
+          <div className="mt-8 pt-8 border-t border-primary-foreground/10">
+            {user ? (
+              <>
+                <Link
+                  to="/minha-conta"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-3 text-lg py-3"
+                >
+                  <UserCircle size={24} />
+                  Minha Conta
+                </Link>
+                <button
+                  onClick={() => {
+                    handleSignOut();
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 text-lg py-3 text-accent"
+                >
+                  <LogOut size={24} />
+                  Sair
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-3 text-lg py-3"
+              >
+                <User size={24} />
+                Entrar / Cadastrar
+              </Link>
+            )}
+          </div>
         </nav>
       </div>
     </header>
