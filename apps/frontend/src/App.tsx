@@ -34,6 +34,9 @@ import OrdersPage from "./pages/account/OrdersPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
+// Search page
+import SearchPage from "./pages/SearchPage";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -58,6 +61,7 @@ const App = () => (
                   <Routes>
                     {/* Public routes */}
                     <Route path="/" element={<Index />} />
+                    <Route path="/busca" element={<SearchPage />} />
                     <Route path="/produto/:slug" element={<ProductPage />} />
                     <Route path="/categoria/:slug" element={<CategoryPage />} />
                     <Route path="/ofertas" element={<OffersPage />} />

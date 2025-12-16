@@ -30,6 +30,7 @@ export default function CheckoutPage() {
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState('');
+  const [loadingCep, setLoadingCep] = useState(false);
 
   const [address, setAddress] = useState<AddressForm>({
     name: user?.user_metadata?.name || '',
@@ -56,6 +57,37 @@ export default function CheckoutPage() {
 
   const handleAddressChange = (field: keyof AddressForm, value: string) => {
     setAddress((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleCepChange = async (cep: string) => {
+    // Remove non-numeric characters
+    const cleanCep = cep.replace(/\D/g, '');
+    setAddress((prev) => ({ ...prev, zipCode: cep }));
+
+    // Only search if CEP has 8 digits
+    if (cleanCep.length === 8) {
+      setLoadingCep(true);
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+        const data = await response.json();
+
+        if (!data.erro) {
+          setAddress((prev) => ({
+            ...prev,
+            street: data.logradouro || '',
+            neighborhood: data.bairro || '',
+            city: data.localidade || '',
+            state: data.uf || '',
+          }));
+        } else {
+          setError('CEP não encontrado');
+        }
+      } catch (err) {
+        console.error('Erro ao buscar CEP:', err);
+      } finally {
+        setLoadingCep(false);
+      }
+    }
   };
 
   const handleApplyCoupon = async () => {
@@ -179,9 +211,13 @@ export default function CheckoutPage() {
                         id="zipCode"
                         placeholder="00000-000"
                         value={address.zipCode}
-                        onChange={(e) => handleAddressChange('zipCode', e.target.value)}
+                        onChange={(e) => handleCepChange(e.target.value)}
                         required
+                        disabled={loadingCep}
                       />
+                      {loadingCep && (
+                        <p className="text-xs text-gray-500 mt-1">Buscando CEP...</p>
+                      )}
                     </div>
 
                     <div>

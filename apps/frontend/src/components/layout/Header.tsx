@@ -1,8 +1,17 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingBag, Search, User } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, ShoppingBag, Search, User, LogOut, Package, UserCircle } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -15,8 +24,30 @@ const navLinks = [
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
   const { totalItems, setIsOpen } = useCart();
+  const { user, signOut } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/busca?q=${encodeURIComponent(searchQuery)}`);
+      setShowSearch(false);
+      setSearchQuery('');
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Erro ao sair:', error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -64,12 +95,55 @@ export const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-2 md:gap-4">
-            <button className="p-2 hover:text-accent transition-colors" aria-label="Buscar">
+            {/* Search Button */}
+            <button 
+              onClick={() => setShowSearch(!showSearch)}
+              className="p-2 hover:text-accent transition-colors" 
+              aria-label="Buscar"
+            >
               <Search size={20} />
             </button>
-            <button className="p-2 hover:text-accent transition-colors hidden md:block" aria-label="Conta">
-              <User size={20} />
-            </button>
+
+            {/* Profile Dropdown */}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="p-2 hover:text-accent transition-colors hidden md:block" aria-label="Conta">
+                    <User size={20} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">{user.user_metadata?.name || 'Usuário'}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/minha-conta" className="flex items-center cursor-pointer">
+                      <UserCircle className="mr-2 h-4 w-4" />
+                      <span>Minha Conta</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/minha-conta/pedidos" className="flex items-center cursor-pointer">
+                      <Package className="mr-2 h-4 w-4" />
+                      <span>Meus Pedidos</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sair</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/login" className="p-2 hover:text-accent transition-colors hidden md:block" aria-label="Entrar">
+                <User size={20} />
+              </Link>
+            )}
             <button
               onClick={() => setIsOpen(true)}
               className="relative p-2 hover:text-accent transition-colors"
@@ -85,6 +159,32 @@ export const Header = () => {
           </div>
         </div>
       </div>
+
+      {/* Search Bar */}
+      {showSearch && (
+        <div className="border-t border-border bg-background">
+          <div className="container mx-auto px-4 py-4">
+            <form onSubmit={handleSearch} className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Buscar produtos..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                autoFocus
+              />
+              <Button type="submit">Buscar</Button>
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setShowSearch(false)}
+              >
+                <X size={20} />
+              </Button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Menu */}
       <div
