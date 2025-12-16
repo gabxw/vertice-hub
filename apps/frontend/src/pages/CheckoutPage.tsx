@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ShoppingBag, Truck, CreditCard } from 'lucide-react';
 
@@ -24,7 +24,7 @@ interface AddressForm {
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { items, total, clearCart } = useCart();
+  const { items, totalPrice, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [couponCode, setCouponCode] = useState('');
@@ -42,15 +42,15 @@ export default function CheckoutPage() {
     zipCode: '',
   });
 
-  // Redirect if cart is empty
-  if (items.length === 0) {
-    navigate('/');
-    return null;
-  }
-
   // Redirect if not logged in
   if (!user) {
     navigate('/login');
+    return null;
+  }
+
+  // Redirect if cart is empty
+  if (items.length === 0) {
+    navigate('/');
     return null;
   }
 
@@ -75,7 +75,7 @@ export default function CheckoutPage() {
       const discountPercent = validCoupons[couponCode.toUpperCase()];
       
       if (discountPercent) {
-        const discountAmount = (total * discountPercent) / 100;
+        const discountAmount = (totalPrice * discountPercent) / 100;
         setDiscount(discountAmount);
         setAppliedCoupon(couponCode.toUpperCase());
         setError('');
@@ -108,14 +108,14 @@ export default function CheckoutPage() {
       // Create order (will be implemented with API)
       const orderData = {
         items: items.map(item => ({
-          productId: item.id,
-          variantId: item.selectedSize || 'default',
+          productId: item.product.id,
+          variantId: item.size || 'default',
           quantity: item.quantity,
-          price: item.price,
+          price: item.product.price,
         })),
         address,
         couponCode: appliedCoupon || undefined,
-        total: total - discount,
+        total: totalPrice - discount,
       };
 
       console.log('Creating order:', orderData);
@@ -128,7 +128,7 @@ export default function CheckoutPage() {
       navigate('/pedido-confirmado', { 
         state: { 
           orderId: 'VRT-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
-          total: total - discount 
+          total: totalPrice - discount 
         } 
       });
     } catch (err: any) {
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
     }
   };
 
-  const finalTotal = total - discount;
+  const finalTotal = totalPrice - discount;
   const shipping = 0; // Free shipping for now
 
   return (
@@ -281,26 +281,26 @@ export default function CheckoutPage() {
                 {/* Items */}
                 <div className="space-y-3">
                   {items.map((item) => (
-                    <div key={`${item.id}-${item.selectedSize}`} className="flex gap-3">
+                    <div key={`${item.product.id}-${item.size}`} className="flex gap-3">
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.product.image}
+                        alt={item.product.name}
                         className="w-16 h-16 object-cover rounded"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm truncate">{item.name}</p>
+                        <p className="font-medium text-sm truncate">{item.product.name}</p>
                         <p className="text-sm text-gray-500">
-                          Tam: {item.selectedSize} | Qtd: {item.quantity}
+                          Tam: {item.size} | Qtd: {item.quantity}
                         </p>
                         <p className="text-sm font-medium">
-                          R$ {(item.price * item.quantity).toFixed(2)}
+                          R$ {(item.product.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <Separator />
+                <div className="border-t border-gray-200 my-2"></div>
 
                 {/* Coupon */}
                 <div className="space-y-2">
@@ -329,13 +329,13 @@ export default function CheckoutPage() {
                   )}
                 </div>
 
-                <Separator />
+                <div className="border-t border-gray-200 my-2"></div>
 
                 {/* Totals */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
-                    <span>R$ {total.toFixed(2)}</span>
+                    <span>R$ {totalPrice.toFixed(2)}</span>
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between text-sm text-green-600">
@@ -347,7 +347,7 @@ export default function CheckoutPage() {
                     <span>Frete</span>
                     <span className="text-green-600">Grátis</span>
                   </div>
-                  <Separator />
+                  <div className="border-t border-gray-200 my-2"></div>
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span>R$ {finalTotal.toFixed(2)}</span>
