@@ -33,79 +33,74 @@ export const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-primary" />
+    <section className="relative min-h-[95vh] flex items-center overflow-hidden">
+      {/* Background with gradient */}
+      <div className="absolute inset-0 bg-gradient-hero" />
       <div 
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-15"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1556906781-9a412961c28c?w=1920)',
+          backgroundImage: 'url(https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          mixBlendMode: 'overlay',
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
+      
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-accent/20 rounded-full blur-[100px] animate-pulse-slow" />
+      <div className="absolute bottom-20 right-20 w-96 h-96 bg-accent/10 rounded-full blur-[120px] animate-pulse-slow" />
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full mb-6 animate-fade-in">
-            <Flame size={18} className="animate-bounce-subtle" />
-            <span className="text-sm font-semibold uppercase tracking-wide">Coleção Limitada</span>
+          <div className="inline-flex items-center gap-2 bg-accent/30 backdrop-blur-sm text-accent-foreground px-5 py-2.5 rounded-full mb-8 animate-fade-in border border-accent/30">
+            <Flame size={18} className="animate-bounce-subtle text-accent" />
+            <span className="text-sm font-bold uppercase tracking-widest">Drop Exclusivo</span>
           </div>
 
           {/* Headline */}
           <h1 
-            className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-primary-foreground mb-6 leading-[0.9] animate-fade-in"
-            style={{ animationDelay: '0.1s' }}
+            className="font-display text-5xl md:text-7xl lg:text-[6rem] font-bold text-primary-foreground mb-6 leading-[0.85] animate-fade-in tracking-tight"
           >
-            VISTA SEU<br />
-            <span className="text-accent">ESTILO</span>
+            DEFINA SEU<br />
+            <span className="text-gradient-neon">PRÓPRIO ESTILO</span>
           </h1>
 
           {/* Subheadline */}
-          <p 
-            className="text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-lg animate-fade-in"
-            style={{ animationDelay: '0.2s' }}
-          >
-            Moda urbana para quem não aceita o comum. Descubra peças exclusivas que expressam quem você realmente é.
+          <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-lg animate-fade-in font-body">
+            Streetwear autêntico pra quem faz suas próprias regras. Peças limitadas que expressam atitude.
           </p>
 
           {/* Countdown */}
-          <div 
-            className="flex items-center gap-4 mb-8 animate-fade-in"
-            style={{ animationDelay: '0.3s' }}
-          >
-            <span className="text-primary-foreground/70 text-sm uppercase tracking-wide">Oferta termina em:</span>
-            <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 mb-10 animate-fade-in">
+            <span className="text-primary-foreground/60 text-xs uppercase tracking-[0.2em] font-medium">Drop termina em:</span>
+            <div className="flex gap-3">
               {[
-                { value: timeLeft.hours, label: 'h' },
-                { value: timeLeft.minutes, label: 'm' },
-                { value: timeLeft.seconds, label: 's' },
+                { value: timeLeft.hours, label: 'HRS' },
+                { value: timeLeft.minutes, label: 'MIN' },
+                { value: timeLeft.seconds, label: 'SEG' },
               ].map((item, index) => (
-                <div key={index} className="flex items-center gap-1">
-                  <span className="bg-accent text-accent-foreground font-bold text-lg px-3 py-1 rounded animate-countdown">
+                <div key={index} className="flex flex-col items-center">
+                  <span className="bg-accent/90 backdrop-blur-sm text-accent-foreground font-bold text-xl px-4 py-2 rounded-lg animate-countdown neon-glow">
                     {String(item.value).padStart(2, '0')}
                   </span>
-                  <span className="text-primary-foreground/70 text-sm">{item.label}</span>
+                  <span className="text-primary-foreground/50 text-[10px] mt-1 tracking-wider">{item.label}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* CTAs */}
-          <div 
-            className="flex flex-col sm:flex-row gap-4 animate-fade-in"
-            style={{ animationDelay: '0.4s' }}
-          >
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
             <Button 
               asChild 
               size="lg" 
-              className="h-14 px-8 text-base font-semibold bg-accent hover:bg-accent/90 text-accent-foreground btn-glow"
+              className="h-14 px-10 text-base font-bold bg-accent hover:bg-accent/90 text-accent-foreground btn-glow rounded-full uppercase tracking-wider"
             >
               <Link to="/ofertas">
-                Ver Ofertas
+                Ver Drop
                 <ArrowRight className="ml-2" size={20} />
               </Link>
             </Button>
@@ -113,19 +108,16 @@ export const HeroSection = () => {
               asChild 
               size="lg" 
               variant="outline" 
-              className="h-14 px-8 text-base font-semibold border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+              className="h-14 px-10 text-base font-bold border-2 border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 rounded-full uppercase tracking-wider"
             >
               <Link to="/categoria/tenis">
-                Nova Coleção
+                Explorar
               </Link>
             </Button>
           </div>
 
           {/* Social Proof */}
-          <div 
-            className="mt-12 flex items-center gap-6 animate-fade-in"
-            style={{ animationDelay: '0.5s' }}
-          >
+          <div className="mt-12 flex items-center gap-6 animate-fade-in">
             <div className="flex -space-x-3">
               {[
                 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
@@ -158,7 +150,6 @@ export const HeroSection = () => {
           src="https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=800"
           alt="Tênis em destaque"
           className="absolute top-1/2 right-20 -translate-y-1/2 w-[500px] h-auto drop-shadow-2xl animate-fade-in hover:scale-105 transition-transform duration-500"
-          style={{ animationDelay: '0.6s' }}
         />
       </div>
     </section>
