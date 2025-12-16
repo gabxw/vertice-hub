@@ -28,11 +28,11 @@ export const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       {/* Top bar - Promotional */}
-      <div className="bg-primary text-primary-foreground text-center py-2 px-4">
-        <p className="text-xs md:text-sm font-medium animate-pulse-slow">
-          🔥 FRETE GRÁTIS em compras acima de R$ 299 | Use o cupom: <span className="font-bold">PRIMEIRA10</span>
+      <div className="bg-gradient-to-r from-accent via-accent/90 to-accent text-accent-foreground text-center py-2.5 px-4">
+        <p className="text-xs md:text-sm font-bold tracking-wide">
+          ⚡ FRETE GRÁTIS acima de R$ 299 | Cupom: <span className="bg-background/20 px-2 py-0.5 rounded">PRIMEIRA10</span>
         </p>
       </div>
 
@@ -41,29 +41,30 @@ export const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 -ml-2"
+            className="lg:hidden p-2 -ml-2 hover:text-accent transition-colors"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <h1 className="font-display text-2xl md:text-3xl font-bold tracking-wider">
+          <Link to="/" className="flex items-center group">
+            <h1 className="font-display text-2xl md:text-3xl font-bold tracking-[0.15em] group-hover:text-accent transition-colors">
               VÉRTICE
             </h1>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  'font-medium text-sm uppercase tracking-wide transition-colors hover:text-accent',
+                  'font-medium text-sm uppercase tracking-[0.15em] transition-all hover:text-accent relative py-2',
                   location.pathname === link.href && 'text-accent',
-                  link.highlight && 'text-destructive font-semibold'
+                  link.highlight && 'text-destructive font-bold',
+                  location.pathname === link.href && 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full'
                 )}
               >
                 {link.label}
@@ -123,12 +124,12 @@ export const Header = () => {
 
             <button
               onClick={() => setIsOpen(true)}
-              className="relative p-2 hover:text-accent transition-colors"
+              className="relative p-2 hover:text-accent transition-colors group"
               aria-label="Carrinho"
             >
-              <ShoppingBag size={20} />
+              <ShoppingBag size={20} className="group-hover:scale-110 transition-transform" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center animate-scale-in">
+                <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center animate-scale-in neon-glow">
                   {totalItems}
                 </span>
               )}
