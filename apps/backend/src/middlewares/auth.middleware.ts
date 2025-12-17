@@ -28,7 +28,14 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
 
     const [bearer, token] = authHeader.split(' ');
 
+    logger.debug('Auth header parsed', {
+      bearer,
+      tokenLength: token?.length,
+      tokenPreview: token?.substring(0, 20) + '...'
+    });
+
     if (bearer !== 'Bearer' || !token) {
+      logger.warn('Invalid token format', { bearer, hasToken: !!token });
       return res.status(401).json({
         error: 'Unauthorized',
         message: 'Formato de token inválido',
