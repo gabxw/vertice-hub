@@ -13,6 +13,7 @@ api.interceptors.request.use(
   async (config) => {
     const { data: { session } } = await supabase.auth.getSession();
     
+    // Adiciona o token de autenticação do Supabase ao cabeçalho
     if (session?.access_token) {
       config.headers.Authorization = `Bearer ${session.access_token}`;
     }
