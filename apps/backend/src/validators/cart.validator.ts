@@ -11,7 +11,8 @@ export const updateCartItemSchema = z.object({
 
 export const createOrderSchema = z.object({
   items: z.array(z.object({
-    productId: z.string().min(1, 'ID de produto inválido'),
+    productId: z.string().optional(), // Optional if productSlug provided
+    productSlug: z.string().optional(), // For lookup when ID is not UUID
     variantId: z.string().optional(), // Optional if size/color provided
     size: z.string().optional(), // For lookup by size + color
     color: z.string().optional(), // For lookup by size + color

@@ -20,9 +20,20 @@ export class OrderService {
     const itemsWithDetails = await Promise.all(
       data.items.map(async (item) => {
         let variant;
+        let productId = item.productId;
+
+        // If productId is not a UUID, try to find product by slug
+        if (item.productSlug || (productId && productId.length < 20)) {
+          const product = await prisma.product.findUnique({
+            where: { slug: item.productSlug || `product-${productId}` },
+          });
+          if (product) {
+            productId = product.id;
+          }
+        }
 
         // Strategy 1: Try to find by variantId if provided and looks like UUID
-        if (item.variantId && item.variantId.length > 10) {
+        if (item.variantId && item.variantId.length > 20) {
           variant = await prisma.productVariant.findUnique({
             where: { id: item.variantId },
             include: { product: true },
@@ -30,10 +41,10 @@ export class OrderService {
         }
 
         // Strategy 2: Find by productId + size + color
-        if (!variant && item.size && item.color) {
+        if (!variant && productId && item.size && item.color) {
           variant = await prisma.productVariant.findFirst({
             where: {
-              productId: item.productId,
+              productId: productId,
               size: item.size,
               colorName: item.color,
             },
