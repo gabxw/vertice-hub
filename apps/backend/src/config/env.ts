@@ -32,6 +32,7 @@ const envSchema = z.object({
   EMAIL_FROM: z.string().optional(),
   
   FRONTEND_URL: z.string().url(),
+  CORS_ORIGIN: z.string().optional(),
   
   REDIS_URL: z.string().optional(),
   
@@ -86,6 +87,7 @@ export const config = {
   EMAIL_FROM: parsedEnv.data.EMAIL_FROM,
   
   FRONTEND_URL: parsedEnv.data.FRONTEND_URL,
+  CORS_ORIGIN: parsedEnv.data.CORS_ORIGIN,
   
   REDIS_URL: parsedEnv.data.REDIS_URL,
   
