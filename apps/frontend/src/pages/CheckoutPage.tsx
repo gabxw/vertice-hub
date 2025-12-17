@@ -26,7 +26,7 @@ interface AddressForm {
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { items, totalPrice, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -47,6 +47,15 @@ export default function CheckoutPage() {
     state: '',
     zipCode: '',
   });
+
+  // Show loading state while authentication is being checked
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl font-semibold">Carregando autenticação...</p>
+      </div>
+    );
+  }
 
   // Redirect if not logged in
   if (!user) {
