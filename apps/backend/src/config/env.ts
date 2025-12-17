@@ -41,8 +41,8 @@ const envSchema = z.object({
   RATE_LIMIT_WINDOW_MS: z.string().default('900000'),
   RATE_LIMIT_MAX_REQUESTS: z.string().default('100'),
   
-  PAYPAL_CLIENT_ID: z.string(),
-  PAYPAL_CLIENT_SECRET: z.string(),
+  PAYPAL_CLIENT_ID: z.string().optional(),
+  PAYPAL_CLIENT_SECRET: z.string().optional(),
   PAYPAL_MODE: z.enum(['sandbox', 'production']).default('sandbox'),
   PAYPAL_WEBHOOK_ID: z.string().optional(),
 });

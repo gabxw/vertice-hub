@@ -51,10 +51,34 @@ export interface Order {
 }
 
 export interface CreateOrderData {
-  shippingAddressId: string;
-  paymentMethod: 'pix' | 'credit_card' | 'boleto';
+  items: Array<{
+    productId: string;
+    variantId: string;
+    quantity: number;
+    price: number;
+  }>;
+  shippingAddress: {
+    name: string;
+    street: string;
+    number: string;
+    complement?: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
   couponCode?: string;
 }
+
+/**
+ * Cria um novo pedido no backend.
+ * @param orderData Os dados do pedido a ser criado.
+ * @returns A resposta da API com os dados do pedido criado.
+ */
+export const createOrder = async (orderData: CreateOrderData) => {
+  const { data } = await api.post('/orders', orderData);
+  return data;
+};
 
 export const ordersApi = {
   // Listar pedidos do usuário
@@ -68,12 +92,6 @@ export const ordersApi = {
   // Buscar detalhes de um pedido
   getById: async (orderId: string): Promise<Order> => {
     const { data } = await api.get(`/orders/${orderId}`);
-    return data;
-  },
-
-  // Criar novo pedido
-  create: async (orderData: CreateOrderData) => {
-    const { data } = await api.post('/orders', orderData);
     return data;
   },
 
