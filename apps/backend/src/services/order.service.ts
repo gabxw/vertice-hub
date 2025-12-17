@@ -5,51 +5,43 @@ import type { CreateOrderInput } from '@/validators/cart.validator';
 
 export class OrderService {
   /**
-   * Create order from cart
+   * Create order from items
    */
   async createOrder(userId: string, data: CreateOrderInput) {
-    // Get user's cart
-    const cart = await prisma.cart.findUnique({
-      where: { userId },
-      include: {
-        items: {
-          include: {
-            variant: {
-              include: {
-                product: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    console.log('[ORDER SERVICE] Creating order for user:', userId);
+    console.log('[ORDER SERVICE] Data:', JSON.stringify(data, null, 2));
 
-    if (!cart || cart.items.length === 0) {
-      throw new Error('Carrinho vazio');
+    // Validate items
+    if (!data.items || data.items.length === 0) {
+      throw new Error('Nenhum item no pedido');
     }
 
-    // Verify address belongs to user
-    const address = await prisma.address.findFirst({
-      where: {
-        id: data.shippingAddressId,
-        userId,
-      },
-    });
+    // Verify stock availability and get product details
+    const itemsWithDetails = await Promise.all(
+      data.items.map(async (item) => {
+        const variant = await prisma.productVariant.findUnique({
+          where: { id: item.variantId },
+          include: { product: true },
+        });
 
-    if (!address) {
-      throw new Error('Endereço não encontrado');
-    }
+        if (!variant) {
+          throw new Error(`Variante ${item.variantId} não encontrada`);
+        }
 
-    // Verify stock availability
-    for (const item of cart.items) {
-      if (item.variant.stock < item.quantity) {
-        throw new Error(`Estoque insuficiente para ${item.variant.product.name}`);
-      }
-    }
+        if (variant.stock < item.quantity) {
+          throw new Error(`Estoque insuficiente para ${variant.product.name}`);
+        }
+
+        return {
+          ...item,
+          variant,
+        };
+      })
+    );
 
     // Calculate totals
-    const subtotal = cart.items.reduce((sum, item) => {
-      return sum + Number(item.variant.product.price) * item.quantity;
+    const subtotal = itemsWithDetails.reduce((sum, item) => {
+      return sum + item.price * item.quantity;
     }, 0);
 
     let discount = 0;
@@ -86,6 +78,17 @@ export class OrderService {
     const shipping = 0; // TODO: Calculate shipping
     const total = subtotal - discount + shipping;
 
+    // Create shipping address
+    const shippingAddress = await prisma.address.create({
+      data: {
+        userId,
+        ...data.shippingAddress,
+        isDefault: false,
+      },
+    });
+
+    console.log('[ORDER SERVICE] Shipping address created:', shippingAddress.id);
+
     // Create order
     const order = await prisma.order.create({
       data: {
@@ -93,19 +96,19 @@ export class OrderService {
         orderNumber: generateOrderNumber(),
         status: 'PENDING',
         paymentStatus: 'PENDING',
-        paymentMethod: data.paymentMethod,
+        paymentMethod: 'PAYPAL', // Default to PayPal for now
         subtotal,
         discount,
         shipping,
         total,
         couponId,
-        shippingAddressId: data.shippingAddressId,
+        shippingAddressId: shippingAddress.id,
         items: {
-          create: cart.items.map((item) => ({
-            productId: item.variant.productId,
+          create: data.items.map((item) => ({
+            productId: item.productId,
             variantId: item.variantId,
             quantity: item.quantity,
-            price: Number(item.variant.product.price),
+            price: item.price,
           })),
         },
         statusHistory: {
@@ -126,6 +129,8 @@ export class OrderService {
       },
     });
 
+    console.log('[ORDER SERVICE] Order created:', order.orderNumber);
+
     // Update coupon usage
     if (couponId) {
       await prisma.coupon.update({
@@ -135,17 +140,12 @@ export class OrderService {
     }
 
     // Decrease stock
-    for (const item of cart.items) {
+    for (const item of data.items) {
       await prisma.productVariant.update({
         where: { id: item.variantId },
         data: { stock: { decrement: item.quantity } },
       });
     }
-
-    // Clear cart
-    await prisma.cartItem.deleteMany({
-      where: { cartId: cart.id },
-    });
 
     logger.info(`Order created: ${order.orderNumber}`);
 
