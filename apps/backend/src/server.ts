@@ -90,27 +90,31 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Start server
-const PORT = env.PORT;
+if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
+  const PORT = env.PORT;
+  
+  app.listen(PORT, () => {
+    logger.info(`🚀 Server running on port ${PORT}`);
+    logger.info(`📍 Environment: ${env.NODE_ENV}`);
+    logger.info(`🔗 API URL: ${env.API_URL}`);
+    logger.info(`🌐 Frontend URL: ${env.FRONTEND_URL}`);
+  });
 
-app.listen(PORT, () => {
-  logger.info(`🚀 Server running on port ${PORT}`);
+  // Graceful shutdown
+  process.on('SIGTERM', async () => {
+    logger.info('SIGTERM received, shutting down gracefully...');
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+
+  process.on('SIGINT', async () => {
+    logger.info('SIGINT received, shutting down gracefully...');
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+} else {
+  logger.info('🚀 Running in serverless mode (Vercel)');
   logger.info(`📍 Environment: ${env.NODE_ENV}`);
-  logger.info(`🔗 API URL: ${env.API_URL}`);
-  logger.info(`🌐 Frontend URL: ${env.FRONTEND_URL}`);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-  logger.info('SIGTERM received, shutting down gracefully...');
-  await prisma.$disconnect();
-  process.exit(0);
-});
-
-process.on('SIGINT', async () => {
-  logger.info('SIGINT received, shutting down gracefully...');
-  await prisma.$disconnect();
-  process.exit(0);
-});
+}
 
 export default app;
