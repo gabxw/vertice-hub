@@ -11,7 +11,15 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
   try {
     const authHeader = req.headers.authorization;
 
+    logger.debug('Auth middleware - checking authorization', {
+      path: req.path,
+      method: req.method,
+      hasAuthHeader: !!authHeader,
+      headers: Object.keys(req.headers)
+    });
+
     if (!authHeader) {
+      logger.warn('No authorization header found');
       return res.status(401).json({
         error: 'Unauthorized',
         message: 'Token de autenticação não fornecido',

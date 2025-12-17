@@ -13,9 +13,16 @@ api.interceptors.request.use(
   async (config) => {
     const { data: { session } } = await supabase.auth.getSession();
     
+    console.log('[API] Request to:', config.url);
+    console.log('[API] Session exists:', !!session);
+    console.log('[API] Token exists:', !!session?.access_token);
+    
     // Adiciona o token de autenticação do Supabase ao cabeçalho
     if (session?.access_token) {
       config.headers.Authorization = `Bearer ${session.access_token}`;
+      console.log('[API] Token added to headers');
+    } else {
+      console.warn('[API] No token found - user may not be logged in');
     }
     
     return config;
