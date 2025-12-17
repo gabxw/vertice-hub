@@ -32,6 +32,7 @@ const envSchema = z.object({
   EMAIL_FROM: z.string().optional(),
   
   FRONTEND_URL: z.string().url(),
+  CORS_ORIGIN: z.string().optional(),
   
   REDIS_URL: z.string().optional(),
   
@@ -40,6 +41,11 @@ const envSchema = z.object({
   
   RATE_LIMIT_WINDOW_MS: z.string().default('900000'),
   RATE_LIMIT_MAX_REQUESTS: z.string().default('100'),
+  
+  PAYPAL_CLIENT_ID: z.string().optional(),
+  PAYPAL_CLIENT_SECRET: z.string().optional(),
+  PAYPAL_MODE: z.enum(['sandbox', 'production']).default('sandbox'),
+  PAYPAL_WEBHOOK_ID: z.string().optional(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
@@ -81,6 +87,7 @@ export const config = {
   EMAIL_FROM: parsedEnv.data.EMAIL_FROM,
   
   FRONTEND_URL: parsedEnv.data.FRONTEND_URL,
+  CORS_ORIGIN: parsedEnv.data.CORS_ORIGIN,
   
   REDIS_URL: parsedEnv.data.REDIS_URL,
   
@@ -89,6 +96,11 @@ export const config = {
   
   RATE_LIMIT_WINDOW_MS: parseInt(parsedEnv.data.RATE_LIMIT_WINDOW_MS, 10),
   RATE_LIMIT_MAX_REQUESTS: parseInt(parsedEnv.data.RATE_LIMIT_MAX_REQUESTS, 10),
+  
+  PAYPAL_CLIENT_ID: parsedEnv.data.PAYPAL_CLIENT_ID,
+  PAYPAL_CLIENT_SECRET: parsedEnv.data.PAYPAL_CLIENT_SECRET,
+  PAYPAL_MODE: parsedEnv.data.PAYPAL_MODE,
+  PAYPAL_WEBHOOK_ID: parsedEnv.data.PAYPAL_WEBHOOK_ID,
   
   isDevelopment: parsedEnv.data.NODE_ENV === 'development',
   isProduction: parsedEnv.data.NODE_ENV === 'production',

@@ -7,14 +7,16 @@ import { ZodSchema, ZodError } from 'zod';
 export function validate(schema: ZodSchema) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log('[VALIDATE] Validating request body:', JSON.stringify(req.body, null, 2));
       schema.parse(req.body);
+      console.log('[VALIDATE] Validation passed');
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = error.errors.map((err) => ({
+        const errors = error.errors ? error.errors.map((err) => ({
           field: err.path.join('.'),
           message: err.message,
-        }));
+        })) : [];
 
         return res.status(400).json({
           error: 'Validation Error',
@@ -38,10 +40,10 @@ export function validateQuery(schema: ZodSchema) {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = error.errors.map((err) => ({
+        const errors = error.errors ? error.errors.map((err) => ({
           field: err.path.join('.'),
           message: err.message,
-        }));
+        })) : [];
 
         return res.status(400).json({
           error: 'Validation Error',
@@ -65,10 +67,10 @@ export function validateParams(schema: ZodSchema) {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = error.errors.map((err) => ({
+        const errors = error.errors ? error.errors.map((err) => ({
           field: err.path.join('.'),
           message: err.message,
-        }));
+        })) : [];
 
         return res.status(400).json({
           error: 'Validation Error',

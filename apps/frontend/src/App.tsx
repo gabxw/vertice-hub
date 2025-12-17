@@ -33,6 +33,8 @@ import OrdersPage from "./pages/account/OrdersPage";
 // Checkout pages
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import PaymentCancelledPage from "./pages/PaymentCancelledPage";
 
 // Search page
 import SearchPage from "./pages/SearchPage";
@@ -87,6 +89,22 @@ const App = () => (
                       element={
                         <PrivateRoute>
                           <OrderConfirmationPage />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/pagamento/sucesso"
+                      element={
+                        <PrivateRoute>
+                          <PaymentSuccessPage />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/pagamento/cancelado"
+                      element={
+                        <PrivateRoute>
+                          <PaymentCancelledPage />
                         </PrivateRoute>
                       }
                     />

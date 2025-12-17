@@ -29,6 +29,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.25.0",
   "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
     "@prisma/client": "6.19.1",
     "@supabase/supabase-js": "^2.87.3",
     "bcryptjs": "^3.0.3",

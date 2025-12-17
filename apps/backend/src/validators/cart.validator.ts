@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const addToCartSchema = z.object({
-  variantId: z.string().uuid('ID de variante inválido'),
+  variantId: z.string().min(1, 'ID de variante inválido'),
   quantity: z.number().int().positive('Quantidade deve ser positiva'),
 });
 
@@ -10,8 +10,22 @@ export const updateCartItemSchema = z.object({
 });
 
 export const createOrderSchema = z.object({
-  shippingAddressId: z.string().uuid('ID de endereço inválido'),
-  paymentMethod: z.enum(['credit_card', 'pix', 'boleto']),
+  items: z.array(z.object({
+    productId: z.string().min(1, 'ID de produto inválido'),
+    variantId: z.string().min(1, 'ID de variante inválido'),
+    quantity: z.number().int().positive('Quantidade deve ser positiva'),
+    price: z.number().positive('Preço deve ser positivo'),
+  })),
+  shippingAddress: z.object({
+    name: z.string().min(1, 'Nome é obrigatório'),
+    street: z.string().min(1, 'Rua é obrigatória'),
+    number: z.string().min(1, 'Número é obrigatório'),
+    complement: z.string().optional(),
+    neighborhood: z.string().min(1, 'Bairro é obrigatório'),
+    city: z.string().min(1, 'Cidade é obrigatória'),
+    state: z.string().length(2, 'Estado deve ter 2 caracteres'),
+    zipCode: z.string().min(8, 'CEP é obrigatório'),
+  }),
   couponCode: z.string().optional(),
 });
 
