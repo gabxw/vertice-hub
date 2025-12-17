@@ -154,6 +154,10 @@ export class CartController {
    */
   async createOrder(req: AuthRequest<{}, {}, CreateOrderInput>, res: Response) {
     try {
+      console.log('[CREATE ORDER] Controller called');
+      console.log('[CREATE ORDER] User:', req.user);
+      console.log('[CREATE ORDER] Body:', JSON.stringify(req.body, null, 2));
+      
       // req.user is guaranteed to exist because of authenticate middleware
       const order = await orderService.createOrder(req.user!.id, req.body);
 
