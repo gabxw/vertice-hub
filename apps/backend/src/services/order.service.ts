@@ -19,19 +19,40 @@ export class OrderService {
     // Verify stock availability and get product details
     const itemsWithDetails = await Promise.all(
       data.items.map(async (item) => {
-        // Try to find variant by ID first, if not found try by SKU pattern
-        let variant = await prisma.productVariant.findFirst({
-          where: {
-            OR: [
-              { id: item.variantId },
-              { sku: { contains: item.variantId } }
-            ]
-          },
-          include: { product: true },
-        });
+        let variant;
+
+        // Strategy 1: Try to find by variantId if provided and looks like UUID
+        if (item.variantId && item.variantId.length > 10) {
+          variant = await prisma.productVariant.findUnique({
+            where: { id: item.variantId },
+            include: { product: true },
+          });
+        }
+
+        // Strategy 2: Find by productId + size + color
+        if (!variant && item.size && item.color) {
+          variant = await prisma.productVariant.findFirst({
+            where: {
+              productId: item.productId,
+              size: item.size,
+              colorName: item.color,
+            },
+            include: { product: true },
+          });
+        }
+
+        // Strategy 3: Fallback - try SKU pattern match
+        if (!variant && item.variantId) {
+          variant = await prisma.productVariant.findFirst({
+            where: {
+              sku: { contains: item.variantId }
+            },
+            include: { product: true },
+          });
+        }
 
         if (!variant) {
-          throw new Error(`Variante ${item.variantId} não encontrada`);
+          throw new Error(`Variante não encontrada para produto ${item.productId} (size: ${item.size}, color: ${item.color})`);
         }
 
         if (variant.stock < item.quantity) {
@@ -110,9 +131,9 @@ export class OrderService {
         couponId,
         shippingAddressId: shippingAddress.id,
         items: {
-          create: data.items.map((item) => ({
-            productId: item.productId,
-            variantId: item.variantId,
+          create: itemsWithDetails.map((item) => ({
+            productId: item.variant.productId,
+            variantId: item.variant.id,
             quantity: item.quantity,
             price: item.price,
           })),
@@ -146,9 +167,9 @@ export class OrderService {
     }
 
     // Decrease stock
-    for (const item of data.items) {
+    for (const item of itemsWithDetails) {
       await prisma.productVariant.update({
-        where: { id: item.variantId },
+        where: { id: item.variant.id },
         data: { stock: { decrement: item.quantity } },
       });
     }

@@ -12,7 +12,9 @@ export const updateCartItemSchema = z.object({
 export const createOrderSchema = z.object({
   items: z.array(z.object({
     productId: z.string().min(1, 'ID de produto inválido'),
-    variantId: z.string().min(1, 'ID de variante inválido'),
+    variantId: z.string().optional(), // Optional if size/color provided
+    size: z.string().optional(), // For lookup by size + color
+    color: z.string().optional(), // For lookup by size + color
     quantity: z.number().int().positive('Quantidade deve ser positiva'),
     price: z.number().positive('Preço deve ser positivo'),
   })),
