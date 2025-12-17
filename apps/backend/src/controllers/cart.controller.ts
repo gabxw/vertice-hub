@@ -154,15 +154,8 @@ export class CartController {
    */
   async createOrder(req: AuthRequest<{}, {}, CreateOrderInput>, res: Response) {
     try {
-      if (!req.user) {
-        return res.status(401).json({
-          success: false,
-          error: 'Unauthorized',
-          message: 'Usuário não autenticado',
-        });
-      }
-
-      const order = await orderService.createOrder(req.user.id, req.body);
+      // req.user is guaranteed to exist because of authenticate middleware
+      const order = await orderService.createOrder(req.user!.id, req.body);
 
       res.status(201).json({
         success: true,

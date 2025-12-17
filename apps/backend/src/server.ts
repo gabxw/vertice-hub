@@ -13,6 +13,8 @@ app.use(helmet());
 app.use(cors({
   origin: [env.FRONTEND_URL, ...(env.CORS_ORIGIN ? env.CORS_ORIGIN.split(',') : [])].filter(Boolean),
   credentials: true,
+  exposedHeaders: ['Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Body parsing middleware
