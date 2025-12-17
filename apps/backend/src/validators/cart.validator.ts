@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const addToCartSchema = z.object({
-  variantId: z.string().uuid('ID de variante inválido'),
+  variantId: z.string().min(1, 'ID de variante inválido'),
   quantity: z.number().int().positive('Quantidade deve ser positiva'),
 });
 
@@ -11,8 +11,8 @@ export const updateCartItemSchema = z.object({
 
 export const createOrderSchema = z.object({
   items: z.array(z.object({
-    productId: z.string().uuid('ID de produto inválido'),
-    variantId: z.string(),
+    productId: z.string().min(1, 'ID de produto inválido'),
+    variantId: z.string().min(1, 'ID de variante inválido'),
     quantity: z.number().int().positive('Quantidade deve ser positiva'),
     price: z.number().positive('Preço deve ser positivo'),
   })),
