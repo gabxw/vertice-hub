@@ -19,8 +19,14 @@ export class OrderService {
     // Verify stock availability and get product details
     const itemsWithDetails = await Promise.all(
       data.items.map(async (item) => {
-        const variant = await prisma.productVariant.findUnique({
-          where: { id: item.variantId },
+        // Try to find variant by ID first, if not found try by SKU pattern
+        let variant = await prisma.productVariant.findFirst({
+          where: {
+            OR: [
+              { id: item.variantId },
+              { sku: { contains: item.variantId } }
+            ]
+          },
           include: { product: true },
         });
 
