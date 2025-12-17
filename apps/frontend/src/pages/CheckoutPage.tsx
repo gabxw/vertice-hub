@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import { createPayPalOrder, capturePayPalOrder } from '@/api/paypal';
+import { createOrder } from '@/api/orders';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ShoppingBag, Truck, CreditCard } from 'lucide-react';
@@ -31,6 +34,8 @@ export default function CheckoutPage() {
   const [discount, setDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState('');
   const [loadingCep, setLoadingCep] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [showPayPal, setShowPayPal] = useState(false);
 
   const [address, setAddress] = useState<AddressForm>({
     name: user?.user_metadata?.name || '',
@@ -125,19 +130,17 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
+    setError('');
 
     try {
       // Validate address
-      if (!address.street || !address.number || !address.neighborhood || 
-          !address.city || !address.state || !address.zipCode) {
-        setError('Preencha todos os campos obrigatórios do endereço');
-        setLoading(false);
+      if (!address.name || !address.street || !address.number || !address.neighborhood || !address.city || !address.state || !address.zipCode) {
+        setError('Por favor, preencha todos os campos obrigatórios');
         return;
       }
 
-      // Create order (will be implemented with API)
+      // Create order in database
       const orderData = {
         items: items.map(item => ({
           productId: item.product.id,
@@ -145,26 +148,15 @@ export default function CheckoutPage() {
           quantity: item.quantity,
           price: item.product.price,
         })),
-        address,
+        shippingAddress: address,
         couponCode: appliedCoupon || undefined,
-        total: totalPrice - discount,
       };
 
-      console.log('Creating order:', orderData);
-
-      // Simulate order creation
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Clear cart and redirect to confirmation
-      clearCart();
-      navigate('/pedido-confirmado', { 
-        state: { 
-          orderId: 'VRT-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
-          total: totalPrice - discount 
-        } 
-      });
+      const response = await createOrder(orderData);
+      setOrderId(response.data.id);
+      setShowPayPal(true);
     } catch (err: any) {
-      setError(err.message || 'Erro ao finalizar pedido');
+      setError(err.message || 'Erro ao criar pedido');
     } finally {
       setLoading(false);
     }
@@ -396,14 +388,44 @@ export default function CheckoutPage() {
                   </Alert>
                 )}
 
-                <Button
-                  onClick={handleSubmit}
-                  className="w-full"
-                  size="lg"
-                  disabled={loading}
-                >
-                  {loading ? 'Processando...' : 'Finalizar Pedido'}
-                </Button>
+                {!showPayPal ? (
+                  <Button
+                    onClick={handleSubmit}
+                    className="w-full"
+                    size="lg"
+                    disabled={loading}
+                  >
+                    {loading ? 'Processando...' : 'Continuar para Pagamento'}
+                  </Button>
+                ) : (
+                  <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID, currency: 'BRL' }}>
+                    <PayPalButtons
+                      style={{ layout: 'vertical' }}
+                      createOrder={async () => {
+                        if (!orderId) throw new Error('Order ID not found');
+                        const response = await createPayPalOrder(orderId);
+                        return response.data.id;
+                      }}
+                      onApprove={async (data) => {
+                        try {
+                          await capturePayPalOrder(data.orderID);
+                          clearCart();
+                          navigate('/pagamento/sucesso', { state: { orderId } });
+                        } catch (error) {
+                          setError('Erro ao processar pagamento');
+                        }
+                      }}
+                      onError={(err) => {
+                        console.error('PayPal error:', err);
+                        setError('Erro ao processar pagamento com PayPal');
+                      }}
+                      onCancel={() => {
+                        setShowPayPal(false);
+                        setError('Pagamento cancelado');
+                      }}
+                    />
+                  </PayPalScriptProvider>
+                )}
 
                 <p className="text-xs text-center text-gray-500">
                   Ao finalizar, você concorda com nossos termos e condições
