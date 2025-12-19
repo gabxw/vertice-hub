@@ -1,10 +1,17 @@
 import { Request } from 'express';
 import { User, Role } from '@prisma/client';
+import { ParsedQs } from 'qs';
 
 /**
  * Authenticated request with user information
+ * Generic parameters: P = params, ResBody = response body, ReqBody = request body, ReqQuery = query
  */
-export interface AuthRequest extends Request {
+export interface AuthRequest<
+  P = Record<string, string>,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery = ParsedQs
+> extends Request<P, ResBody, ReqBody, ReqQuery> {
   user?: {
     id: string;
     email: string;
