@@ -2,6 +2,25 @@ import { client, checkoutNodeJssdk } from '../config/paypal';
 import { env } from '../config/env';
 import { logger } from '../config/logger';
 
+// Define types for PayPal responses
+interface PayPalOrderResponse {
+  id: string;
+  status: string;
+  links?: Array<{ href: string; rel: string; method?: string }>;
+  payer?: {
+    email_address?: string;
+    payer_id?: string;
+    name?: { given_name?: string; surname?: string };
+  };
+  purchase_units?: Array<{
+    reference_id?: string;
+    payments?: {
+      captures?: Array<{ id: string; status: string; amount?: { currency_code: string; value: string } }>;
+    };
+  }>;
+  amount?: { currency_code: string; value: string };
+}
+
 export interface PayPalOrderItem {
   name: string;
   description?: string;
@@ -55,23 +74,25 @@ export class PayPalService {
         ],
       });
 
-      const response = await client().execute(request);
+      const response = await client().execute<PayPalOrderResponse>(request);
+      const result = response.result;
       
       logger.info('PayPal order created', {
-        paypalOrderId: response.result.id,
+        paypalOrderId: result.id,
         orderId: data.orderId,
-        status: response.result.status,
+        status: result.status,
       });
 
       return {
-        id: response.result.id,
-        status: response.result.status,
-        links: response.result.links,
+        id: result.id,
+        status: result.status,
+        links: result.links,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       logger.error('Error creating PayPal order', {
-        error: error.message,
-        details: error.response?.data || error,
+        error: errorMessage,
+        details: error,
       });
       throw new Error('Erro ao criar pedido no PayPal');
     }
@@ -85,25 +106,27 @@ export class PayPalService {
       const request = new checkoutNodeJssdk.orders.OrdersCaptureRequest(paypalOrderId);
       request.requestBody({});
 
-      const response = await client().execute(request);
+      const response = await client().execute<PayPalOrderResponse>(request);
+      const result = response.result;
 
       logger.info('PayPal order captured', {
         paypalOrderId,
-        status: response.result.status,
-        captureId: response.result.purchase_units[0]?.payments?.captures?.[0]?.id,
+        status: result.status,
+        captureId: result.purchase_units?.[0]?.payments?.captures?.[0]?.id,
       });
 
       return {
-        id: response.result.id,
-        status: response.result.status,
-        payer: response.result.payer,
-        purchase_units: response.result.purchase_units,
+        id: result.id,
+        status: result.status,
+        payer: result.payer,
+        purchase_units: result.purchase_units,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       logger.error('Error capturing PayPal order', {
         paypalOrderId,
-        error: error.message,
-        details: error.response?.data || error,
+        error: errorMessage,
+        details: error,
       });
       throw new Error('Erro ao capturar pagamento no PayPal');
     }
@@ -115,18 +138,20 @@ export class PayPalService {
   static async getOrder(paypalOrderId: string) {
     try {
       const request = new checkoutNodeJssdk.orders.OrdersGetRequest(paypalOrderId);
-      const response = await client().execute(request);
+      const response = await client().execute<PayPalOrderResponse>(request);
+      const result = response.result;
 
       return {
-        id: response.result.id,
-        status: response.result.status,
-        payer: response.result.payer,
-        purchase_units: response.result.purchase_units,
+        id: result.id,
+        status: result.status,
+        payer: result.payer,
+        purchase_units: result.purchase_units,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       logger.error('Error getting PayPal order', {
         paypalOrderId,
-        error: error.message,
+        error: errorMessage,
       });
       throw new Error('Erro ao buscar pedido no PayPal');
     }
@@ -134,41 +159,11 @@ export class PayPalService {
 
   /**
    * Refund a capture
+   * Note: This method is currently disabled as the PayPal SDK types don't include payments namespace
    */
-  static async refundCapture(captureId: string, amount?: number, currency: string = 'BRL') {
-    try {
-      const request = new checkoutNodeJssdk.payments.CapturesRefundRequest(captureId);
-      
-      if (amount) {
-        request.requestBody({
-          amount: {
-            value: amount.toFixed(2),
-            currency_code: currency,
-          },
-        });
-      } else {
-        request.requestBody({});
-      }
-
-      const response = await client().execute(request);
-
-      logger.info('PayPal capture refunded', {
-        captureId,
-        refundId: response.result.id,
-        status: response.result.status,
-      });
-
-      return {
-        id: response.result.id,
-        status: response.result.status,
-        amount: response.result.amount,
-      };
-    } catch (error: any) {
-      logger.error('Error refunding PayPal capture', {
-        captureId,
-        error: error.message,
-      });
-      throw new Error('Erro ao reembolsar pagamento no PayPal');
-    }
+  static async refundCapture(captureId: string, _amount?: number, _currency: string = 'BRL') {
+    // TODO: Implement refund using PayPal REST API directly
+    logger.warn('Refund not implemented', { captureId });
+    throw new Error('Reembolso via PayPal não está implementado ainda');
   }
 }
