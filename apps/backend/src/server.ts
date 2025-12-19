@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(compression());
 
 // Request logging middleware
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((req: Request, _res: Response, next: NextFunction) => {
   logger.info(`${req.method} ${req.path}`, {
     ip: req.ip,
     userAgent: req.get('user-agent'),
@@ -34,7 +34,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Health check endpoint
-app.get('/health', async (req: Request, res: Response) => {
+app.get('/health', async (_req: Request, res: Response) => {
   try {
     await prisma.$queryRaw`SELECT 1`;
     res.json({
@@ -56,7 +56,7 @@ app.get('/health', async (req: Request, res: Response) => {
 // API routes
 import routes from './routes';
 
-app.get('/api/v1', (req: Request, res: Response) => {
+app.get('/api/v1', (_req: Request, res: Response) => {
   res.json({
     message: 'VÉRTICE E-commerce API',
     version: '1.0.0',
@@ -75,7 +75,8 @@ app.use((req: Request, res: Response) => {
 });
 
 // Global error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   logger.error('Unhandled error:', {
     error: err.message,
     stack: err.stack,
