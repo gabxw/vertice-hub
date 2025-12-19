@@ -1,8 +1,8 @@
-import { prisma } from '@/config/database';
-import { cache, CACHE_KEYS, CACHE_TTL } from '@/config/cache';
-import { logger } from '@/config/logger';
-import { slugify, calculatePagination, createPaginatedResponse } from '@/utils/helpers';
-import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '@/validators/product.validator';
+import { prisma } from '../config/database';
+import { cache, CACHE_KEYS, CACHE_TTL } from '../config/cache';
+import { logger } from '../config/logger';
+import { slugify, calculatePagination, createPaginatedResponse } from '../utils/helpers';
+import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '../validators/product.validator';
 
 export class ProductService {
   /**

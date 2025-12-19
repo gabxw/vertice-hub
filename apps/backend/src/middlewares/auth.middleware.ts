@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { supabase } from '../config/supabase';
 import { logger } from '../config/logger';
-import { AuthRequest } from '@/types';
+import { AuthRequest } from '../types';
 import { Role } from '@prisma/client';
 
 /**

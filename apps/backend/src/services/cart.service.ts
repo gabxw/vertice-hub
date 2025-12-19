@@ -1,6 +1,6 @@
-import { prisma } from '@/config/database';
-import { logger } from '@/config/logger';
-import type { AddToCartInput, UpdateCartItemInput } from '@/validators/cart.validator';
+import { prisma } from '../config/database';
+import { logger } from '../config/logger';
+import type { AddToCartInput, UpdateCartItemInput } from '../validators/cart.validator';
 
 export class CartService {
   /**

@@ -6,7 +6,7 @@ import categoryRoutes from './category.routes';
 import cartRoutes from './cart.routes';
 import orderRoutes from './order.routes';
 import paypalRoutes from './paypal.routes';
-import { authenticate } from '@/middlewares/auth.middleware';
+import { authenticate } from '../middlewares/auth.middleware';
 
 const router = Router();
 

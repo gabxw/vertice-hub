@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { productService } from '@/services/product.service';
-import { AuthRequest } from '@/types';
-import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '@/validators/product.validator';
+import { productService } from '../services/product.service';
+import { AuthRequest } from '../types';
+import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '../validators/product.validator';
 
 export class ProductController {
   /**

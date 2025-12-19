@@ -1,8 +1,8 @@
-import { prisma } from '@/config/database';
-import { cache, CACHE_KEYS, CACHE_TTL } from '@/config/cache';
-import { logger } from '@/config/logger';
-import { slugify } from '@/utils/helpers';
-import type { CreateCategoryInput, UpdateCategoryInput } from '@/validators/category.validator';
+import { prisma } from '../config/database';
+import { cache, CACHE_KEYS, CACHE_TTL } from '../config/cache';
+import { logger } from '../config/logger';
+import { slugify } from '../utils/helpers';
+import type { CreateCategoryInput, UpdateCategoryInput } from '../validators/category.validator';
 
 export class CategoryService {
   /**

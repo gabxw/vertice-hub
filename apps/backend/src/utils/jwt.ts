@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { env } from '@/config/env';
-import { JwtPayload } from '@/types';
+import { env } from '../config/env';
+import { JwtPayload } from '../types';
 
 /**
  * Generate access token

@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import { authService } from '@/services/auth.service';
-import { AuthRequest } from '@/types';
+import { authService } from '../services/auth.service';
+import { AuthRequest } from '../types';
 import type {
   RegisterInput,
   LoginInput,
   RefreshTokenInput,
   ForgotPasswordInput,
   ResetPasswordInput,
-} from '@/validators/auth.validator';
+} from '../validators/auth.validator';
 
 export class AuthController {
   /**

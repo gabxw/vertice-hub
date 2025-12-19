@@ -1,7 +1,7 @@
-import { prisma } from '@/config/database';
-import { logger } from '@/config/logger';
-import { generateOrderNumber, calculatePagination, createPaginatedResponse } from '@/utils/helpers';
-import type { CreateOrderInput } from '@/validators/cart.validator';
+import { prisma } from '../config/database';
+import { logger } from '../config/logger';
+import { generateOrderNumber, calculatePagination, createPaginatedResponse } from '../utils/helpers';
+import type { CreateOrderInput } from '../validators/cart.validator';
 
 export class OrderService {
   /**

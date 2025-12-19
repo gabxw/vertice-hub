@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import { cartService } from '@/services/cart.service';
-import { orderService } from '@/services/order.service';
-import { AuthRequest } from '@/types';
-import type { AddToCartInput, UpdateCartItemInput, CreateOrderInput } from '@/validators/cart.validator';
+import { cartService } from '../services/cart.service';
+import { orderService } from '../services/order.service';
+import { AuthRequest } from '../types';
+import type { AddToCartInput, UpdateCartItemInput, CreateOrderInput } from '../validators/cart.validator';
 
 export class CartController {
   /**
