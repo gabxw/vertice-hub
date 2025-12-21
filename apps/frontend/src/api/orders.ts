@@ -50,10 +50,14 @@ export interface Order {
   updatedAt: string;
 }
 
+// Interface flexível para criação de pedidos que aceita diferentes formatos de items
 export interface CreateOrderData {
   items: Array<{
     productId: string;
-    variantId: string;
+    productSlug?: string;
+    variantId?: string;
+    size?: string;
+    color?: string;
     quantity: number;
     price: number;
   }>;

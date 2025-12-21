@@ -1,3 +1,5 @@
+packages:
+  - 'apps/*'
 onlyBuiltDependencies:
   - '@prisma/engines'
   - '@swc/core'

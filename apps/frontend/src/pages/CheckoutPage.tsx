@@ -164,7 +164,7 @@ export default function CheckoutPage() {
       };
 
       const response = await createOrder(orderData);
-      setOrderId(response.data.id);
+      setOrderId(response.id);
       setShowPayPal(true);
     } catch (err: any) {
       setError(err.message || 'Erro ao criar pedido');
@@ -322,7 +322,7 @@ export default function CheckoutPage() {
                   {items.map((item) => (
                     <div key={`${item.product.id}-${item.size}`} className="flex gap-3">
                       <img
-                        src={item.product.image}
+                        src={item.product.images[0]}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded"
                       />

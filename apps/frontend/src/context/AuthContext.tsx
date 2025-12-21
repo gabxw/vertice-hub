@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { User, Session } from '@supabase/supabase-js';
+import type { User, Session, AuthError } from '@supabase/supabase-js';
 
 interface Profile {
   id: string;
@@ -8,6 +8,12 @@ interface Profile {
   email: string | null;
   phone: string | null;
   avatar_url: string | null;
+}
+
+interface UpdateProfileData {
+  full_name?: string;
+  phone?: string;
+  avatar_url?: string;
 }
 
 interface AuthContextType {
@@ -19,7 +25,8 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
-  updatePassword: (newPassword: string) => Promise<void>;
+  updatePassword: (newPassword: string) => Promise<{ error: AuthError | null }>;
+  updateProfile: (data: UpdateProfileData) => Promise<{ error: Error | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -41,10 +48,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) {
         console.error('Error fetching profile:', error);
         // Se não existir perfil, criar um básico com os dados do user
+        const currentUser = (await supabase.auth.getUser()).data.user;
         setProfile({
           id: userId,
-          full_name: user?.user_metadata?.name || null,
-          email: user?.email || null,
+          full_name: currentUser?.user_metadata?.name || null,
+          email: currentUser?.email || null,
           phone: null,
           avatar_url: null,
         });
@@ -120,12 +128,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error;
   };
 
-  const updatePassword = async (newPassword: string) => {
+  const updatePassword = async (newPassword: string): Promise<{ error: AuthError | null }> => {
     const { error } = await supabase.auth.updateUser({
       password: newPassword,
     });
 
-    if (error) throw error;
+    return { error };
+  };
+
+  const updateProfile = async (data: UpdateProfileData): Promise<{ error: Error | null }> => {
+    if (!user) {
+      return { error: new Error('Usuário não autenticado') };
+    }
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          ...data,
+          updated_at: new Date().toISOString(),
+        });
+
+      if (error) {
+        return { error: new Error(error.message) };
+      }
+
+      // Atualizar o perfil local
+      setProfile((prev) => prev ? { ...prev, ...data } : null);
+      return { error: null };
+    } catch (err) {
+      return { error: err instanceof Error ? err : new Error('Erro desconhecido') };
+    }
   };
 
   const value = {
@@ -138,6 +172,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
     resetPassword,
     updatePassword,
+    updateProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
