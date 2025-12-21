@@ -70,19 +70,40 @@ export interface CreateOrderData {
   couponCode?: string;
 }
 
+export interface CreateOrderResponse {
+  id: string;
+  orderNumber: string;
+  status: OrderStatus;
+  total: number;
+}
+
+export interface OrderListResponse {
+  orders: Order[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 /**
  * Cria um novo pedido no backend.
  * @param orderData Os dados do pedido a ser criado.
  * @returns A resposta da API com os dados do pedido criado.
  */
-export const createOrder = async (orderData: CreateOrderData) => {
+export const createOrder = async (orderData: CreateOrderData): Promise<CreateOrderResponse> => {
   const { data } = await api.post('/orders', orderData);
   return data;
 };
 
 export const ordersApi = {
+  // Criar um novo pedido
+  create: async (orderData: CreateOrderData): Promise<CreateOrderResponse> => {
+    const { data } = await api.post('/orders', orderData);
+    return data;
+  },
+
   // Listar pedidos do usuário
-  list: async (page = 1, limit = 10) => {
+  list: async (page = 1, limit = 10): Promise<OrderListResponse> => {
     const { data } = await api.get('/users/me/orders', {
       params: { page, limit },
     });
@@ -96,7 +117,7 @@ export const ordersApi = {
   },
 
   // Cancelar pedido
-  cancel: async (orderId: string) => {
+  cancel: async (orderId: string): Promise<Order> => {
     const { data } = await api.post(`/orders/${orderId}/cancel`);
     return data;
   },

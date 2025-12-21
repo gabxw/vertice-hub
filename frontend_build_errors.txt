@@ -1,0 +1,14 @@
+Frontend Build Errors - Vercel Deployment
+==========================================
+
+Erros de TypeScript encontrados:
+
+1. src/components/account/AccountLayout.tsx(20,20): error TS2339: Property 'profile' does not exist on type 'AuthContextType'.
+
+2. src/hooks/useOrders.ts(27,59): error TS2339: Property 'create' does not exist on type '{ list: (page?: number, limit?: number...
+
+3. src/hooks/useOrders.ts(34,37): error TS2339: Property 'orderNumber' does not exist on type 'unknown'.
+
+4. src/hooks/useOrders.ts(38,33): error TS2339: Property 'id' does not exist on type 'unknown'.
+
+Causa: O código TypeScript tem erros de tipagem que precisam ser corrigidos.
