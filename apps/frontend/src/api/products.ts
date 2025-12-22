@@ -67,9 +67,10 @@ export interface ProductsResponse {
 
 export const productsApi = {
   // Listar produtos com filtros
-  list: async (filters?: ProductsFilters): Promise<ProductsResponse> => {
+  list: async (filters?: ProductsFilters): Promise<{ products: Product[]; data?: Product[] }> => {
     const { data } = await api.get('/products', { params: filters });
-    return data;
+    // A API retorna { success: true, data: [...] }
+    return { products: data.data || data.products || data, data: data.data };
   },
 
   // Buscar produto por slug
