@@ -147,6 +147,7 @@ export default function CheckoutPage() {
       // Validate address
       if (!address.name || !address.street || !address.number || !address.neighborhood || !address.city || !address.state || !address.zipCode) {
         setError('Por favor, preencha todos os campos obrigatórios');
+        setLoading(false);
         return;
       }
 
