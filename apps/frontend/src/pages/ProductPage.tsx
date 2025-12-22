@@ -77,9 +77,8 @@ const ProductPage = () => {
       setError(null);
       
       try {
-        const response = await productsApi.getBySlug(slug);
-        // A API já retorna o produto diretamente (axios extrai data)
-        const apiProduct = (response as any).data || response;
+        const apiProduct = await productsApi.getBySlug(slug);
+        // A API já extrai o data, então apiProduct é o produto diretamente
         const converted = convertProduct(apiProduct as ApiProduct);
         setProduct(converted);
         setStock(converted.stock);
