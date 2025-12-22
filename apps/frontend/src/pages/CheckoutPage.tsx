@@ -116,6 +116,7 @@ export default function CheckoutPage() {
         BEMVINDO10: 10,
         PRIMEIRACOMPRA: 15,
         FRETEGRATIS: 20,
+        PRIMEIRA10: 10,
       };
 
       const discountPercent = validCoupons[couponCode.toUpperCase()];
