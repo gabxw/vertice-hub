@@ -12,6 +12,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { NewsletterPopup } from "@/components/NewsletterPopup";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 // Public pages
 import Index from "./pages/Index";
@@ -67,6 +68,7 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 {/* Admin routes - without Header/Footer */}
                 <Route

@@ -1,9 +1,49 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { categories } from '@/data/products';
+import { ArrowRight, Loader2 } from 'lucide-react';
+import { categoriesApi, Category } from '@/api/categories';
+
+// Imagens padrão para categorias
+const defaultCategoryImages: Record<string, string> = {
+  'tenis': 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600',
+  'calcas': 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600',
+  'blusas': 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600',
+};
 
 export const CategorySection = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const accentColors = ['accent', 'neon', 'electric'];
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await categoriesApi.list();
+        // A API pode retornar { success: true, data: [...] } ou diretamente o array
+        const cats = Array.isArray(response) ? response : (response as any).data || [];
+        setCategories(cats);
+      } catch (err) {
+        console.error('Erro ao carregar categorias:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-20 md:py-32 bg-background">
+        <div className="container mx-auto px-4 flex justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+        </div>
+      </section>
+    );
+  }
+
+  if (categories.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-20 md:py-32 bg-background">
@@ -38,7 +78,7 @@ export const CategorySection = () => {
             >
               {/* Image */}
               <img
-                src={category.image}
+                src={category.image || defaultCategoryImages[category.slug] || defaultCategoryImages['blusas']}
                 alt={category.name}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -52,7 +92,7 @@ export const CategorySection = () => {
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                 <span className={`text-${accentColors[index % 3]} text-xs font-bold uppercase tracking-[0.2em] mb-2 block`}>
-                  {category.productCount} produtos
+                  Coleção
                 </span>
                 <h3 className="font-display text-3xl md:text-4xl lg:text-5xl text-primary-foreground mb-3">
                   {category.name.toUpperCase()}

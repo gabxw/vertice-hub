@@ -1,12 +1,46 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { products } from '@/data/products';
+import { productsApi, Product as ApiProduct } from '@/api/products';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Loader2 } from 'lucide-react';
+
+// Mapeamento de categoryId para slug
+const categoryIdToSlug: Record<string, string> = {
+  'cat-1': 'tenis',
+  'cat-2': 'calcas',
+  'cat-3': 'blusas',
+};
+
+// Converter produto da API para o formato esperado pelo ProductCard
+const convertProduct = (p: ApiProduct) => ({
+  id: p.id,
+  name: p.name,
+  slug: p.slug,
+  category: categoryIdToSlug[p.categoryId] || p.category?.slug || 'blusas',
+  price: Number(p.price),
+  originalPrice: p.originalPrice ? Number(p.originalPrice) : undefined,
+  images: p.images?.map(img => img.url) || [],
+  description: p.description,
+  story: p.story || p.description,
+  benefits: p.benefits?.map(b => b.text) || [],
+  sizes: [...new Set(p.variants?.map(v => v.size) || [])],
+  colors: p.variants?.reduce((acc: { name: string; hex: string }[], v) => {
+    if (!acc.find(c => c.name === v.colorName)) {
+      acc.push({ name: v.colorName, hex: v.colorHex });
+    }
+    return acc;
+  }, []) || [],
+  stock: p.variants?.reduce((sum, v) => sum + v.stock, 0) || 0,
+  rating: Number(p.rating) || 4.5,
+  reviews: p.reviewCount || 0,
+  tags: p.tags?.map(t => t.name) || [],
+  isNew: p.isNew,
+  isBestSeller: p.isBestSeller,
+});
 
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,9 +50,27 @@ export default function SearchPage() {
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
+  const [allProducts, setAllProducts] = useState<ReturnType<typeof convertProduct>[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await productsApi.list();
+        const products = (response.products || response.data || []).map(convertProduct);
+        setAllProducts(products);
+      } catch (err) {
+        console.error('Erro ao carregar produtos:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Filter products
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = allProducts.filter((product) => {
     const matchesSearch = 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -33,7 +85,7 @@ export default function SearchPage() {
     return matchesSearch && matchesPrice && matchesCategory;
   });
 
-  const categories = Array.from(new Set(products.map(p => p.category)));
+  const categories = Array.from(new Set(allProducts.map(p => p.category)));
 
   useEffect(() => {
     if (initialQuery) {
@@ -131,7 +183,7 @@ export default function SearchPage() {
                       <button
                         key={category}
                         onClick={() => setSelectedCategory(category)}
-                        className={`w-full text-left px-3 py-2 rounded transition-colors ${
+                        className={`w-full text-left px-3 py-2 rounded transition-colors capitalize ${
                           selectedCategory === category
                             ? 'bg-primary text-primary-foreground'
                             : 'hover:bg-gray-100'
@@ -167,7 +219,11 @@ export default function SearchPage() {
 
           {/* Products Grid */}
           <div className="flex-1">
-            {filteredProducts.length > 0 ? (
+            {loading ? (
+              <div className="flex justify-center items-center py-20">
+                <Loader2 className="w-8 h-8 animate-spin text-accent" />
+              </div>
+            ) : filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />

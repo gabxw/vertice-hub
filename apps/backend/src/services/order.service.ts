@@ -169,6 +169,19 @@ export class OrderService {
 
     console.log('[ORDER SERVICE] Order created:', order.orderNumber);
 
+    // Create payment record for PayPal
+    await prisma.payment.create({
+      data: {
+        orderId: order.id,
+        provider: 'PAYPAL',
+        status: 'PENDING',
+        amount: total,
+        paymentMethod: 'PAYPAL',
+      },
+    });
+
+    console.log('[ORDER SERVICE] Payment record created for order:', order.orderNumber);
+
     // Update coupon usage
     if (couponId) {
       await prisma.coupon.update({

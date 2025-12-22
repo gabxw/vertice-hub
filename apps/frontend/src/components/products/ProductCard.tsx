@@ -1,11 +1,24 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag, Eye } from 'lucide-react';
-import { Product } from '@/data/products';
 import { cn } from '@/lib/utils';
 
+// Interface flexível para aceitar produtos mockados ou da API
+interface ProductCardProduct {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  price: number;
+  originalPrice?: number;
+  images: string[];
+  stock?: number;
+  isNew?: boolean;
+  colors?: { name: string; hex: string }[];
+}
+
 interface ProductCardProps {
-  product: Product;
+  product: ProductCardProduct;
   index?: number;
 }
 
@@ -17,6 +30,10 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
+  const stock = product.stock ?? 99;
+  const colors = product.colors ?? [];
+  const images = product.images ?? [];
+
   return (
     <div
       className="group relative animate-fade-in"
@@ -27,19 +44,25 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       {/* Image Container */}
       <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-secondary">
         {/* Main Image */}
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          className={cn(
-            'w-full h-full object-cover transition-all duration-700',
-            isHovered && 'scale-110 opacity-0'
-          )}
-        />
+        {images.length > 0 ? (
+          <img
+            src={images[0]}
+            alt={product.name}
+            className={cn(
+              'w-full h-full object-cover transition-all duration-700',
+              isHovered && images[1] && 'scale-110 opacity-0'
+            )}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+            Sem imagem
+          </div>
+        )}
         
         {/* Second Image on Hover */}
-        {product.images[1] && (
+        {images[1] && (
           <img
-            src={product.images[1]}
+            src={images[1]}
             alt={product.name}
             className={cn(
               'absolute inset-0 w-full h-full object-cover transition-all duration-700 scale-110',
@@ -60,9 +83,9 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
               -{discountPercentage}%
             </span>
           )}
-          {product.stock <= 5 && product.stock > 0 && (
+          {stock <= 5 && stock > 0 && (
             <span className="bg-hot text-hot-foreground text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
-              Últimas {product.stock}
+              Últimas {stock}
             </span>
           )}
         </div>
@@ -131,19 +154,21 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         </div>
 
         {/* Colors */}
-        <div className="flex gap-1.5 pt-1">
-          {product.colors.slice(0, 4).map((color) => (
-            <div
-              key={color.name}
-              className="w-4 h-4 border border-border hover:scale-125 transition-transform cursor-pointer"
-              style={{ backgroundColor: color.hex }}
-              title={color.name}
-            />
-          ))}
-          {product.colors.length > 4 && (
-            <span className="text-xs text-muted-foreground">+{product.colors.length - 4}</span>
-          )}
-        </div>
+        {colors.length > 0 && (
+          <div className="flex gap-1.5 pt-1">
+            {colors.slice(0, 4).map((color) => (
+              <div
+                key={color.name}
+                className="w-4 h-4 border border-border hover:scale-125 transition-transform cursor-pointer"
+                style={{ backgroundColor: color.hex }}
+                title={color.name}
+              />
+            ))}
+            {colors.length > 4 && (
+              <span className="text-xs text-muted-foreground">+{colors.length - 4}</span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

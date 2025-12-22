@@ -11,48 +11,121 @@ import {
   Shield, 
   RefreshCw,
   Check,
-  AlertTriangle
+  AlertTriangle,
+  Loader2
 } from 'lucide-react';
-import { products, reviews as allReviews } from '@/data/products';
+import { productsApi, Product as ApiProduct } from '@/api/products';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
+// Mapeamento de categoryId para slug
+const categoryIdToSlug: Record<string, string> = {
+  'cat-1': 'tenis',
+  'cat-2': 'calcas',
+  'cat-3': 'blusas',
+};
+
+// Converter produto da API para o formato esperado pelo carrinho
+const convertProduct = (p: ApiProduct) => ({
+  id: p.id,
+  name: p.name,
+  slug: p.slug,
+  category: categoryIdToSlug[p.categoryId] || p.category?.slug || 'blusas',
+  price: Number(p.price),
+  originalPrice: p.originalPrice ? Number(p.originalPrice) : undefined,
+  images: p.images?.map(img => img.url) || [],
+  description: p.description,
+  story: p.story || p.description,
+  benefits: p.benefits?.map(b => b.text) || [],
+  sizes: [...new Set(p.variants?.map(v => v.size) || [])],
+  colors: p.variants?.reduce((acc: { name: string; hex: string }[], v) => {
+    if (!acc.find(c => c.name === v.colorName)) {
+      acc.push({ name: v.colorName, hex: v.colorHex });
+    }
+    return acc;
+  }, []) || [],
+  stock: p.variants?.reduce((sum, v) => sum + v.stock, 0) || 0,
+  rating: Number(p.rating) || 4.5,
+  reviews: p.reviewCount || 0,
+  tags: p.tags?.map(t => t.name) || [],
+  isNew: p.isNew,
+  isBestSeller: p.isBestSeller,
+});
+
 const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const product = products.find((p) => p.slug === slug);
   const { addItem } = useCart();
   const { toast } = useToast();
 
+  const [product, setProduct] = useState<ReturnType<typeof convertProduct> | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [stock, setStock] = useState(product?.stock || 0);
+  const [stock, setStock] = useState(0);
+
+  // Buscar produto da API
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!slug) return;
+      
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const response = await productsApi.getBySlug(slug);
+        // A API pode retornar { success: true, data: {...} } ou diretamente o produto
+        const apiProduct = response.data || response;
+        const converted = convertProduct(apiProduct);
+        setProduct(converted);
+        setStock(converted.stock);
+      } catch (err: any) {
+        console.error('Erro ao carregar produto:', err);
+        setError(err.message || 'Produto não encontrado');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [slug]);
 
   // Simulate stock decreasing
   useEffect(() => {
-    if (product && product.stock <= 10) {
+    if (product && stock <= 10) {
       const timer = setInterval(() => {
         setStock((prev) => Math.max(prev - 1, 1));
       }, 30000);
       return () => clearInterval(timer);
     }
-  }, [product]);
+  }, [product, stock]);
 
-  if (!product) {
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="font-display text-4xl font-bold mb-4">Produto não encontrado</h1>
+          <p className="text-muted-foreground mb-4">{error}</p>
           <Link to="/" className="text-accent hover:underline">Voltar para a home</Link>
         </div>
       </div>
     );
   }
 
-  const productReviews = allReviews.filter((r) => r.productId === product.id);
   const discountPercentage = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
@@ -110,11 +183,17 @@ const ProductPage = () => {
             <div className="space-y-4">
               {/* Main Image */}
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted">
-                <img
-                  src={product.images[selectedImage]}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
+                {product.images.length > 0 ? (
+                  <img
+                    src={product.images[selectedImage]}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                    Sem imagem
+                  </div>
+                )}
                 
                 {/* Navigation Arrows */}
                 {product.images.length > 1 && (
@@ -206,7 +285,7 @@ const ProductPage = () => {
               </div>
 
               {/* Stock Warning */}
-              {stock <= 10 && (
+              {stock <= 10 && stock > 0 && (
                 <div className="flex items-center gap-2 bg-destructive/10 text-destructive px-4 py-3 rounded-lg animate-pulse-slow">
                   <AlertTriangle size={18} />
                   <span className="font-semibold">
@@ -216,44 +295,48 @@ const ProductPage = () => {
               )}
 
               {/* Colors */}
-              <div>
-                <h3 className="font-semibold mb-3">Cor: {selectedColor}</h3>
-                <div className="flex gap-3">
-                  {product.colors.map((color) => (
-                    <button
-                      key={color.name}
-                      onClick={() => setSelectedColor(color.name)}
-                      className={cn(
-                        'w-10 h-10 rounded-full border-2 transition-all',
-                        selectedColor === color.name ? 'border-accent ring-2 ring-accent ring-offset-2' : 'border-border'
-                      )}
-                      style={{ backgroundColor: color.hex }}
-                      title={color.name}
-                    />
-                  ))}
+              {product.colors.length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-3">Cor: {selectedColor}</h3>
+                  <div className="flex gap-3">
+                    {product.colors.map((color) => (
+                      <button
+                        key={color.name}
+                        onClick={() => setSelectedColor(color.name)}
+                        className={cn(
+                          'w-10 h-10 rounded-full border-2 transition-all',
+                          selectedColor === color.name ? 'border-accent ring-2 ring-accent ring-offset-2' : 'border-border'
+                        )}
+                        style={{ backgroundColor: color.hex }}
+                        title={color.name}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Sizes */}
-              <div>
-                <h3 className="font-semibold mb-3">Tamanho: {selectedSize}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={cn(
-                        'min-w-[48px] h-12 px-4 border rounded-lg font-semibold transition-all',
-                        selectedSize === size
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'border-border hover:border-foreground'
-                      )}
-                    >
-                      {size}
-                    </button>
-                  ))}
+              {product.sizes.length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-3">Tamanho: {selectedSize}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {product.sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={cn(
+                          'min-w-[48px] h-12 px-4 border rounded-lg font-semibold transition-all',
+                          selectedSize === size
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'border-border hover:border-foreground'
+                        )}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Quantity */}
               <div>
@@ -267,7 +350,7 @@ const ProductPage = () => {
                   </button>
                   <span className="w-12 text-center font-semibold text-lg">{quantity}</span>
                   <button
-                    onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
+                    onClick={() => setQuantity((q) => Math.min(stock || 99, q + 1))}
                     className="w-12 h-12 border border-border rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
                   >
                     <Plus size={18} />
@@ -282,8 +365,9 @@ const ProductPage = () => {
                   size="xl"
                   variant="accent"
                   className="flex-1"
+                  disabled={stock === 0}
                 >
-                  Adicionar ao Carrinho
+                  {stock === 0 ? 'Esgotado' : 'Adicionar ao Carrinho'}
                 </Button>
                 <Button size="xl" variant="outline" className="w-14">
                   <Heart size={20} />
@@ -311,57 +395,22 @@ const ProductPage = () => {
                 <h3 className="font-display text-xl font-bold mb-3">Sobre este produto</h3>
                 <p className="text-muted-foreground leading-relaxed">{product.story}</p>
                 
-                <h4 className="font-semibold mt-6 mb-3">Por que você vai amar:</h4>
-                <ul className="space-y-2">
-                  {product.benefits.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                      <span>{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
+                {product.benefits.length > 0 && (
+                  <>
+                    <h4 className="font-semibold mt-6 mb-3">Por que você vai amar:</h4>
+                    <ul className="space-y-2">
+                      {product.benefits.map((benefit, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
             </div>
           </div>
-
-          {/* Reviews */}
-          <section className="mt-16 pt-16 border-t border-border">
-            <h2 className="font-display text-3xl font-bold mb-8">
-              Avaliações dos Clientes
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {productReviews.map((review) => (
-                <div key={review.id} className="bg-card p-6 rounded-xl border border-border">
-                  <div className="flex items-center gap-3 mb-4">
-                    <img
-                      src={review.avatar}
-                      alt={review.author}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold">{review.author}</span>
-                        {review.verified && (
-                          <span className="text-xs bg-success/10 text-success px-2 py-0.5 rounded">
-                            Compra verificada
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <span key={star} className={star <= review.rating ? 'text-accent' : 'text-muted'}>
-                            ★
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-muted-foreground">{review.content}</p>
-                </div>
-              ))}
-            </div>
-          </section>
         </div>
       </main>
     </>
