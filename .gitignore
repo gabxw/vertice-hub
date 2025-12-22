@@ -7,7 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build output
 dist
 dist-ssr
 *.local
@@ -22,11 +25,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.env
 
-# Environment files
-apps/backend/.env
-apps/frontend/.env.local
+# Environment files - apenas locais
 .env.local
-.env
+apps/backend/.env
+apps/frontend/.env
+apps/frontend/.env.local
 
+# Manter .env.production para deploy
+!apps/frontend/.env.production
