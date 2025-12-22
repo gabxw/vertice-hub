@@ -11,6 +11,8 @@ import {
   Plus,
   Settings,
   BarChart3,
+  FolderTree,
+  Ticket,
 } from 'lucide-react';
 import api from '@/lib/api';
 
@@ -196,7 +198,7 @@ export default function AdminDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
               <Link to="/admin/produtos">
                 <Button variant="outline" className="w-full justify-start gap-2">
                   <Package className="h-4 w-4" />
@@ -211,8 +213,26 @@ export default function AdminDashboard() {
               </Link>
               <Link to="/admin/categorias">
                 <Button variant="outline" className="w-full justify-start gap-2">
-                  <Users className="h-4 w-4" />
+                  <FolderTree className="h-4 w-4" />
                   Categorias
+                </Button>
+              </Link>
+              <Link to="/admin/cupons">
+                <Button variant="outline" className="w-full justify-start gap-2">
+                  <Ticket className="h-4 w-4" />
+                  Cupons
+                </Button>
+              </Link>
+              <Link to="/admin/configuracoes">
+                <Button variant="outline" className="w-full justify-start gap-2">
+                  <Settings className="h-4 w-4" />
+                  Configurações
+                </Button>
+              </Link>
+              <Link to="/">
+                <Button variant="outline" className="w-full justify-start gap-2">
+                  <Users className="h-4 w-4" />
+                  Ver Loja
                 </Button>
               </Link>
             </div>

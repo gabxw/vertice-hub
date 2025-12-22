@@ -45,6 +45,9 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminProductForm from "./pages/admin/AdminProductForm";
 import AdminOrders from "./pages/admin/AdminOrders";
+import AdminCategories from "./pages/admin/AdminCategories";
+import AdminCoupons from "./pages/admin/AdminCoupons";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -103,6 +106,30 @@ const App = () => (
                   element={
                     <AdminRoute>
                       <AdminOrders />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/categorias"
+                  element={
+                    <AdminRoute>
+                      <AdminCategories />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/cupons"
+                  element={
+                    <AdminRoute>
+                      <AdminCoupons />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/configuracoes"
+                  element={
+                    <AdminRoute>
+                      <AdminSettings />
                     </AdminRoute>
                   }
                 />
