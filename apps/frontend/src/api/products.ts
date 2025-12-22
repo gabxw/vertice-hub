@@ -70,25 +70,29 @@ export const productsApi = {
   list: async (filters?: ProductsFilters): Promise<{ products: Product[]; data?: Product[] }> => {
     const { data } = await api.get('/products', { params: filters });
     // A API retorna { success: true, data: [...] }
-    return { products: data.data || data.products || data, data: data.data };
+    const products = data.data || data.products || data;
+    return { products, data: products };
   },
 
   // Buscar produto por slug
   getBySlug: async (slug: string): Promise<Product> => {
     const { data } = await api.get(`/products/${slug}`);
-    return data;
+    // A API retorna { success: true, data: {...} }
+    return data.data || data;
   },
 
   // Produtos em destaque
   getFeatured: async (): Promise<Product[]> => {
     const { data } = await api.get('/products/featured');
-    return data;
+    // A API retorna { success: true, data: [...] }
+    return data.data || data;
   },
 
   // Produtos novos
   getNew: async (): Promise<Product[]> => {
     const { data } = await api.get('/products/new');
-    return data;
+    // A API retorna { success: true, data: [...] }
+    return data.data || data;
   },
 
   // Reviews de um produto
@@ -96,12 +100,12 @@ export const productsApi = {
     const { data } = await api.get(`/products/${productId}/reviews`, {
       params: { page, limit: 10 },
     });
-    return data;
+    return data.data || data;
   },
 
   // Criar review (usuário autenticado)
   createReview: async (productId: string, review: { rating: number; content: string }) => {
     const { data } = await api.post(`/products/${productId}/reviews`, review);
-    return data;
+    return data.data || data;
   },
 };
