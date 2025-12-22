@@ -7,9 +7,28 @@ export class OrderService {
   /**
    * Create order from items
    */
-  async createOrder(userId: string, data: CreateOrderInput) {
+  async createOrder(userId: string, data: CreateOrderInput, userEmail?: string, userName?: string) {
     console.log('[ORDER SERVICE] Creating order for user:', userId);
     console.log('[ORDER SERVICE] Data:', JSON.stringify(data, null, 2));
+
+    // Ensure user exists in database (sync with Supabase Auth)
+    let user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      console.log('[ORDER SERVICE] User not found in database, creating from Supabase Auth data');
+      // Create user from Supabase Auth data
+      user = await prisma.user.create({
+        data: {
+          id: userId,
+          email: userEmail || `user-${userId}@temp.com`,
+          name: userName || data.shippingAddress.name || 'Usuário',
+          password: '', // No password needed for Supabase Auth users
+        },
+      });
+      console.log('[ORDER SERVICE] User created:', user.id);
+    }
 
     // Validate items
     if (!data.items || data.items.length === 0) {

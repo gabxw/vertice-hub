@@ -62,12 +62,14 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
     req.user = {
       id: user.id,
       email: user.email!,
+      name: user.user_metadata?.name || user.user_metadata?.full_name,
       role: role,
     };
 
     logger.debug('Usuário autenticado', { 
       userId: user.id, 
       email: user.email,
+      name: user.user_metadata?.name,
       role: role 
     });
 
