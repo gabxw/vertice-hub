@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -114,7 +114,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Bebas Neue', 'Oswald', sans-serif;
     @apply font-semibold uppercase tracking-wider;
   }
 }
@@ -122,20 +122,21 @@
 @layer utilities {
   /* Typography */
   .font-display {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Bebas Neue', 'Oswald', sans-serif;
   }
 
   .font-gothic {
-    font-family: 'Cinzel', serif;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
   }
 
   .font-body {
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   /* Editorial large text */
   .text-editorial {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Bebas Neue', 'Oswald', sans-serif;
     @apply text-[12vw] md:text-[10vw] leading-[0.85] font-bold uppercase tracking-tighter;
   }
 

@@ -10,9 +10,9 @@ const trustBadges = [
 
 export const Footer = () => {
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-card text-card-foreground border-t border-border">
       {/* Trust Badges */}
-      <div className="border-b border-primary-foreground/10">
+      <div className="border-b border-border">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {trustBadges.map((badge) => (
@@ -32,23 +32,23 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <h2 className="font-display text-4xl tracking-[0.1em] mb-6">
+            <h2 className="font-display text-4xl tracking-[0.1em] mb-6 text-foreground">
               VÉRTICE
             </h2>
-            <p className="text-sm text-primary-foreground/60 mb-6 font-light leading-relaxed">
+            <p className="text-sm text-muted-foreground mb-6 font-body leading-relaxed">
               Streetwear autêntico para quem faz suas próprias regras. Atitude, exclusividade e movimento em cada peça.
             </p>
             <div className="flex gap-3">
               <a 
                 href="#" 
-                className="w-10 h-10 bg-primary-foreground/10 flex items-center justify-center hover:bg-accent transition-colors" 
+                className="w-10 h-10 bg-muted flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors" 
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
               </a>
               <a 
                 href="#" 
-                className="w-10 h-10 bg-primary-foreground/10 flex items-center justify-center hover:bg-accent transition-colors" 
+                className="w-10 h-10 bg-muted flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors" 
                 aria-label="Twitter"
               >
                 <Twitter size={18} />
@@ -58,21 +58,26 @@ export const Footer = () => {
 
           {/* Navigation */}
           <div>
-            <h3 className="font-display text-xl tracking-wider mb-6">NAVEGAÇÃO</h3>
+            <h3 className="font-display text-xl tracking-wider mb-6 text-foreground">NAVEGAÇÃO</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/categoria/tenis" className="text-sm text-primary-foreground/60 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/categoria/tenis" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Tênis
                 </Link>
               </li>
               <li>
-                <Link to="/categoria/calcas" className="text-sm text-primary-foreground/60 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/categoria/calcas" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Calças
                 </Link>
               </li>
               <li>
-                <Link to="/categoria/blusas" className="text-sm text-primary-foreground/60 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/categoria/blusas" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Blusas
+                </Link>
+              </li>
+              <li>
+                <Link to="/categoria/acessorios" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                  Acessórios
                 </Link>
               </li>
               <li>
@@ -85,25 +90,25 @@ export const Footer = () => {
 
           {/* Institucional */}
           <div>
-            <h3 className="font-display text-xl tracking-wider mb-6">INSTITUCIONAL</h3>
+            <h3 className="font-display text-xl tracking-wider mb-6 text-foreground">INSTITUCIONAL</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/sobre" className="text-sm text-primary-foreground/60 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/sobre" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Quem Somos
                 </Link>
               </li>
               <li>
-                <Link to="/trocas-devolucoes" className="text-sm text-primary-foreground/60 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/trocas-devolucoes" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Trocas e Devoluções
                 </Link>
               </li>
               <li>
-                <Link to="/privacidade" className="text-sm text-primary-foreground/60 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/privacidade" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Privacidade
                 </Link>
               </li>
               <li>
-                <Link to="/termos" className="text-sm text-primary-foreground/60 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/termos" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Termos de Uso
                 </Link>
               </li>
@@ -112,17 +117,17 @@ export const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h3 className="font-display text-xl tracking-wider mb-6">CONTATO</h3>
+            <h3 className="font-display text-xl tracking-wider mb-6 text-foreground">CONTATO</h3>
             <ul className="space-y-4">
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/60">
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail size={16} className="text-accent" />
                 contato@vertice.com.br
               </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/60">
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone size={16} className="text-accent" />
                 (11) 99999-9999
               </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/60">
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <MapPin size={16} className="text-accent" />
                 São Paulo, SP
               </li>
@@ -132,10 +137,10 @@ export const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-primary-foreground/10">
+      <div className="border-t border-border">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-primary-foreground/40 uppercase tracking-wider">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">
               © 2024 VÉRTICE. Todos os direitos reservados.
             </p>
             <div className="flex items-center gap-4">
@@ -148,7 +153,7 @@ export const Footer = () => {
       </div>
 
       {/* Accent Line */}
-      <div className="h-1 bg-gradient-to-r from-accent via-neon to-electric" />
+      <div className="h-1 bg-accent" />
     </footer>
   );
 };

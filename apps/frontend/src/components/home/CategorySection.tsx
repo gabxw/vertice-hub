@@ -1,68 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Loader2 } from 'lucide-react';
-import { categoriesApi, Category } from '@/api/categories';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
-const defaultCategoryImages: Record<string, string> = {
-  'tenis': 'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&q=80',
-  'calcas': 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&q=80',
-  'blusas': 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80',
-};
-
-// Style collections for the editorial grid
+// Style collections for the editorial grid - Tênis, Calça, Blusa, Acessórios
 const styleCollections = [
   {
-    id: 'grunge',
-    name: 'GRUNGE',
-    subtitle: 'Estilo destruído',
-    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=80',
-    link: '/categoria/blusas',
+    id: 'tenis',
+    name: 'TÊNIS',
+    subtitle: 'Street style',
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80',
+    link: '/categoria/tenis',
   },
   {
-    id: 'dark',
-    name: 'DARK',
-    subtitle: 'Streetwear sombrio',
-    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80',
+    id: 'calcas',
+    name: 'CALÇAS',
+    subtitle: 'Estilo destruído',
+    image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80',
     link: '/categoria/calcas',
   },
   {
-    id: 'rock',
-    name: 'ROCK',
-    subtitle: 'Atitude rebelde',
-    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&q=80',
-    link: '/categoria/tenis',
+    id: 'blusas',
+    name: 'BLUSAS',
+    subtitle: 'Dark vibes',
+    image: 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=800&q=80',
+    link: '/categoria/blusas',
+  },
+  {
+    id: 'acessorios',
+    name: 'ACESSÓRIOS',
+    subtitle: 'Detalhes únicos',
+    image: 'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&q=80',
+    link: '/categoria/acessorios',
   },
 ];
 
 export const CategorySection = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await categoriesApi.list();
-        const cats = Array.isArray(response) ? response : (response as any).data || [];
-        setCategories(cats);
-      } catch (err) {
-        console.error('Erro ao carregar categorias:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="py-24 bg-background">
-        <div className="container flex justify-center">
-          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="py-24 bg-background relative">
@@ -70,7 +43,7 @@ export const CategorySection = () => {
       <div className="container mb-16">
         <div className="flex items-end justify-between">
           <div>
-            <span className="font-gothic text-xs text-accent tracking-[0.4em] uppercase mb-4 block">
+            <span className="font-gothic text-sm text-accent tracking-[0.3em] uppercase mb-4 block">
               Coleções
             </span>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground tracking-tight">
@@ -89,7 +62,7 @@ export const CategorySection = () => {
 
       {/* Editorial Grid */}
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {styleCollections.map((collection, index) => (
             <Link
               key={collection.id}
@@ -108,7 +81,7 @@ export const CategorySection = () => {
                 />
                 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90" />
                 
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-colors duration-500" />
@@ -123,7 +96,7 @@ export const CategorySection = () => {
                 
                 {/* Title */}
                 <div className="flex items-end justify-between">
-                  <h3 className="font-display text-3xl md:text-4xl text-foreground group-hover:text-accent transition-colors duration-300">
+                  <h3 className="font-display text-2xl md:text-3xl text-foreground group-hover:text-accent transition-colors duration-300">
                     {collection.name}
                   </h3>
                   
@@ -138,7 +111,7 @@ export const CategorySection = () => {
               </div>
 
               {/* Index Number */}
-              <div className="absolute top-6 left-6 font-gothic text-xs text-muted-foreground/50">
+              <div className="absolute top-6 left-6 font-gothic text-sm text-muted-foreground/50">
                 0{index + 1}
               </div>
             </Link>
@@ -156,25 +129,6 @@ export const CategorySection = () => {
           </Link>
         </div>
       </div>
-
-      {/* Category Links (Alternative) */}
-      {categories.length > 0 && (
-        <div className="container mt-20 pt-20 border-t border-border">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category, index) => (
-              <Link
-                key={category.id}
-                to={`/categoria/${category.slug}`}
-                className="group py-4 text-center border border-border hover:border-accent hover:bg-accent/5 transition-all duration-300"
-              >
-                <span className="font-display text-sm tracking-[0.15em] text-foreground group-hover:text-accent transition-colors">
-                  {category.name.toUpperCase()}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
     </section>
   );
 };
