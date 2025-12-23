@@ -9,6 +9,7 @@ const categoryIdToSlug: Record<string, string> = {
   'cat-1': 'tenis',
   'cat-2': 'calcas',
   'cat-3': 'blusas',
+  'cat-4': 'acessorios',
 };
 
 // Converter produto da API para o formato esperado pelo ProductCard
