@@ -516,16 +516,9 @@ export default function CheckoutPage() {
                         <PayPalButtons
                           style={{ layout: 'vertical', shape: 'rect', label: 'pay' }}
                           createOrder={async () => {
-                            try {
-                              if (!orderId) throw new Error('Order ID not found');
-                              const response = await createPayPalOrder(orderId);
-                              return response.data.id;
-                            } catch (err: any) {
-                              console.error('PayPal createOrder error:', err);
-                              setError(err.response?.data?.message || 'Erro ao criar pedido PayPal. Tente novamente.');
-                              setShowPayPal(false);
-                              throw err;
-                            }
+                            if (!orderId) throw new Error('Order ID not found');
+                            const response = await createPayPalOrder(orderId);
+                            return response.data.id;
                           }}
                           onApprove={async (data) => {
                             try {
@@ -538,8 +531,7 @@ export default function CheckoutPage() {
                           }}
                           onError={(err) => {
                             console.error('PayPal error:', err);
-                            setError('Erro ao processar pagamento com PayPal. Verifique sua conta PayPal e tente novamente.');
-                            setShowPayPal(false);
+                            setError('Erro ao processar pagamento com PayPal');
                           }}
                           onCancel={() => {
                             setShowPayPal(false);
