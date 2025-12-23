@@ -77,10 +77,18 @@ export class PayPalController {
         orderId: order.orderNumber,
       });
 
-      // Update order with PayPal order ID (using transactionId instead of externalId)
-      await prisma.payment.update({
+      // Create or update payment with PayPal order ID
+      await prisma.payment.upsert({
         where: { orderId: orderId },
-        data: {
+        create: {
+          orderId: orderId,
+          provider: 'paypal',
+          transactionId: paypalOrder.id,
+          status: 'PENDING',
+          amount: order.total,
+          paymentMethod: 'paypal',
+        },
+        update: {
           transactionId: paypalOrder.id,
         },
       });
