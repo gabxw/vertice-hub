@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, ShoppingBag, Star, Truck } from 'lucide-react';
+import { Heart, ShoppingBag, Truck, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAddToCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
@@ -40,8 +40,6 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const stock = product.stock ?? 99;
   const colors = product.colors ?? [];
   const images = product.images ?? [];
-  const rating = product.rating ?? 4.5;
-  const reviews = product.reviews ?? 0;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -51,7 +49,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     try {
       await addItem({ variantId: product.id, quantity: 1 });
       toast({
-        title: 'Adicionado ao carrinho',
+        title: 'Adicionado! 🔥',
         description: product.name,
       });
     } catch (error) {
@@ -73,7 +71,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-muted card-gothic">
+      <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-muted card-street">
         {/* Main Image */}
         {images.length > 0 ? (
           <img
@@ -81,12 +79,13 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             alt={product.name}
             loading="lazy"
             className={cn(
-              'w-full h-full object-cover transition-all duration-700 filter grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105',
-              isHovered && images[1] && 'opacity-0'
+              'w-full h-full object-cover transition-all duration-500',
+              isHovered && images[1] && 'opacity-0',
+              'group-hover:scale-105'
             )}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-muted">
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-muted font-body">
             Sem imagem
           </div>
         )}
@@ -98,37 +97,38 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             alt={product.name}
             loading="lazy"
             className={cn(
-              'absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105',
+              'absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105',
               isHovered ? 'opacity-100' : 'opacity-0'
             )}
           />
         )}
 
-        {/* Discount Badge */}
+        {/* Discount Badge - Neon Style */}
         {discountPercentage > 0 && (
-          <div className="absolute top-0 left-0 bg-accent text-accent-foreground font-bold text-xs px-3 py-1.5 uppercase tracking-wider">
+          <div className="absolute top-0 left-0 bg-accent text-accent-foreground font-bold text-sm px-3 py-2 font-display tracking-wider">
             -{discountPercentage}%
           </div>
         )}
 
-        {/* New/Bestseller Badges */}
+        {/* Hot/New Badges */}
         <div className="absolute top-0 right-0 flex flex-col items-end">
           {product.isBestSeller && (
-            <span className="bg-primary text-primary-foreground text-[10px] font-medium px-2 py-1 uppercase tracking-wider">
-              Top
+            <span className="bg-neon-pink text-neon-pink-foreground text-xs font-bold px-3 py-1.5 uppercase tracking-wider flex items-center gap-1">
+              <Flame size={12} />
+              HOT
             </span>
           )}
           {product.isNew && !product.isBestSeller && (
-            <span className="bg-secondary text-secondary-foreground text-[10px] font-medium px-2 py-1 uppercase tracking-wider">
-              Novo
+            <span className="bg-neon-blue text-neon-blue-foreground text-xs font-bold px-3 py-1.5 uppercase tracking-wider">
+              DROP
             </span>
           )}
         </div>
 
         {/* Low Stock Warning */}
         {stock <= 5 && stock > 0 && (
-          <div className="absolute bottom-0 left-0 right-0 bg-wine text-wine-foreground text-xs font-medium py-1.5 text-center">
-            Últimas {stock} unidades
+          <div className="absolute bottom-12 left-0 right-0 bg-rust text-rust-foreground text-xs font-bold py-2 text-center uppercase tracking-wider">
+            Últimas {stock} peças
           </div>
         )}
 
@@ -139,14 +139,14 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             setIsWishlisted(!isWishlisted);
           }}
           className={cn(
-            'absolute top-10 right-2 w-8 h-8 flex items-center justify-center transition-all border',
+            'absolute top-12 right-2 w-10 h-10 flex items-center justify-center transition-all',
             isWishlisted
-              ? 'bg-accent text-accent-foreground border-accent'
-              : 'bg-background/90 text-foreground border-border/50 hover:bg-accent hover:text-accent-foreground hover:border-accent'
+              ? 'bg-accent text-accent-foreground'
+              : 'bg-secondary/90 text-secondary-foreground hover:bg-accent hover:text-accent-foreground'
           )}
           aria-label="Adicionar aos favoritos"
         >
-          <Heart size={14} className={isWishlisted ? 'fill-current' : ''} strokeWidth={1.5} />
+          <Heart size={16} className={isWishlisted ? 'fill-current' : ''} strokeWidth={2} />
         </button>
 
         {/* Quick Add Button */}
@@ -154,82 +154,67 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
           onClick={handleAddToCart}
           disabled={isAdding || stock === 0}
           className={cn(
-            'absolute bottom-0 left-0 right-0 bg-primary text-primary-foreground h-11 font-medium text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300',
+            'absolute bottom-0 left-0 right-0 bg-accent text-accent-foreground h-12 font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300',
             'translate-y-full group-hover:translate-y-0',
-            stock <= 5 && stock > 0 && 'translate-y-[-36px] group-hover:translate-y-[-36px]',
+            stock <= 5 && stock > 0 && 'group-hover:-translate-y-10',
             (isAdding || stock === 0) && 'opacity-50 cursor-not-allowed'
           )}
         >
-          <ShoppingBag size={14} strokeWidth={1.5} />
-          {stock === 0 ? 'Esgotado' : isAdding ? 'Adicionando...' : 'Adicionar'}
+          <ShoppingBag size={16} strokeWidth={2} />
+          {stock === 0 ? 'ESGOTADO' : isAdding ? 'ADICIONANDO...' : 'COMPRAR'}
         </button>
+
+        {/* Hover border effect */}
+        <div className="absolute inset-0 border-2 border-transparent group-hover:border-accent transition-colors duration-300 pointer-events-none" />
       </Link>
 
       {/* Product Info */}
       <div className="mt-4 space-y-2">
-        {/* Rating */}
-        {reviews > 0 && (
-          <div className="flex items-center gap-1">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  size={10}
-                  className={cn(
-                    star <= Math.round(rating) ? 'text-accent fill-accent' : 'text-muted'
-                  )}
-                />
-              ))}
-            </div>
-            <span className="text-xs text-muted-foreground">({reviews})</span>
-          </div>
-        )}
-
         {/* Name */}
         <Link to={`/produto/${product.slug}`}>
-          <h3 className="font-medium text-sm leading-tight text-foreground hover:text-accent transition-colors line-clamp-2">
+          <h3 className="font-body font-bold text-sm leading-tight text-foreground hover:text-accent transition-colors line-clamp-2 uppercase tracking-wide">
             {product.name}
           </h3>
         </Link>
 
         {/* Price */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-bold text-base text-foreground">
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="font-display text-2xl text-foreground">
             R$ {product.price.toFixed(2).replace('.', ',')}
           </span>
           {product.originalPrice && (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-sm text-muted-foreground line-through font-body">
               R$ {product.originalPrice.toFixed(2).replace('.', ',')}
             </span>
           )}
         </div>
 
         {/* Installments */}
-        <p className="text-xs text-muted-foreground">
-          ou 3x de R$ {(product.price / 3).toFixed(2).replace('.', ',')}
+        <p className="text-xs text-muted-foreground font-body">
+          ou 3x de R$ {(product.price / 3).toFixed(2).replace('.', ',')} sem juros
         </p>
 
         {/* Free Shipping Indicator */}
         {product.price >= 299 && (
-          <div className="flex items-center gap-1 text-xs text-accent font-medium">
-            <Truck size={12} strokeWidth={1.5} />
+          <div className="flex items-center gap-1.5 text-xs text-accent font-bold uppercase tracking-wider">
+            <Truck size={14} strokeWidth={2} />
             <span>Frete Grátis</span>
           </div>
         )}
 
         {/* Colors */}
         {colors.length > 0 && (
-          <div className="flex gap-1 pt-1">
+          <div className="flex gap-1.5 pt-1">
             {colors.slice(0, 4).map((color) => (
               <div
                 key={color.name}
-                className="w-4 h-4 border border-border"
+                className="w-5 h-5 border-2 border-border hover:border-accent transition-colors"
                 style={{ backgroundColor: color.hex }}
                 title={color.name}
               />
             ))}
             {colors.length > 4 && (
-              <span className="text-xs text-muted-foreground">+{colors.length - 4}</span>
+              <span className="text-xs text-muted-foreground font-body">+{colors.length - 4}</span>
             )}
           </div>
         )}
