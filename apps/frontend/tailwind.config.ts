@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Bebas Neue", "sans-serif"],
+        display: ["Cinzel", "serif"],
         body: ["Inter", "sans-serif"],
       },
       colors: {
@@ -51,17 +51,21 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        neon: {
-          DEFAULT: "hsl(var(--neon))",
-          foreground: "hsl(var(--neon-foreground))",
+        gothic: {
+          DEFAULT: "hsl(var(--gothic))",
+          foreground: "hsl(var(--gothic-foreground))",
         },
-        electric: {
-          DEFAULT: "hsl(var(--electric))",
-          foreground: "hsl(var(--electric-foreground))",
+        wine: {
+          DEFAULT: "hsl(var(--wine))",
+          foreground: "hsl(var(--wine-foreground))",
         },
-        hot: {
-          DEFAULT: "hsl(var(--hot))",
-          foreground: "hsl(var(--hot-foreground))",
+        silver: {
+          DEFAULT: "hsl(var(--silver))",
+          foreground: "hsl(var(--silver-foreground))",
+        },
+        smoke: {
+          DEFAULT: "hsl(var(--smoke))",
+          foreground: "hsl(var(--smoke-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -90,9 +94,8 @@ export default {
       boxShadow: {
         card: "var(--card-shadow)",
         "card-hover": "var(--card-shadow-hover)",
-        "glow-red": "var(--glow-red)",
-        "glow-neon": "var(--glow-neon)",
         "glow-purple": "var(--glow-purple)",
+        "glow-wine": "var(--glow-wine)",
       },
       keyframes: {
         "accordion-down": {
@@ -123,16 +126,9 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
-        countdown: {
-          "0%, 100%": { transform: "scale(1)" },
-          "50%": { transform: "scale(1.05)" },
-        },
-        glitch: {
-          "0%, 100%": { transform: "translate(0)" },
-          "20%": { transform: "translate(-2px, 2px)" },
-          "40%": { transform: "translate(-2px, -2px)" },
-          "60%": { transform: "translate(2px, 2px)" },
-          "80%": { transform: "translate(2px, -2px)" },
+        flicker: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.8" },
         },
       },
       animation: {
@@ -143,8 +139,7 @@ export default {
         "slide-in-right": "slide-in-right 0.5s ease-out forwards",
         "scale-in": "scale-in 0.3s ease-out forwards",
         shimmer: "shimmer 2s linear infinite",
-        countdown: "countdown 1s ease-in-out infinite",
-        glitch: "glitch 0.3s ease-in-out infinite",
+        flicker: "flicker 3s ease-in-out infinite",
       },
     },
   },
