@@ -20,6 +20,9 @@ import ProductPage from "./pages/ProductPage";
 import CategoryPage from "./pages/CategoryPage";
 import OffersPage from "./pages/OffersPage";
 import AboutPage from "./pages/AboutPage";
+import ReturnsPage from "./pages/ReturnsPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
 import NotFound from "./pages/NotFound";
 
 // Auth pages
@@ -105,6 +108,9 @@ const App = () => (
                           <Route path="/categoria/:slug" element={<CategoryPage />} />
                           <Route path="/ofertas" element={<OffersPage />} />
                           <Route path="/sobre" element={<AboutPage />} />
+                          <Route path="/trocas-devolucoes" element={<ReturnsPage />} />
+                          <Route path="/privacidade" element={<PrivacyPage />} />
+                          <Route path="/termos" element={<TermsPage />} />
 
                           {/* Auth routes */}
                           <Route path="/login" element={<LoginPage />} />
