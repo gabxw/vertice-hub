@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Cinzel", "serif"],
-        body: ["Inter", "sans-serif"],
+        display: ["Bebas Neue", "sans-serif"],
+        body: ["Roboto Condensed", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -51,21 +51,17 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        gothic: {
-          DEFAULT: "hsl(var(--gothic))",
-          foreground: "hsl(var(--gothic-foreground))",
+        "neon-pink": {
+          DEFAULT: "hsl(var(--neon-pink))",
+          foreground: "hsl(var(--neon-pink-foreground))",
         },
-        wine: {
-          DEFAULT: "hsl(var(--wine))",
-          foreground: "hsl(var(--wine-foreground))",
+        "neon-blue": {
+          DEFAULT: "hsl(var(--neon-blue))",
+          foreground: "hsl(var(--neon-blue-foreground))",
         },
-        silver: {
-          DEFAULT: "hsl(var(--silver))",
-          foreground: "hsl(var(--silver-foreground))",
-        },
-        smoke: {
-          DEFAULT: "hsl(var(--smoke))",
-          foreground: "hsl(var(--smoke-foreground))",
+        rust: {
+          DEFAULT: "hsl(var(--rust))",
+          foreground: "hsl(var(--rust-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -94,8 +90,8 @@ export default {
       boxShadow: {
         card: "var(--card-shadow)",
         "card-hover": "var(--card-shadow-hover)",
-        "glow-purple": "var(--glow-purple)",
-        "glow-wine": "var(--glow-wine)",
+        "glow-neon": "var(--glow-neon)",
+        "glow-pink": "var(--glow-pink)",
       },
       keyframes: {
         "accordion-down": {
@@ -126,9 +122,13 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
-        flicker: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "pulse-border": {
+          "0%, 100%": { borderColor: "hsl(var(--accent))" },
+          "50%": { borderColor: "hsl(var(--accent) / 0.5)" },
         },
       },
       animation: {
@@ -139,7 +139,8 @@ export default {
         "slide-in-right": "slide-in-right 0.5s ease-out forwards",
         "scale-in": "scale-in 0.3s ease-out forwards",
         shimmer: "shimmer 2s linear infinite",
-        flicker: "flicker 3s ease-in-out infinite",
+        marquee: "marquee 20s linear infinite",
+        "pulse-border": "pulse-border 2s ease-in-out infinite",
       },
     },
   },
