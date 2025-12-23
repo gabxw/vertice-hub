@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,127 +6,100 @@
 
 @layer base {
   :root {
-    /* Underground Streetwear Theme - Light Mode */
-    --background: 0 0% 96%;
-    --foreground: 0 0% 8%;
+    /* Dark Streetwear - Light Mode (rarely used) */
+    --background: 0 0% 97%;
+    --foreground: 0 0% 5%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card-foreground: 0 0% 5%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover-foreground: 0 0% 5%;
 
-    /* Primary - Concrete Black */
-    --primary: 0 0% 8%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 0 0% 5%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Asphalt Gray */
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 10%;
 
-    /* Muted - Concrete */
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Accent - Neon Yellow/Green (spray paint) */
-    --accent: 65 100% 50%;
-    --accent-foreground: 0 0% 0%;
+    /* Accent - Blood Red (gothic/rock) */
+    --accent: 0 75% 45%;
+    --accent-foreground: 0 0% 100%;
 
-    /* Neon Pink (graffiti) */
-    --neon-pink: 330 100% 60%;
-    --neon-pink-foreground: 0 0% 0%;
-
-    /* Neon Blue (electric) */
-    --neon-blue: 200 100% 55%;
-    --neon-blue-foreground: 0 0% 0%;
-
-    /* Rust Orange (urban decay) */
-    --rust: 25 90% 50%;
-    --rust-foreground: 0 0% 100%;
-
-    /* Destructive */
     --destructive: 0 85% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Success */
-    --success: 120 60% 45%;
+    --success: 150 60% 40%;
     --success-foreground: 0 0% 100%;
 
-    --border: 0 0% 80%;
-    --input: 0 0% 80%;
-    --ring: 65 100% 50%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 75% 45%;
     --radius: 0px;
 
-    /* Custom Design Tokens */
-    --hero-gradient: linear-gradient(180deg, hsl(0 0% 6%) 0%, hsl(0 0% 10%) 100%);
-    --card-shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.15);
-    --card-shadow-hover: 0 20px 40px -8px hsl(0 0% 0% / 0.3);
-    --glow-neon: 0 0 30px hsl(65 100% 50% / 0.5), 0 0 60px hsl(65 100% 50% / 0.3);
-    --glow-pink: 0 0 30px hsl(330 100% 60% / 0.5);
+    /* Custom Tokens */
+    --card-shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.1);
+    --card-shadow-hover: 0 20px 40px -8px hsl(0 0% 0% / 0.2);
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 8%;
-    --sidebar-primary: 0 0% 8%;
+    --sidebar-foreground: 0 0% 5%;
+    --sidebar-primary: 0 0% 5%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 94%;
-    --sidebar-accent-foreground: 0 0% 8%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 65 100% 50%;
+    --sidebar-accent: 0 0% 95%;
+    --sidebar-accent-foreground: 0 0% 5%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 75% 45%;
   }
 
   .dark {
-    /* Underground Streetwear Theme - Dark Mode (PRIMARY) */
-    --background: 0 0% 5%;
+    /* Dark Streetwear - Dark Mode (PRIMARY) */
+    --background: 0 0% 3%;
     --foreground: 0 0% 95%;
 
-    --card: 0 0% 8%;
+    --card: 0 0% 6%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 8%;
+    --popover: 0 0% 6%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 5%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 3%;
 
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 90%;
 
     --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
+    --muted-foreground: 0 0% 50%;
 
-    --accent: 65 100% 50%;
-    --accent-foreground: 0 0% 0%;
+    /* Accent - Blood Red */
+    --accent: 0 70% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --neon-pink: 330 100% 65%;
-    --neon-pink-foreground: 0 0% 0%;
-
-    --neon-blue: 200 100% 60%;
-    --neon-blue-foreground: 0 0% 0%;
-
-    --rust: 25 85% 55%;
-    --rust-foreground: 0 0% 100%;
-
-    --destructive: 0 85% 60%;
+    --destructive: 0 85% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 120 55% 50%;
+    --success: 150 55% 45%;
     --success-foreground: 0 0% 100%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 65 100% 50%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 70% 50%;
 
-    --hero-gradient: linear-gradient(180deg, hsl(0 0% 3%) 0%, hsl(0 0% 8%) 100%);
+    --card-shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.4);
+    --card-shadow-hover: 0 20px 40px -8px hsl(0 0% 0% / 0.6);
 
-    --sidebar-background: 0 0% 5%;
+    --sidebar-background: 0 0% 3%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 65 100% 50%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 12%;
+    --sidebar-primary: 0 70% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 10%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 65 100% 50%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 70% 50%;
   }
 }
 
@@ -137,126 +110,69 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', sans-serif;
-    @apply tracking-wider font-normal;
-    letter-spacing: 0.08em;
+    font-family: 'Oswald', sans-serif;
+    @apply font-semibold uppercase tracking-wide;
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Oswald', sans-serif;
   }
 
   .font-body {
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
-  /* Urban Gradients */
-  .bg-gradient-hero {
-    background: var(--hero-gradient);
+  /* Minimal Card Effect */
+  .card-minimal {
+    @apply bg-card border border-border transition-all duration-300;
   }
 
-  .bg-gradient-concrete {
-    background: linear-gradient(180deg, hsl(0 0% 10%) 0%, hsl(0 0% 6%) 50%, hsl(0 0% 3%) 100%);
+  .card-minimal:hover {
+    @apply border-accent;
+    box-shadow: var(--card-shadow-hover);
   }
 
-  .bg-gradient-street {
-    background: linear-gradient(135deg, hsl(0 0% 8%) 0%, hsl(0 0% 12%) 50%, hsl(0 0% 5%) 100%);
+  /* Subtle texture */
+  .texture-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
   }
 
-  /* Neon Text Effects */
-  .text-neon {
-    color: hsl(var(--accent));
-    text-shadow: 
-      0 0 10px hsl(var(--accent) / 0.8),
-      0 0 20px hsl(var(--accent) / 0.5),
-      0 0 40px hsl(var(--accent) / 0.3);
-  }
-
-  .text-neon-pink {
-    color: hsl(var(--neon-pink));
-    text-shadow: 
-      0 0 10px hsl(var(--neon-pink) / 0.8),
-      0 0 20px hsl(var(--neon-pink) / 0.5);
-  }
-
-  .text-neon-blue {
-    color: hsl(var(--neon-blue));
-    text-shadow: 
-      0 0 10px hsl(var(--neon-blue) / 0.8),
-      0 0 20px hsl(var(--neon-blue) / 0.5);
-  }
-
-  /* Glow Effects */
-  .glow-neon {
-    box-shadow: var(--glow-neon);
-  }
-
-  .glow-pink {
-    box-shadow: var(--glow-pink);
-  }
-
-  /* Grunge/Concrete texture overlay */
-  .texture-concrete {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
-  }
-
-  /* Spray paint drip effect */
-  .spray-texture {
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='2' fill='%23ffffff' opacity='0.03'/%3E%3Ccircle cx='25' cy='30' r='1' fill='%23ffffff' opacity='0.02'/%3E%3Ccircle cx='75' cy='70' r='1.5' fill='%23ffffff' opacity='0.02'/%3E%3C/svg%3E");
-  }
-
-  /* Urban grid pattern */
-  .urban-grid {
+  /* Grid overlay */
+  .grid-overlay {
     background-image: 
       linear-gradient(hsl(0 0% 100% / 0.02) 1px, transparent 1px),
       linear-gradient(90deg, hsl(0 0% 100% / 0.02) 1px, transparent 1px);
-    background-size: 50px 50px;
+    background-size: 60px 60px;
   }
 
-  /* Diagonal stripes (warning/construction) */
-  .stripes-warning {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      hsl(var(--accent)),
-      hsl(var(--accent)) 10px,
-      hsl(0 0% 0%) 10px,
-      hsl(0 0% 0%) 20px
-    );
+  /* Fade animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
   }
 
-  /* Card Effects */
-  .card-street {
-    @apply transition-all duration-300 ease-out bg-card border-2 border-transparent;
-    box-shadow: var(--card-shadow);
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  .card-street:hover {
-    box-shadow: var(--card-shadow-hover);
-    @apply border-accent;
+  .animate-fade-in-slow {
+    animation: fadeInSlow 0.8s ease-out forwards;
   }
 
-  /* Glitch effect */
-  .glitch {
-    animation: glitch 0.3s infinite;
+  @keyframes fadeInSlow {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
-  @keyframes glitch {
-    0%, 100% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(2px, -2px); }
-    60% { transform: translate(-2px, -2px); }
-    80% { transform: translate(2px, 2px); }
-  }
-
-  /* Marquee animation */
+  /* Marquee */
   .animate-marquee {
-    animation: marquee 20s linear infinite;
+    animation: marquee 30s linear infinite;
   }
 
   @keyframes marquee {
@@ -264,64 +180,7 @@
     100% { transform: translateX(-50%); }
   }
 
-  /* Flicker (neon sign effect) */
-  .animate-flicker {
-    animation: flicker 2s ease-in-out infinite;
-  }
-
-  @keyframes flicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
-    52% { opacity: 1; }
-    54% { opacity: 0.9; }
-  }
-
-  /* Pulse neon */
-  .animate-pulse-neon {
-    animation: pulse-neon 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-neon {
-    0%, 100% { 
-      box-shadow: 0 0 10px hsl(var(--accent) / 0.5), 0 0 30px hsl(var(--accent) / 0.3);
-    }
-    50% { 
-      box-shadow: 0 0 20px hsl(var(--accent) / 0.8), 0 0 50px hsl(var(--accent) / 0.5);
-    }
-  }
-
-  /* Slide up animation */
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out forwards;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Fade in animation */
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  /* Shake animation */
-  .animate-shake {
-    animation: shake 0.5s ease-in-out;
-  }
-
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-  }
-
-  /* Line Clamp */
+  /* Line clamp */
   .line-clamp-1 {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -336,7 +195,7 @@
     overflow: hidden;
   }
 
-  /* Scrollbar Hide */
+  /* Scrollbar */
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
@@ -345,45 +204,27 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-
-  /* Skew transforms */
-  .skew-x-2 {
-    transform: skewX(-2deg);
-  }
-
-  .skew-x-3 {
-    transform: skewX(-3deg);
-  }
-
-  /* Cut corners effect */
-  .cut-corner {
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-  }
-
-  .cut-corner-left {
-    clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
-  }
 }
 
-/* Custom Selection */
+/* Selection */
 ::selection {
   background: hsl(var(--accent));
   color: hsl(var(--accent-foreground));
 }
 
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
+  background: hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--accent));
+  background: hsl(var(--border));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--accent) / 0.8);
+  background: hsl(var(--muted-foreground));
 }
