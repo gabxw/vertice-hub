@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowUpRight, Loader2 } from 'lucide-react';
 import { categoriesApi, Category } from '@/api/categories';
 
 const defaultCategoryImages: Record<string, string> = {
-  'tenis': 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600',
-  'calcas': 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600',
-  'blusas': 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600',
+  'tenis': 'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&q=80',
+  'calcas': 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&q=80',
+  'blusas': 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80',
+};
+
+const categoryDescriptions: Record<string, string> = {
+  'tenis': 'Pisada com atitude',
+  'calcas': 'Conforto e estilo',
+  'blusas': 'Expressão única',
 };
 
 export const CategorySection = () => {
@@ -47,46 +53,53 @@ export const CategorySection = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
-            Coleções
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl mb-4">
-            COMPRE POR CATEGORIA
+          <h2 className="font-display text-3xl md:text-4xl text-foreground tracking-wide mb-3">
+            CATEGORIAS
           </h2>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            Encontre o que procura de forma rápida e fácil
-          </p>
+          <div className="gothic-line-accent w-24 mx-auto" />
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {categories.slice(0, 3).map((category, index) => (
             <Link
               key={category.id}
               to={`/categoria/${category.slug}`}
-              className="group relative overflow-hidden aspect-[4/5] animate-fade-in bg-secondary"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="group relative aspect-[3/4] overflow-hidden bg-muted card-gothic"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Image */}
-              <img
-                src={category.image || defaultCategoryImages[category.slug] || defaultCategoryImages['blusas']}
-                alt={category.name}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
+              <div className="absolute inset-0">
+                <img
+                  src={category.image || defaultCategoryImages[category.slug] || defaultCategoryImages['blusas']}
+                  alt={category.name}
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
+                />
+              </div>
               
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-500" />
               
               {/* Content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-end p-8 text-center">
-                <h3 className="font-display text-3xl md:text-4xl text-primary-foreground mb-2">
-                  {category.name.toUpperCase()}
-                </h3>
-                <div className="inline-flex items-center gap-2 text-accent text-sm font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all">
-                  Ver Produtos
-                  <ArrowRight size={16} />
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <div className="transform transition-transform duration-500 group-hover:translate-y-0 translate-y-2">
+                  <p className="text-primary-foreground/60 text-sm mb-1 font-body">
+                    {categoryDescriptions[category.slug] || 'Ver produtos'}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-display text-2xl md:text-3xl text-primary-foreground tracking-wider">
+                      {category.name.toUpperCase()}
+                    </h3>
+                    <ArrowUpRight 
+                      size={24} 
+                      className="text-accent transform transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" 
+                    />
+                  </div>
                 </div>
               </div>
+
+              {/* Accent border on hover */}
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </Link>
           ))}
         </div>

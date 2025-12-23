@@ -49,10 +49,9 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     
     setIsAdding(true);
     try {
-      // Assuming we have a variantId, for now use productId as placeholder
       await addItem({ variantId: product.id, quantity: 1 });
       toast({
-        title: 'Adicionado ao carrinho!',
+        title: 'Adicionado ao carrinho',
         description: product.name,
       });
     } catch (error) {
@@ -74,7 +73,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-secondary">
+      <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-muted card-gothic">
         {/* Main Image */}
         {images.length > 0 ? (
           <img
@@ -82,7 +81,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             alt={product.name}
             loading="lazy"
             className={cn(
-              'w-full h-full object-cover transition-all duration-500',
+              'w-full h-full object-cover transition-all duration-700 filter grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105',
               isHovered && images[1] && 'opacity-0'
             )}
           />
@@ -99,15 +98,15 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             alt={product.name}
             loading="lazy"
             className={cn(
-              'absolute inset-0 w-full h-full object-cover transition-opacity duration-500',
+              'absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105',
               isHovered ? 'opacity-100' : 'opacity-0'
             )}
           />
         )}
 
-        {/* Discount Badge - Highly Visible */}
+        {/* Discount Badge */}
         {discountPercentage > 0 && (
-          <div className="absolute top-0 left-0 bg-accent text-accent-foreground font-bold text-sm px-3 py-1.5">
+          <div className="absolute top-0 left-0 bg-accent text-accent-foreground font-bold text-xs px-3 py-1.5 uppercase tracking-wider">
             -{discountPercentage}%
           </div>
         )}
@@ -115,12 +114,12 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         {/* New/Bestseller Badges */}
         <div className="absolute top-0 right-0 flex flex-col items-end">
           {product.isBestSeller && (
-            <span className="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
-              🔥 Top
+            <span className="bg-primary text-primary-foreground text-[10px] font-medium px-2 py-1 uppercase tracking-wider">
+              Top
             </span>
           )}
           {product.isNew && !product.isBestSeller && (
-            <span className="bg-neon text-neon-foreground text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
+            <span className="bg-secondary text-secondary-foreground text-[10px] font-medium px-2 py-1 uppercase tracking-wider">
               Novo
             </span>
           )}
@@ -128,8 +127,8 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
         {/* Low Stock Warning */}
         {stock <= 5 && stock > 0 && (
-          <div className="absolute bottom-0 left-0 right-0 bg-accent text-accent-foreground text-xs font-bold py-1.5 text-center">
-            🔥 Últimas {stock} unidades!
+          <div className="absolute bottom-0 left-0 right-0 bg-wine text-wine-foreground text-xs font-medium py-1.5 text-center">
+            Últimas {stock} unidades
           </div>
         )}
 
@@ -140,14 +139,14 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             setIsWishlisted(!isWishlisted);
           }}
           className={cn(
-            'absolute top-10 right-2 w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-sm',
+            'absolute top-10 right-2 w-8 h-8 flex items-center justify-center transition-all border',
             isWishlisted
-              ? 'bg-accent text-accent-foreground'
-              : 'bg-background/90 text-foreground hover:bg-accent hover:text-accent-foreground'
+              ? 'bg-accent text-accent-foreground border-accent'
+              : 'bg-background/90 text-foreground border-border/50 hover:bg-accent hover:text-accent-foreground hover:border-accent'
           )}
           aria-label="Adicionar aos favoritos"
         >
-          <Heart size={16} className={isWishlisted ? 'fill-current' : ''} />
+          <Heart size={14} className={isWishlisted ? 'fill-current' : ''} strokeWidth={1.5} />
         </button>
 
         {/* Quick Add Button */}
@@ -155,19 +154,19 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
           onClick={handleAddToCart}
           disabled={isAdding || stock === 0}
           className={cn(
-            'absolute bottom-0 left-0 right-0 bg-primary text-primary-foreground h-11 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all',
+            'absolute bottom-0 left-0 right-0 bg-primary text-primary-foreground h-11 font-medium text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300',
             'translate-y-full group-hover:translate-y-0',
-            stock <= 5 && stock > 0 && 'translate-y-[-44px] group-hover:translate-y-[-44px]',
+            stock <= 5 && stock > 0 && 'translate-y-[-36px] group-hover:translate-y-[-36px]',
             (isAdding || stock === 0) && 'opacity-50 cursor-not-allowed'
           )}
         >
-          <ShoppingBag size={14} />
-          {stock === 0 ? 'Esgotado' : isAdding ? 'Adicionando...' : 'Comprar'}
+          <ShoppingBag size={14} strokeWidth={1.5} />
+          {stock === 0 ? 'Esgotado' : isAdding ? 'Adicionando...' : 'Adicionar'}
         </button>
       </Link>
 
       {/* Product Info */}
-      <div className="mt-3 space-y-1.5">
+      <div className="mt-4 space-y-2">
         {/* Rating */}
         {reviews > 0 && (
           <div className="flex items-center gap-1">
@@ -175,9 +174,9 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  size={12}
+                  size={10}
                   className={cn(
-                    star <= Math.round(rating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'
+                    star <= Math.round(rating) ? 'text-accent fill-accent' : 'text-muted'
                   )}
                 />
               ))}
@@ -188,14 +187,14 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
         {/* Name */}
         <Link to={`/produto/${product.slug}`}>
-          <h3 className="font-medium text-sm leading-tight hover:text-accent transition-colors line-clamp-2">
+          <h3 className="font-medium text-sm leading-tight text-foreground hover:text-accent transition-colors line-clamp-2">
             {product.name}
           </h3>
         </Link>
 
         {/* Price */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-bold text-lg">
+          <span className="font-bold text-base text-foreground">
             R$ {product.price.toFixed(2).replace('.', ',')}
           </span>
           {product.originalPrice && (
@@ -213,7 +212,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
         {/* Free Shipping Indicator */}
         {product.price >= 299 && (
           <div className="flex items-center gap-1 text-xs text-accent font-medium">
-            <Truck size={12} />
+            <Truck size={12} strokeWidth={1.5} />
             <span>Frete Grátis</span>
           </div>
         )}
@@ -224,7 +223,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             {colors.slice(0, 4).map((color) => (
               <div
                 key={color.name}
-                className="w-4 h-4 border border-border rounded-full"
+                className="w-4 h-4 border border-border"
                 style={{ backgroundColor: color.hex }}
                 title={color.name}
               />

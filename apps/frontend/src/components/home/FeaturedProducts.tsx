@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { productsApi, Product } from '@/api/products';
 import { ProductCard } from '@/components/products/ProductCard';
-import { ArrowRight, Loader2, TrendingUp } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const categoryIdToSlug: Record<string, string> = {
@@ -60,29 +60,24 @@ export const FeaturedProducts = () => {
   }, []);
 
   return (
-    <section className="py-16 md:py-24 bg-muted">
+    <section className="py-16 md:py-24 bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <div>
-            <div className="flex items-center gap-2 text-accent mb-2">
-              <TrendingUp size={18} />
-              <span className="text-xs font-bold uppercase tracking-[0.3em]">
-                Mais Vendidos
-              </span>
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl">
-              PRODUTOS EM DESTAQUE
+            <p className="text-accent text-sm uppercase tracking-[0.2em] mb-2 font-medium">Seleção Exclusiva</p>
+            <h2 className="font-display text-3xl md:text-4xl text-foreground tracking-wide">
+              MAIS VENDIDOS
             </h2>
           </div>
           <Button 
             asChild 
-            variant="outline" 
-            className="self-start md:self-auto border-foreground/20 hover:bg-foreground hover:text-background uppercase tracking-wider font-bold h-12 px-8"
+            variant="ghost" 
+            className="group self-start md:self-auto text-foreground hover:text-accent transition-colors"
           >
-            <Link to="/ofertas">
-              Ver Todos
-              <ArrowRight className="ml-2" size={18} />
+            <Link to="/ofertas" className="flex items-center gap-2">
+              <span className="text-sm uppercase tracking-wider">Ver Todos</span>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
         </div>
@@ -95,13 +90,24 @@ export const FeaturedProducts = () => {
         )}
 
         {/* Products Grid */}
-        {!loading && (
+        {!loading && products.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {products.map((product, index) => (
               <ProductCard key={product.id} product={convertProduct(product)} index={index} />
             ))}
           </div>
         )}
+
+        {!loading && products.length === 0 && (
+          <div className="text-center py-16 text-muted-foreground">
+            <p>Nenhum produto encontrado</p>
+          </div>
+        )}
+
+        {/* Decorative line */}
+        <div className="mt-16">
+          <div className="gothic-line-accent" />
+        </div>
       </div>
     </section>
   );
