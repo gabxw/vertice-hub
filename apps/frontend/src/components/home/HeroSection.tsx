@@ -1,115 +1,129 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const HeroSection = () => {
-  return (
-    <section className="relative min-h-screen flex items-center bg-background overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ 
-          backgroundImage: 'url(https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80)',
-        }}
-      />
-      
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-background/90" />
-      
-      {/* Subtle texture */}
-      <div className="absolute inset-0 texture-noise" />
+  const scrollToContent = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+  };
 
-      {/* Marquee Banner */}
-      <div className="absolute top-0 left-0 right-0 bg-foreground py-2.5 overflow-hidden">
+  return (
+    <section className="relative min-h-screen flex flex-col bg-background overflow-hidden">
+      {/* Announcement Bar */}
+      <div className="bg-accent py-2.5 overflow-hidden relative z-20">
         <div className="flex animate-marquee whitespace-nowrap">
-          {Array(6).fill(null).map((_, i) => (
-            <span key={i} className="mx-12 font-body text-sm text-background tracking-widest">
-              FRETE GRÁTIS ACIMA DE R$299 • PEÇAS EXCLUSIVAS • ENVIO EM 24H • PARCELAMENTO EM ATÉ 6X
+          {Array(8).fill(null).map((_, i) => (
+            <span key={i} className="mx-8 font-body text-xs text-accent-foreground tracking-[0.2em] uppercase">
+              FRETE GRÁTIS ACIMA DE R$299 ✦ PEÇAS EXCLUSIVAS ✦ ENVIO 24H ✦ ATÉ 6X SEM JUROS
             </span>
           ))}
         </div>
       </div>
 
-      {/* Content */}
-      <div className="container relative z-10 pt-20">
-        <div className="max-w-3xl">
-          {/* Badge */}
-          <div className="inline-block mb-8 animate-fade-in">
-            <span className="font-body text-xs text-accent font-semibold tracking-[0.3em] uppercase">
-              Nova Coleção
-            </span>
-          </div>
+      {/* Main Hero */}
+      <div className="flex-1 relative">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center img-grunge"
+          style={{ 
+            backgroundImage: 'url(https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1920&q=80)',
+          }}
+        />
+        
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-background/85" />
+        
+        {/* Texture */}
+        <div className="absolute inset-0 texture-grunge" />
 
-          {/* Headline */}
-          <h1 
-            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-foreground leading-[0.9] mb-6 animate-fade-in"
-            style={{ animationDelay: '0.1s' }}
-          >
-            DARK
-            <br />
-            <span className="text-accent">STREET</span>
-            <br />
-            WEAR
-          </h1>
+        {/* Content Grid */}
+        <div className="container h-full relative z-10 flex items-center py-20">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
+            
+            {/* Left - Text Content */}
+            <div className="order-2 lg:order-1">
+              {/* Collection Tag */}
+              <div className="animate-fade-up mb-6">
+                <span className="inline-block font-gothic text-xs text-accent tracking-[0.4em] uppercase border border-accent px-4 py-2">
+                  Coleção 2024
+                </span>
+              </div>
 
-          {/* Subtitle */}
-          <p 
-            className="text-lg text-muted-foreground mb-10 max-w-md font-body leading-relaxed animate-fade-in"
-            style={{ animationDelay: '0.2s' }}
-          >
-            Estética underground. Atitude rebelde. 
-            Peças exclusivas para quem não segue tendências.
-          </p>
+              {/* Headline */}
+              <h1 className="animate-fade-up delay-100">
+                <span className="block font-display text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[7rem] text-foreground leading-[0.85] tracking-tight">
+                  GRUNGE
+                </span>
+                <span className="block font-display text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[7rem] text-accent leading-[0.85] tracking-tight">
+                  STREET
+                </span>
+                <span className="block font-display text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[7rem] text-foreground leading-[0.85] tracking-tight">
+                  WEAR
+                </span>
+              </h1>
 
-          {/* CTAs */}
-          <div 
-            className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-in"
-            style={{ animationDelay: '0.3s' }}
-          >
-            <Button 
-              asChild 
-              size="lg" 
-              className="h-14 px-10 bg-foreground text-background hover:bg-foreground/90 font-display text-base tracking-widest"
-            >
-              <Link to="/ofertas" className="flex items-center gap-3">
-                VER COLEÇÃO
-                <ArrowRight size={18} />
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              variant="outline" 
-              className="h-14 px-10 border-foreground/30 text-foreground hover:bg-foreground hover:text-background font-display text-base tracking-widest"
-            >
-              <Link to="/categoria/tenis">
-                EXPLORAR
-              </Link>
-            </Button>
-          </div>
+              {/* Subtitle */}
+              <p className="animate-fade-up delay-200 text-muted-foreground font-body text-lg md:text-xl mt-8 max-w-md leading-relaxed">
+                Estética underground. Atitude rebelde. 
+                Peças exclusivas para quem não segue tendências.
+              </p>
 
-          {/* Trust badges */}
-          <div 
-            className="flex flex-wrap gap-8 text-muted-foreground animate-fade-in"
-            style={{ animationDelay: '0.4s' }}
-          >
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-6 bg-accent" />
-              <span className="font-body text-sm">Pagamento Seguro</span>
+              {/* CTAs */}
+              <div className="animate-fade-up delay-300 flex flex-col sm:flex-row gap-4 mt-10">
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="h-14 px-10 bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground font-display text-base tracking-[0.2em] transition-all duration-300"
+                >
+                  <Link to="/ofertas" className="flex items-center gap-3">
+                    VER COLEÇÃO
+                    <ArrowRight size={18} />
+                  </Link>
+                </Button>
+                <Button 
+                  asChild 
+                  size="lg" 
+                  variant="outline" 
+                  className="h-14 px-10 border-foreground/20 text-foreground hover:border-accent hover:text-accent bg-transparent font-display text-base tracking-[0.2em] transition-all duration-300"
+                >
+                  <Link to="/categoria/tenis">
+                    NOVO DROP
+                  </Link>
+                </Button>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-6 bg-accent" />
-              <span className="font-body text-sm">Troca em 30 dias</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-6 bg-accent" />
-              <span className="font-body text-sm">Envio Nacional</span>
+
+            {/* Right - Featured Image */}
+            <div className="order-1 lg:order-2 animate-fade-up delay-200">
+              <div className="relative aspect-[3/4] max-w-md mx-auto lg:max-w-none">
+                <img
+                  src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=800&q=80"
+                  alt="Coleção Grunge Streetwear"
+                  className="w-full h-full object-cover img-grunge"
+                />
+                {/* Accent border */}
+                <div className="absolute -bottom-4 -right-4 w-full h-full border border-accent -z-10" />
+                
+                {/* Floating badge */}
+                <div className="absolute -left-4 bottom-12 bg-accent text-accent-foreground px-6 py-3">
+                  <span className="font-display text-sm tracking-[0.2em]">NOVO DROP</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+        <button 
+          onClick={scrollToContent}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-accent transition-colors animate-fade-in delay-500"
+          aria-label="Scroll down"
+        >
+          <ChevronDown size={28} className="animate-bounce" />
+        </button>
       </div>
 
-      {/* Decorative line */}
+      {/* Bottom Line */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-border" />
     </section>
   );

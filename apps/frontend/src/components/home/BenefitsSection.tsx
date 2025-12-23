@@ -25,25 +25,38 @@ const benefits = [
 
 export const BenefitsSection = () => {
   return (
-    <section className="bg-primary py-5 border-y-2 border-accent">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {benefits.map((benefit) => (
+    <section className="bg-secondary py-6 border-y border-border relative overflow-hidden">
+      {/* Subtle accent line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+      
+      <div className="container">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          {benefits.map((benefit, index) => (
             <div 
               key={benefit.title} 
-              className="flex items-center gap-3 justify-center md:justify-start"
+              className="flex items-center gap-4 py-2"
             >
-              <div className="flex-shrink-0 w-10 h-10 bg-accent flex items-center justify-center">
-                <benefit.icon size={18} className="text-accent-foreground" strokeWidth={2} />
+              {/* Icon */}
+              <div className="flex-shrink-0 w-12 h-12 border border-border flex items-center justify-center group-hover:border-accent transition-colors">
+                <benefit.icon size={20} className="text-accent" strokeWidth={1.5} />
               </div>
+              
+              {/* Text */}
               <div>
-                <p className="text-sm font-bold text-primary-foreground uppercase tracking-wide">{benefit.title}</p>
-                <p className="text-xs text-primary-foreground/60 font-body">{benefit.description}</p>
+                <p className="font-display text-sm text-foreground tracking-[0.1em] uppercase">
+                  {benefit.title}
+                </p>
+                <p className="text-xs text-muted-foreground font-body mt-0.5">
+                  {benefit.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Subtle accent line */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
     </section>
   );
 };

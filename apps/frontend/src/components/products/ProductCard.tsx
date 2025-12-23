@@ -63,13 +63,13 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
   return (
     <div
-      className="group animate-fade-in"
+      className="group animate-fade-up"
       style={{ animationDelay: `${index * 0.05}s` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-muted">
+      <Link to={`/produto/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-secondary">
         {/* Main Image */}
         {images.length > 0 ? (
           <img
@@ -77,13 +77,13 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             alt={product.name}
             loading="lazy"
             className={cn(
-              'w-full h-full object-cover transition-all duration-500',
+              'w-full h-full object-cover transition-all duration-700 img-grunge',
               isHovered && images[1] && 'opacity-0',
               'group-hover:scale-105'
             )}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-muted font-body text-sm">
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-secondary font-body text-sm">
             Sem imagem
           </div>
         )}
@@ -95,66 +95,85 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             alt={product.name}
             loading="lazy"
             className={cn(
-              'absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105',
+              'absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 img-grunge',
               isHovered ? 'opacity-100' : 'opacity-0'
             )}
           />
         )}
 
-        {/* Discount Badge */}
-        {discountPercentage > 0 && (
-          <div className="absolute top-3 left-3 bg-accent text-accent-foreground font-display text-sm px-2 py-1 tracking-wider">
-            -{discountPercentage}%
-          </div>
-        )}
+        {/* Badges Container */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {/* Discount Badge */}
+          {discountPercentage > 0 && (
+            <div className="bg-accent text-accent-foreground font-display text-xs px-2.5 py-1 tracking-wider">
+              -{discountPercentage}%
+            </div>
+          )}
 
-        {/* New/Bestseller Badge */}
-        {product.isNew && !discountPercentage && (
-          <div className="absolute top-3 left-3 bg-foreground text-background font-display text-xs px-2 py-1 tracking-wider">
-            NOVO
-          </div>
-        )}
+          {/* New Badge */}
+          {product.isNew && !discountPercentage && (
+            <div className="bg-foreground text-background font-display text-xs px-2.5 py-1 tracking-wider">
+              NOVO
+            </div>
+          )}
 
-        {/* Low Stock */}
+          {/* Bestseller Badge */}
+          {product.isBestSeller && !product.isNew && !discountPercentage && (
+            <div className="bg-secondary text-foreground font-display text-xs px-2.5 py-1 tracking-wider border border-border">
+              TOP
+            </div>
+          )}
+        </div>
+
+        {/* Low Stock Warning */}
         {stock <= 5 && stock > 0 && (
-          <div className="absolute bottom-12 left-0 right-0 bg-accent/90 text-accent-foreground text-xs font-body py-1.5 text-center">
+          <div className="absolute bottom-12 left-0 right-0 bg-accent text-accent-foreground text-xs font-body py-1.5 text-center tracking-wide">
             Últimas {stock} unidades
           </div>
         )}
 
-        {/* Wishlist */}
+        {/* Wishlist Button */}
         <button
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             setIsWishlisted(!isWishlisted);
           }}
           className={cn(
-            'absolute top-3 right-3 w-9 h-9 flex items-center justify-center transition-all bg-background/80 hover:bg-background',
-            isWishlisted && 'text-accent'
+            'absolute top-3 right-3 w-9 h-9 flex items-center justify-center transition-all bg-background/90 hover:bg-background border border-border',
+            isWishlisted && 'border-accent'
           )}
           aria-label="Favoritar"
         >
-          <Heart size={16} className={isWishlisted ? 'fill-current' : ''} strokeWidth={1.5} />
+          <Heart 
+            size={16} 
+            className={cn(
+              'transition-colors',
+              isWishlisted ? 'fill-accent text-accent' : 'text-foreground'
+            )} 
+            strokeWidth={1.5} 
+          />
         </button>
 
-        {/* Quick Add */}
+        {/* Quick Add Button */}
         <button
           onClick={handleAddToCart}
           disabled={isAdding || stock === 0}
           className={cn(
-            'absolute bottom-0 left-0 right-0 bg-foreground text-background h-11 font-display text-sm tracking-widest flex items-center justify-center gap-2 transition-all duration-300',
+            'absolute bottom-0 left-0 right-0 bg-foreground text-background h-11 font-display text-xs tracking-[0.15em] flex items-center justify-center gap-2 transition-all duration-300',
             'translate-y-full group-hover:translate-y-0',
             stock <= 5 && stock > 0 && 'group-hover:-translate-y-8',
             (isAdding || stock === 0) && 'opacity-50 cursor-not-allowed'
           )}
         >
           <ShoppingBag size={14} strokeWidth={1.5} />
-          {stock === 0 ? 'ESGOTADO' : isAdding ? 'ADICIONANDO...' : 'ADICIONAR'}
+          {stock === 0 ? 'ESGOTADO' : isAdding ? 'ADICIONANDO...' : 'COMPRAR'}
         </button>
       </Link>
 
-      {/* Info */}
+      {/* Product Info */}
       <div className="mt-4 space-y-2">
+        {/* Name */}
         <Link to={`/produto/${product.slug}`}>
           <h3 className="font-body text-sm text-foreground leading-snug line-clamp-2 hover:text-accent transition-colors">
             {product.name}
@@ -163,11 +182,11 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
         {/* Price */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-display text-xl text-foreground">
+          <span className="font-display text-lg text-foreground tracking-wide">
             R$ {product.price.toFixed(2).replace('.', ',')}
           </span>
           {product.originalPrice && (
-            <span className="text-sm text-muted-foreground line-through font-body">
+            <span className="text-xs text-muted-foreground line-through font-body">
               R$ {product.originalPrice.toFixed(2).replace('.', ',')}
             </span>
           )}
@@ -188,7 +207,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
         {/* Colors */}
         {colors.length > 0 && (
-          <div className="flex gap-1 pt-1">
+          <div className="flex gap-1.5 pt-1">
             {colors.slice(0, 4).map((color) => (
               <div
                 key={color.name}

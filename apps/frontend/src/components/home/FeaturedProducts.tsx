@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { productsApi, Product } from '@/api/products';
 import { ProductCard } from '@/components/products/ProductCard';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const categoryIdToSlug: Record<string, string> = {
@@ -60,33 +60,33 @@ export const FeaturedProducts = () => {
   }, []);
 
   return (
-    <section className="py-20 bg-secondary">
-      <div className="container">
+    <section className="py-24 bg-secondary relative">
+      {/* Texture */}
+      <div className="absolute inset-0 texture-grunge opacity-50" />
+      
+      <div className="container relative z-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <span className="font-body text-xs text-accent font-semibold tracking-[0.3em] uppercase mb-3 block">
-              Destaques
+            <span className="font-gothic text-xs text-accent tracking-[0.4em] uppercase mb-4 block">
+              Seleção
             </span>
-            <h2 className="font-display text-3xl md:text-4xl text-foreground">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground tracking-tight">
               MAIS VENDIDOS
             </h2>
           </div>
-          <Button 
-            asChild 
-            variant="ghost" 
-            className="self-start md:self-auto text-foreground hover:text-accent hover:bg-transparent font-body text-sm"
+          <Link 
+            to="/ofertas" 
+            className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-body text-sm group self-start md:self-auto"
           >
-            <Link to="/ofertas" className="flex items-center gap-2">
-              Ver todos
-              <ArrowRight size={14} />
-            </Link>
-          </Button>
+            Ver todos os produtos
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
 
         {/* Loading */}
         {loading && (
-          <div className="flex justify-center items-center py-20">
+          <div className="flex justify-center items-center py-24">
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
           </div>
         )}
@@ -101,31 +101,44 @@ export const FeaturedProducts = () => {
         )}
 
         {!loading && products.length === 0 && (
-          <div className="text-center py-16 text-muted-foreground">
+          <div className="text-center py-20 text-muted-foreground">
             <p className="font-body">Nenhum produto encontrado</p>
           </div>
         )}
 
         {/* CTA Banner */}
-        <div className="mt-16 bg-background border border-border p-10 md:p-14">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                10% OFF NA PRIMEIRA COMPRA
-              </h3>
-              <p className="text-muted-foreground font-body">
-                Use o cupom <span className="text-accent font-semibold">DARK10</span> no checkout
-              </p>
+        <div className="mt-20 relative overflow-hidden">
+          <div className="bg-background border border-border p-8 md:p-12 lg:p-16">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+              {/* Left Content */}
+              <div className="flex-1">
+                <span className="font-gothic text-xs text-accent tracking-[0.3em] uppercase mb-3 block">
+                  Oferta Exclusiva
+                </span>
+                <h3 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground tracking-tight mb-4">
+                  10% OFF NA PRIMEIRA COMPRA
+                </h3>
+                <p className="text-muted-foreground font-body max-w-md">
+                  Use o código <span className="text-accent font-semibold">VERTICE10</span> no checkout e garanta seu desconto exclusivo.
+                </p>
+              </div>
+
+              {/* CTA Button */}
+              <Button 
+                asChild 
+                size="lg"
+                className="h-14 px-10 bg-accent hover:bg-accent/90 text-accent-foreground font-display tracking-[0.2em] group"
+              >
+                <Link to="/ofertas" className="flex items-center gap-3">
+                  COMPRAR AGORA
+                  <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </Link>
+              </Button>
             </div>
-            <Button 
-              asChild 
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-display tracking-widest h-12 px-8"
-            >
-              <Link to="/ofertas">
-                COMPRAR
-                <ArrowRight size={16} className="ml-2" />
-              </Link>
-            </Button>
+
+            {/* Decorative Elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 border-r border-t border-accent/20" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 border-l border-b border-accent/20" />
           </div>
         </div>
       </div>
