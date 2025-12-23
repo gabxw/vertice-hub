@@ -5,48 +5,46 @@ const benefits = [
     icon: Truck,
     title: 'Frete Grátis',
     description: 'Acima de R$ 299',
-    accent: 'accent',
   },
   {
     icon: Shield,
     title: 'Compra Segura',
     description: '100% protegida',
-    accent: 'neon',
   },
   {
     icon: RefreshCw,
     title: '30 Dias',
     description: 'Para trocar',
-    accent: 'electric',
   },
   {
     icon: Headphones,
     title: 'Suporte',
     description: 'Atendimento rápido',
-    accent: 'hot',
   },
 ];
 
 export const BenefitsSection = () => {
   return (
-    <section className="py-16 bg-secondary">
+    <section className="py-8 bg-secondary border-y border-border">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {benefits.map((benefit, index) => (
             <div
               key={benefit.title}
-              className="flex flex-col items-center text-center animate-fade-in group"
+              className="flex items-center gap-3 animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className={`w-16 h-16 bg-${benefit.accent}/10 flex items-center justify-center mb-4 group-hover:bg-${benefit.accent} transition-colors`}>
-                <benefit.icon className={`w-7 h-7 text-${benefit.accent} group-hover:text-${benefit.accent}-foreground transition-colors`} />
+              <div className="w-12 h-12 bg-accent/10 flex items-center justify-center shrink-0">
+                <benefit.icon className="w-5 h-5 text-accent" />
               </div>
-              <h3 className="font-display text-xl uppercase tracking-wider mb-1 text-secondary-foreground">
-                {benefit.title}
-              </h3>
-              <p className="text-xs text-secondary-foreground/60 uppercase tracking-wider">
-                {benefit.description}
-              </p>
+              <div>
+                <h3 className="font-bold text-sm text-secondary-foreground">
+                  {benefit.title}
+                </h3>
+                <p className="text-xs text-secondary-foreground/60">
+                  {benefit.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>

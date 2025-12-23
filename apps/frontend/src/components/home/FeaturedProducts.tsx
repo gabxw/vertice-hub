@@ -2,17 +2,15 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { productsApi, Product } from '@/api/products';
 import { ProductCard } from '@/components/products/ProductCard';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Mapeamento de categoryId para slug
 const categoryIdToSlug: Record<string, string> = {
   'cat-1': 'tenis',
   'cat-2': 'calcas',
   'cat-3': 'blusas',
 };
 
-// Converter produto da API para o formato esperado pelo ProductCard
 const convertProduct = (p: Product) => ({
   id: p.id,
   name: p.name,
@@ -47,7 +45,6 @@ export const FeaturedProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await productsApi.list();
-        // Filtrar produtos em destaque (bestseller ou novo)
         const featured = (response.products || response.data || [])
           .filter((p: Product) => p.isBestSeller || p.isNew)
           .slice(0, 8);
@@ -63,19 +60,26 @@ export const FeaturedProducts = () => {
   }, []);
 
   return (
-    <section className="py-20 md:py-32 bg-muted">
+    <section className="py-16 md:py-24 bg-muted">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
           <div>
-            <span className="text-neon text-xs font-bold uppercase tracking-[0.3em] mb-3 block">
-              Mais Vendidos
-            </span>
-            <h2 className="font-display text-5xl md:text-6xl lg:text-7xl">
-              EM DESTAQUE
+            <div className="flex items-center gap-2 text-accent mb-2">
+              <TrendingUp size={18} />
+              <span className="text-xs font-bold uppercase tracking-[0.3em]">
+                Mais Vendidos
+              </span>
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl">
+              PRODUTOS EM DESTAQUE
             </h2>
           </div>
-          <Button asChild variant="outline" className="self-start md:self-auto border-foreground/20 hover:bg-foreground hover:text-background uppercase tracking-wider font-bold h-12 px-8">
+          <Button 
+            asChild 
+            variant="outline" 
+            className="self-start md:self-auto border-foreground/20 hover:bg-foreground hover:text-background uppercase tracking-wider font-bold h-12 px-8"
+          >
             <Link to="/ofertas">
               Ver Todos
               <ArrowRight className="ml-2" size={18} />
