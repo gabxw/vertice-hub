@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { categoriesApi, Category } from '@/api/categories';
 
 const defaultCategoryImages: Record<string, string> = {
-  'tenis': 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&q=80',
-  'calcas': 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&q=80',
-  'blusas': 'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=800&q=80',
-};
-
-const categoryDescriptions: Record<string, string> = {
-  'tenis': 'PISADA DO GUETO',
-  'calcas': 'CONFORTO URBANO',
-  'blusas': 'ESTILO PRÓPRIO',
+  'tenis': 'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&q=80',
+  'calcas': 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&q=80',
+  'blusas': 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80',
 };
 
 export const CategorySection = () => {
@@ -36,9 +30,9 @@ export const CategorySection = () => {
 
   if (loading) {
     return (
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 flex justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+      <section className="py-20 bg-background">
+        <div className="container flex justify-center">
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
         </div>
       </section>
     );
@@ -49,58 +43,52 @@ export const CategorySection = () => {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-secondary">
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-background">
+      <div className="container">
         {/* Header */}
-        <div className="flex items-end justify-between mb-10">
+        <div className="flex items-end justify-between mb-12">
           <div>
-            <span className="text-accent font-bold text-sm uppercase tracking-widest mb-2 block">Explore</span>
-            <h2 className="font-display text-4xl md:text-6xl text-primary-foreground tracking-wider">
-              CATEGORIAS
+            <span className="font-body text-xs text-accent font-semibold tracking-[0.3em] uppercase mb-3 block">
+              Categorias
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl text-foreground">
+              EXPLORE
             </h2>
           </div>
-          <div className="hidden md:block w-24 h-1 bg-accent mb-3" />
         </div>
 
-        {/* Categories Grid - Asymmetric */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {categories.slice(0, 3).map((category, index) => (
             <Link
               key={category.id}
               to={`/categoria/${category.slug}`}
-              className={`group relative overflow-hidden card-street ${
-                index === 0 ? 'md:col-span-7 aspect-[4/3] md:aspect-[16/10]' : 'md:col-span-5 aspect-[4/3]'
-              }`}
+              className="group relative aspect-[4/5] overflow-hidden bg-secondary animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Image */}
-              <div className="absolute inset-0">
-                <img
-                  src={category.image || defaultCategoryImages[category.slug] || defaultCategoryImages['blusas']}
-                  alt={category.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
+              <img
+                src={category.image || defaultCategoryImages[category.slug] || defaultCategoryImages['blusas']}
+                alt={category.name}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0"
+              />
               
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/60 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
               
               {/* Content */}
-              <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                <span className="text-accent font-bold text-xs uppercase tracking-widest mb-2">
-                  {categoryDescriptions[category.slug] || 'VER MAIS'}
-                </span>
-                <div className="flex items-end justify-between">
-                  <h3 className="font-display text-3xl md:text-5xl text-primary-foreground tracking-wider">
-                    {category.name.toUpperCase()}
-                  </h3>
-                  <div className="w-12 h-12 bg-accent flex items-center justify-center transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <ArrowUpRight size={24} className="text-accent-foreground" />
-                  </div>
+              <div className="absolute inset-0 flex flex-col justify-end p-8">
+                <h3 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+                  {category.name.toUpperCase()}
+                </h3>
+                <div className="flex items-center gap-2 text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="font-body text-sm">Ver produtos</span>
+                  <ArrowRight size={14} />
                 </div>
               </div>
 
-              {/* Accent border on hover */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-accent transition-colors duration-300 pointer-events-none" />
+              {/* Border on hover */}
+              <div className="absolute inset-0 border border-transparent group-hover:border-accent transition-colors duration-300 pointer-events-none" />
             </Link>
           ))}
         </div>
