@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, ShoppingBag, Eye } from 'lucide-react';
+import { Heart, ShoppingBag, Eye, Users, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Interface flexível para aceitar produtos mockados ou da API
@@ -14,7 +14,10 @@ interface ProductCardProduct {
   images: string[];
   stock?: number;
   isNew?: boolean;
+  isBestSeller?: boolean;
   colors?: { name: string; hex: string }[];
+  rating?: number;
+  reviews?: number;
 }
 
 interface ProductCardProps {
@@ -25,6 +28,16 @@ interface ProductCardProps {
 export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [viewingNow, setViewingNow] = useState(0);
+
+  // Simular pessoas visualizando (prova social)
+  useEffect(() => {
+    setViewingNow(Math.floor(Math.random() * 15) + 3);
+    const interval = setInterval(() => {
+      setViewingNow(Math.floor(Math.random() * 15) + 3);
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const discountPercentage = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -33,6 +46,8 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const stock = product.stock ?? 99;
   const colors = product.colors ?? [];
   const images = product.images ?? [];
+  const rating = product.rating ?? 4.5;
+  const reviews = product.reviews ?? 0;
 
   return (
     <div
@@ -73,7 +88,12 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
         {/* Badges */}
         <div className="absolute top-0 left-0 flex flex-col">
-          {product.isNew && (
+          {product.isBestSeller && (
+            <span className="bg-electric text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
+              🔥 Mais Vendido
+            </span>
+          )}
+          {product.isNew && !product.isBestSeller && (
             <span className="bg-neon text-neon-foreground text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
               Novo
             </span>
@@ -84,11 +104,19 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             </span>
           )}
           {stock <= 5 && stock > 0 && (
-            <span className="bg-hot text-hot-foreground text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
-              Últimas {stock}
+            <span className="bg-hot text-hot-foreground text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider animate-pulse">
+              🔥 Últimas {stock}!
             </span>
           )}
         </div>
+
+        {/* Viewing Now - Prova Social */}
+        {viewingNow > 5 && (
+          <div className="absolute bottom-3 left-3 bg-background/90 backdrop-blur-sm px-2 py-1 rounded text-xs flex items-center gap-1">
+            <Users size={12} className="text-accent" />
+            <span className="font-medium">{viewingNow} vendo agora</span>
+          </div>
+        )}
 
         {/* Wishlist Button */}
         <button
@@ -141,6 +169,24 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
           </h3>
         </Link>
 
+        {/* Rating */}
+        {reviews > 0 && (
+          <div className="flex items-center gap-1">
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  size={12}
+                  className={cn(
+                    star <= Math.round(rating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'
+                  )}
+                />
+              ))}
+            </div>
+            <span className="text-xs text-muted-foreground">({reviews})</span>
+          </div>
+        )}
+
         {/* Price */}
         <div className="flex items-center gap-3">
           <span className="font-bold text-lg">
@@ -152,6 +198,11 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             </span>
           )}
         </div>
+
+        {/* Installments */}
+        <p className="text-xs text-muted-foreground">
+          ou 3x de R$ {(product.price / 3).toFixed(2).replace('.', ',')} sem juros
+        </p>
 
         {/* Colors */}
         {colors.length > 0 && (

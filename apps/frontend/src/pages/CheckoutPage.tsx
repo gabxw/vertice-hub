@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -11,7 +11,7 @@ import { createPayPalOrder, capturePayPalOrder } from '@/api/paypal';
 import { createOrder } from '@/api/orders';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ShoppingBag, Truck, CreditCard } from 'lucide-react';
+import { ShoppingBag, Truck, CreditCard, Shield, Clock, CheckCircle, Lock, Zap } from 'lucide-react';
 
 interface AddressForm {
   name: string;
@@ -36,6 +36,9 @@ export default function CheckoutPage() {
   const [loadingCep, setLoadingCep] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [showPayPal, setShowPayPal] = useState(false);
+  
+  // Timer de urgência
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
 
   const [address, setAddress] = useState<AddressForm>({
     name: user?.user_metadata?.name || '',
@@ -47,6 +50,22 @@ export default function CheckoutPage() {
     state: '',
     zipCode: '',
   });
+
+  // Timer countdown
+  useEffect(() => {
+    if (items.length > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [items.length]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
 
   // Show loading state while authentication is being checked
   if (authLoading) {
@@ -178,9 +197,27 @@ export default function CheckoutPage() {
   const finalTotal = totalPrice - discount;
   const shipping = 0; // Free shipping for now
 
+  // Calcular economia total
+  const totalSavings = items.reduce((sum, item) => {
+    if (item.product.originalPrice) {
+      return sum + (item.product.originalPrice - item.product.price) * item.quantity;
+    }
+    return sum;
+  }, 0) + discount;
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Urgency Banner */}
+        {timeLeft > 0 && (
+          <div className="mb-6 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg p-4 flex items-center justify-center gap-3">
+            <Clock className="h-5 w-5 animate-pulse" />
+            <span className="font-medium">
+              Seu carrinho está reservado por <span className="font-bold text-lg">{formatTime(timeLeft)}</span>
+            </span>
+          </div>
+        )}
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Finalizar Compra</h1>
           <p className="text-gray-600 mt-2">Complete seus dados para finalizar o pedido</p>
@@ -189,6 +226,22 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Forms */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Trust Badges */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="flex flex-col items-center text-center p-4 bg-white rounded-lg border">
+                <Shield className="h-8 w-8 text-green-600 mb-2" />
+                <span className="text-sm font-medium">Compra 100% Segura</span>
+              </div>
+              <div className="flex flex-col items-center text-center p-4 bg-white rounded-lg border">
+                <Truck className="h-8 w-8 text-blue-600 mb-2" />
+                <span className="text-sm font-medium">Frete Grátis</span>
+              </div>
+              <div className="flex flex-col items-center text-center p-4 bg-white rounded-lg border">
+                <CheckCircle className="h-8 w-8 text-purple-600 mb-2" />
+                <span className="text-sm font-medium">30 Dias p/ Troca</span>
+              </div>
+            </div>
+
             {/* Address Form */}
             <Card>
               <CardHeader>
@@ -299,12 +352,13 @@ export default function CheckoutPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <Alert>
-                  <AlertDescription>
-                    O pagamento será processado após a confirmação do pedido.
-                    Você receberá um link de pagamento por email.
-                  </AlertDescription>
-                </Alert>
+                <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <Lock className="h-5 w-5 text-green-600" />
+                  <div>
+                    <p className="font-medium text-green-800">Pagamento Seguro via PayPal</p>
+                    <p className="text-sm text-green-600">Seus dados estão protegidos com criptografia SSL</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -331,7 +385,7 @@ export default function CheckoutPage() {
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm truncate">{item.product.name}</p>
                         <p className="text-sm text-gray-500">
-                          Tam: {item.size} | Qtd: {item.quantity}
+                          Tam: {item.size} | Cor: {item.color}
                         </p>
                         <p className="text-sm font-medium">
                           R$ {(item.product.price * item.quantity).toFixed(2)}
@@ -386,13 +440,28 @@ export default function CheckoutPage() {
                   )}
                   <div className="flex justify-between text-sm">
                     <span>Frete</span>
-                    <span className="text-green-600">Grátis</span>
+                    <span className="text-green-600 font-medium">Grátis</span>
                   </div>
+                  
+                  {/* Economia total */}
+                  {totalSavings > 0 && (
+                    <div className="flex items-center justify-between bg-green-50 text-green-700 px-3 py-2 rounded-lg text-sm">
+                      <span className="flex items-center gap-1">
+                        <Zap size={14} />
+                        Você está economizando
+                      </span>
+                      <span className="font-bold">R$ {totalSavings.toFixed(2)}</span>
+                    </div>
+                  )}
+                  
                   <div className="border-t border-gray-200 my-2"></div>
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span>R$ {finalTotal.toFixed(2)}</span>
                   </div>
+                  <p className="text-xs text-gray-500">
+                    ou 3x de R$ {(finalTotal / 3).toFixed(2)} sem juros
+                  </p>
                 </div>
 
                 {error && (
@@ -404,11 +473,11 @@ export default function CheckoutPage() {
                 {!showPayPal ? (
                   <Button
                     onClick={handleSubmit}
-                    className="w-full"
+                    className="w-full h-12 text-base font-semibold bg-green-600 hover:bg-green-700"
                     size="lg"
                     disabled={loading}
                   >
-                    {loading ? 'Processando...' : 'Continuar para Pagamento'}
+                    {loading ? 'Processando...' : '🔒 Continuar para Pagamento'}
                   </Button>
                 ) : (
                   <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID, currency: 'BRL' }}>
@@ -440,9 +509,10 @@ export default function CheckoutPage() {
                   </PayPalScriptProvider>
                 )}
 
-                <p className="text-xs text-center text-gray-500">
-                  Ao finalizar, você concorda com nossos termos e condições
-                </p>
+                <div className="flex items-center justify-center gap-2 text-xs text-gray-500 pt-2">
+                  <Lock size={12} />
+                  <span>Pagamento 100% seguro e criptografado</span>
+                </div>
               </CardContent>
             </Card>
           </div>

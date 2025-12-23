@@ -41,25 +41,31 @@ export class OrderService {
         let variant;
         let productId = item.productId;
 
-        // If productId is not a UUID, try to find product by slug
-        if (item.productSlug || (productId && productId.length < 20)) {
+        console.log('[ORDER SERVICE] Processing item:', JSON.stringify(item));
+
+        // Strategy 1: Try to find product by slug first (most reliable)
+        if (item.productSlug) {
           const product = await prisma.product.findUnique({
-            where: { slug: item.productSlug || `product-${productId}` },
+            where: { slug: item.productSlug },
           });
           if (product) {
             productId = product.id;
+            console.log('[ORDER SERVICE] Found product by slug:', productId);
           }
         }
 
-        // Strategy 1: Try to find by variantId if provided and looks like UUID
+        // Strategy 2: Try to find by variantId if provided and looks like UUID
         if (item.variantId && item.variantId.length > 20) {
           variant = await prisma.productVariant.findUnique({
             where: { id: item.variantId },
             include: { product: true },
           });
+          if (variant) {
+            console.log('[ORDER SERVICE] Found variant by ID:', variant.id);
+          }
         }
 
-        // Strategy 2: Find by productId + size + color
+        // Strategy 3: Find by productId + size + color
         if (!variant && productId && item.size && item.color) {
           variant = await prisma.productVariant.findFirst({
             where: {
@@ -69,9 +75,40 @@ export class OrderService {
             },
             include: { product: true },
           });
+          if (variant) {
+            console.log('[ORDER SERVICE] Found variant by productId+size+color:', variant.id);
+          }
         }
 
-        // Strategy 3: Fallback - try SKU pattern match
+        // Strategy 4: Find by productId + size only (color might have different format)
+        if (!variant && productId && item.size) {
+          variant = await prisma.productVariant.findFirst({
+            where: {
+              productId: productId,
+              size: item.size,
+            },
+            include: { product: true },
+          });
+          if (variant) {
+            console.log('[ORDER SERVICE] Found variant by productId+size:', variant.id);
+          }
+        }
+
+        // Strategy 5: Find any variant for the product (fallback)
+        if (!variant && productId) {
+          variant = await prisma.productVariant.findFirst({
+            where: {
+              productId: productId,
+              stock: { gte: item.quantity },
+            },
+            include: { product: true },
+          });
+          if (variant) {
+            console.log('[ORDER SERVICE] Found variant by productId (fallback):', variant.id);
+          }
+        }
+
+        // Strategy 6: Fallback - try SKU pattern match
         if (!variant && item.variantId) {
           variant = await prisma.productVariant.findFirst({
             where: {
@@ -79,10 +116,14 @@ export class OrderService {
             },
             include: { product: true },
           });
+          if (variant) {
+            console.log('[ORDER SERVICE] Found variant by SKU:', variant.id);
+          }
         }
 
         if (!variant) {
-          throw new Error(`Variante não encontrada para produto ${item.productId} (size: ${item.size}, color: ${item.color})`);
+          console.error('[ORDER SERVICE] Variant not found for item:', JSON.stringify(item));
+          throw new Error(`Variante não encontrada para produto ${item.productId || item.productSlug} (size: ${item.size}, color: ${item.color})`);
         }
 
         if (variant.stock < item.quantity) {
