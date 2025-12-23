@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag, Star, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useCart } from '@/hooks/useCart';
+import { useAddToCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProduct {
@@ -30,7 +30,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const { addItem } = useCart();
+  const { mutateAsync: addItem } = useAddToCart();
   const { toast } = useToast();
 
   const discountPercentage = product.originalPrice
@@ -49,13 +49,8 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     
     setIsAdding(true);
     try {
-      await addItem({
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        image: images[0],
-        quantity: 1,
-      });
+      // Assuming we have a variantId, for now use productId as placeholder
+      await addItem({ variantId: product.id, quantity: 1 });
       toast({
         title: 'Adicionado ao carrinho!',
         description: product.name,
