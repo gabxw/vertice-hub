@@ -101,7 +101,7 @@ export default function AdminProductForm() {
   const fetchProduct = async () => {
     setLoading(true);
     try {
-      const response = await api.get(`/products/${id}`);
+      const response = await api.get(`/products/by-id/${id}`);
       const product = response.data.data;
       
       setForm({

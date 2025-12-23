@@ -46,6 +46,26 @@ export class ProductController {
   }
 
   /**
+   * Get product by ID (for admin)
+   */
+  async getProductById(req: Request<{ id: string }>, res: Response) {
+    try {
+      const product = await productService.getProductById(req.params.id);
+
+      res.json({
+        success: true,
+        data: product,
+      });
+    } catch (error: any) {
+      res.status(404).json({
+        success: false,
+        error: 'Not Found',
+        message: error.message,
+      });
+    }
+  }
+
+  /**
    * Get featured products
    */
   async getFeaturedProducts(req: Request, res: Response) {

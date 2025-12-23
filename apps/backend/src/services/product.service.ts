@@ -133,6 +133,52 @@ export class ProductService {
   }
 
   /**
+   * Get product by ID (for admin)
+   */
+  async getProductById(id: string) {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        category: {
+          select: { id: true, name: true, slug: true },
+        },
+        images: {
+          orderBy: { order: 'asc' },
+        },
+        variants: {
+          select: {
+            id: true,
+            size: true,
+            colorName: true,
+            colorHex: true,
+            sku: true,
+            stock: true,
+          },
+        },
+        benefits: {
+          orderBy: { order: 'asc' },
+          select: { text: true },
+        },
+        tags: {
+          select: { name: true },
+        },
+        supplier: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      throw new Error('Produto não encontrado');
+    }
+
+    return product;
+  }
+
+  /**
    * Get featured products
    */
   async getFeaturedProducts(limit: number = 8) {

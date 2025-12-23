@@ -33,6 +33,13 @@ router.get('/featured', productController.getFeaturedProducts.bind(productContro
 router.get('/new', productController.getNewProducts.bind(productController));
 
 /**
+ * @route   GET /api/v1/products/by-id/:id
+ * @desc    Get product by ID (for admin)
+ * @access  Public
+ */
+router.get('/by-id/:id', productController.getProductById.bind(productController));
+
+/**
  * @route   GET /api/v1/products/:slug
  * @desc    Get product by slug
  * @access  Public
