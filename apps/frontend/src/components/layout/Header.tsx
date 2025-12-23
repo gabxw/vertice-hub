@@ -19,6 +19,7 @@ const navLinks = [
   { href: '/categoria/tenis', label: 'Tênis' },
   { href: '/categoria/calcas', label: 'Calças' },
   { href: '/categoria/blusas', label: 'Blusas' },
+  { href: '/categoria/acessorios', label: 'Acessórios' },
   { href: '/ofertas', label: 'Drops', highlight: true },
 ];
 
@@ -50,14 +51,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-primary text-primary-foreground">
-      {/* Top bar - Promotional */}
-      <div className="bg-accent text-accent-foreground text-center py-2 px-4">
-        <p className="text-xs font-bold uppercase tracking-[0.15em]">
-          Frete Grátis acima de R$ 299 | Cupom: <span className="underline">PRIMEIRA10</span>
-        </p>
-      </div>
-
+    <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Mobile Menu Button */}
@@ -71,7 +65,7 @@ export const Header = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <h1 className="font-display text-3xl md:text-4xl tracking-[0.1em]">
+            <h1 className="font-display text-3xl md:text-4xl tracking-[0.1em] text-foreground">
               VÉRTICE
             </h1>
           </Link>
@@ -86,7 +80,7 @@ export const Header = () => {
                   'text-sm font-medium uppercase tracking-[0.15em] transition-colors relative py-2',
                   'hover:text-accent',
                   location.pathname === link.href && 'text-accent',
-                  link.highlight && 'text-neon'
+                  link.highlight && 'text-accent font-semibold'
                 )}
               >
                 {link.label}
@@ -168,7 +162,7 @@ export const Header = () => {
 
       {/* Search Bar */}
       {showSearch && (
-        <div className="border-t border-primary-foreground/10 bg-primary">
+        <div className="border-t border-border bg-background">
           <div className="container mx-auto px-4 py-4">
             <form onSubmit={handleSearch} className="flex gap-2">
               <input
@@ -176,7 +170,7 @@ export const Header = () => {
                 placeholder="O que você procura?"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 px-4 py-3 bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent border-none"
+                className="flex-1 px-4 py-3 bg-muted text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent border border-border"
                 autoFocus
               />
               <Button type="submit" className="px-6 bg-accent hover:bg-accent/90 text-accent-foreground uppercase tracking-wider font-bold">
@@ -186,7 +180,7 @@ export const Header = () => {
                 type="button" 
                 variant="outline" 
                 onClick={() => setShowSearch(false)}
-                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                className="border-border text-foreground hover:bg-muted"
               >
                 <X size={20} />
               </Button>
@@ -198,7 +192,7 @@ export const Header = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          'lg:hidden fixed inset-0 top-[104px] bg-primary z-40 transition-all duration-300',
+          'lg:hidden fixed inset-0 top-[64px] bg-background z-40 transition-all duration-300',
           isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         )}
       >
@@ -209,9 +203,9 @@ export const Header = () => {
               to={link.href}
               onClick={() => setIsMenuOpen(false)}
               className={cn(
-                'font-display text-3xl uppercase py-3 border-b border-primary-foreground/10 transition-colors hover:text-accent',
+                'font-display text-3xl uppercase py-3 border-b border-border transition-colors hover:text-accent',
                 location.pathname === link.href && 'text-accent',
-                link.highlight && 'text-neon'
+                link.highlight && 'text-accent'
               )}
             >
               {link.label}
@@ -219,7 +213,7 @@ export const Header = () => {
           ))}
           
           {/* Mobile Auth Links */}
-          <div className="mt-8 pt-8 border-t border-primary-foreground/10">
+          <div className="mt-8 pt-8 border-t border-border">
             {user ? (
               <>
                 <Link
