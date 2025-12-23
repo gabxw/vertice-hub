@@ -42,6 +42,7 @@ import PaymentCancelledPage from "./pages/PaymentCancelledPage";
 import SearchPage from "./pages/SearchPage";
 
 // Admin pages
+import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminProductForm from "./pages/admin/AdminProductForm";
@@ -70,71 +71,24 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <Routes>
-                {/* Admin routes - without Header/Footer */}
+                {/* Admin routes - with AdminLayout */}
                 <Route
                   path="/admin"
                   element={
                     <AdminRoute>
-                      <AdminDashboard />
+                      <AdminLayout />
                     </AdminRoute>
                   }
-                />
-                <Route
-                  path="/admin/produtos"
-                  element={
-                    <AdminRoute>
-                      <AdminProducts />
-                    </AdminRoute>
-                  }
-                />
-                <Route
-                  path="/admin/produtos/novo"
-                  element={
-                    <AdminRoute>
-                      <AdminProductForm />
-                    </AdminRoute>
-                  }
-                />
-                <Route
-                  path="/admin/produtos/:id"
-                  element={
-                    <AdminRoute>
-                      <AdminProductForm />
-                    </AdminRoute>
-                  }
-                />
-                <Route
-                  path="/admin/pedidos"
-                  element={
-                    <AdminRoute>
-                      <AdminOrders />
-                    </AdminRoute>
-                  }
-                />
-                <Route
-                  path="/admin/categorias"
-                  element={
-                    <AdminRoute>
-                      <AdminCategories />
-                    </AdminRoute>
-                  }
-                />
-                <Route
-                  path="/admin/cupons"
-                  element={
-                    <AdminRoute>
-                      <AdminCoupons />
-                    </AdminRoute>
-                  }
-                />
-                <Route
-                  path="/admin/configuracoes"
-                  element={
-                    <AdminRoute>
-                      <AdminSettings />
-                    </AdminRoute>
-                  }
-                />
+                >
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="produtos" element={<AdminProducts />} />
+                  <Route path="produtos/novo" element={<AdminProductForm />} />
+                  <Route path="produtos/:id" element={<AdminProductForm />} />
+                  <Route path="pedidos" element={<AdminOrders />} />
+                  <Route path="categorias" element={<AdminCategories />} />
+                  <Route path="cupons" element={<AdminCoupons />} />
+                  <Route path="configuracoes" element={<AdminSettings />} />
+                </Route>
 
                 {/* Main site routes - with Header/Footer */}
                 <Route
