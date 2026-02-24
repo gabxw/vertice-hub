@@ -5,7 +5,7 @@ const PrivacyPage = () => {
   return (
     <>
       <Helmet>
-        <title>Política de Privacidade | VÉRTICE</title>
+        <title>Vértice</title>
         <meta name="description" content="Política de privacidade da VÉRTICE. Saiba como protegemos seus dados pessoais." />
       </Helmet>
 

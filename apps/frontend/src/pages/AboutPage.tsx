@@ -28,7 +28,7 @@ const AboutPage = () => {
   return (
     <>
       <Helmet>
-        <title>Quem Somos | VÉRTICE</title>
+        <title>Vértice</title>
         <meta name="description" content="Conheça a história da VÉRTICE. Moda urbana para quem não aceita o comum." />
       </Helmet>
 

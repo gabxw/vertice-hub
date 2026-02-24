@@ -28,7 +28,7 @@ const ReturnsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Trocas e Devoluções | VÉRTICE</title>
+        <title>Vértice</title>
         <meta name="description" content="Política de trocas e devoluções da VÉRTICE. Sua satisfação é nossa prioridade." />
       </Helmet>
 

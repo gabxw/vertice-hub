@@ -158,7 +158,7 @@ const ProductPage = () => {
   return (
     <>
       <Helmet>
-        <title>{product.name} | VÉRTICE</title>
+        <title>Vértice</title>
         <meta name="description" content={product.description} />
         <meta property="og:title" content={product.name} />
         <meta property="og:description" content={product.description} />

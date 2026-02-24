@@ -5,7 +5,7 @@ const TermsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Termos de Uso | VÉRTICE</title>
+        <title>Vértice</title>
         <meta name="description" content="Termos de uso da VÉRTICE. Leia os termos e condições para utilizar nossos serviços." />
       </Helmet>
 

@@ -9,12 +9,12 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>VERTICE | Streetwear autoral para o dia a dia</title>
+        <title>VÃ©rtice</title>
         <meta
           name="description"
-          content="Drop com identidade underground, fit comercial e curadoria de tenis, calcas, blusas e acessorios para uso diario."
+          content="Streetwear 90s com identidade urbana, caimento oversized e curadoria autoral."
         />
-        <meta name="keywords" content="streetwear, moda urbana, tenis, calcas, blusas, acessorios, estilo autoral" />
+        <meta name="keywords" content="streetwear 90s, oversized, baggy jeans, moda urbana, vertice" />
         <link rel="canonical" href="https://vertice.com.br" />
       </Helmet>
 

@@ -107,7 +107,7 @@ const CategoryPage = () => {
   return (
     <>
       <Helmet>
-        <title>{category.name} | VÉRTICE</title>
+        <title>Vértice</title>
         <meta name="description" content={`${category.description}. Confira nossa coleção de ${category.name.toLowerCase()} com estilo urbano.`} />
       </Helmet>
 
