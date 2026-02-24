@@ -12,7 +12,10 @@ export const HeroSection = () => {
       <div className="flex-1 relative">
         <div
           className="absolute inset-0 bg-cover bg-center img-grunge"
-          style={{ backgroundImage: 'url(/streetwear-90s-hero.jpg)' }}
+          style={{
+            backgroundImage:
+              'url(https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1920&q=80)',
+          }}
         />
 
         <div className="absolute inset-0 bg-background/84" />
