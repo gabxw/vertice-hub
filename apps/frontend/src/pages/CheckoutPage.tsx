@@ -153,9 +153,7 @@ export default function CheckoutPage() {
       const orderData = {
         items: items.map(item => ({
           productId: item.product.id,
-          productSlug: item.product.slug,
-          size: item.size,
-          color: item.color,
+          variantId: `${item.product.id}-${item.size}-${item.color}`,
           quantity: item.quantity,
           price: item.product.price,
         })),
@@ -177,11 +175,11 @@ export default function CheckoutPage() {
   const shipping = 0; // Free shipping for now
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-background/20 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Finalizar Compra</h1>
-          <p className="text-gray-600 mt-2">Complete seus dados para finalizar o pedido</p>
+          <p className="mt-2 text-muted-foreground">Complete seus dados para finalizar o pedido</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -219,7 +217,7 @@ export default function CheckoutPage() {
                         disabled={loadingCep}
                       />
                       {loadingCep && (
-                        <p className="text-xs text-gray-500 mt-1">Buscando CEP...</p>
+                        <p className="mt-1 text-xs text-muted-foreground">Buscando CEP...</p>
                       )}
                     </div>
 
@@ -322,13 +320,13 @@ export default function CheckoutPage() {
                   {items.map((item) => (
                     <div key={`${item.product.id}-${item.size}`} className="flex gap-3">
                       <img
-                        src={item.product.image}
+                        src={item.product.images[0]}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded"
                       />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm truncate">{item.product.name}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           Tam: {item.size} | Qtd: {item.quantity}
                         </p>
                         <p className="text-sm font-medium">
@@ -339,7 +337,7 @@ export default function CheckoutPage() {
                   ))}
                 </div>
 
-                <div className="border-t border-gray-200 my-2"></div>
+                <div className="my-2 border-t border-border/60"></div>
 
                 {/* Coupon */}
                 <div className="space-y-2">
@@ -362,13 +360,13 @@ export default function CheckoutPage() {
                     </Button>
                   </div>
                   {appliedCoupon && (
-                    <p className="text-sm text-green-600">
+                    <p className="text-sm text-success">
                       ✓ Cupom {appliedCoupon} aplicado!
                     </p>
                   )}
                 </div>
 
-                <div className="border-t border-gray-200 my-2"></div>
+                <div className="my-2 border-t border-border/60"></div>
 
                 {/* Totals */}
                 <div className="space-y-2">
@@ -377,16 +375,16 @@ export default function CheckoutPage() {
                     <span>R$ {totalPrice.toFixed(2)}</span>
                   </div>
                   {discount > 0 && (
-                    <div className="flex justify-between text-sm text-green-600">
+                    <div className="flex justify-between text-sm text-success">
                       <span>Desconto</span>
                       <span>- R$ {discount.toFixed(2)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-sm">
                     <span>Frete</span>
-                    <span className="text-green-600">Grátis</span>
+                    <span className="text-success">Grátis</span>
                   </div>
-                  <div className="border-t border-gray-200 my-2"></div>
+                  <div className="my-2 border-t border-border/60"></div>
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span>R$ {finalTotal.toFixed(2)}</span>
@@ -438,7 +436,7 @@ export default function CheckoutPage() {
                   </PayPalScriptProvider>
                 )}
 
-                <p className="text-xs text-center text-gray-500">
+                <p className="text-center text-xs text-muted-foreground">
                   Ao finalizar, você concorda com nossos termos e condições
                 </p>
               </CardContent>

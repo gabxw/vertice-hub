@@ -7,68 +7,52 @@ export default function PaymentCancelledPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="max-w-2xl w-full">
-        <CardContent className="pt-12 pb-8 text-center">
-          {/* Cancel Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="bg-yellow-100 rounded-full p-6">
-              <XCircle className="w-16 h-16 text-yellow-600" />
+    <div className="flex min-h-screen items-center justify-center bg-background/20 p-4">
+      <Card className="panel-surface w-full max-w-2xl border-border/70">
+        <CardContent className="pb-8 pt-12 text-center">
+          <div className="mb-6 flex justify-center">
+            <div className="rounded-full bg-hot/20 p-6">
+              <XCircle className="h-16 w-16 text-hot" />
             </div>
           </div>
 
-          {/* Cancel Message */}
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Pagamento Cancelado
-          </h1>
-          <p className="text-lg text-gray-600 mb-8">
-            Você cancelou o processo de pagamento. Nenhuma cobrança foi realizada.
+          <h1 className="mb-4 font-display text-4xl">Pagamento Cancelado</h1>
+          <p className="mb-8 text-lg text-muted-foreground">
+            Voce cancelou o processo de pagamento. Nenhuma cobranca foi realizada.
           </p>
 
-          {/* Info Box */}
-          <div className="bg-blue-50 rounded-lg p-6 mb-8 text-left">
-            <h2 className="font-semibold text-gray-900 mb-3">O que aconteceu?</h2>
-            <ul className="space-y-2 text-sm text-gray-700">
+          <div className="mb-8 rounded-lg border border-electric/35 bg-electric/10 p-6 text-left">
+            <h2 className="mb-3 font-semibold text-electric">O que aconteceu?</h2>
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="text-blue-600">•</span>
-                <span>Você cancelou o pagamento no PayPal</span>
+                <span className="text-electric">�</span>
+                <span>Voce cancelou o pagamento no PayPal</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600">•</span>
-                <span>Seu pedido não foi finalizado</span>
+                <span className="text-electric">�</span>
+                <span>Seu pedido nao foi finalizado</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600">•</span>
-                <span>Os itens ainda estão no seu carrinho</span>
+                <span className="text-electric">�</span>
+                <span>Os itens ainda estao no seu carrinho</span>
               </li>
             </ul>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              onClick={() => navigate('/checkout')}
-              variant="outline"
-              size="lg"
-              className="gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <Button onClick={() => navigate('/checkout')} variant="outline" size="lg" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
               Voltar ao Checkout
             </Button>
-            <Button
-              onClick={() => navigate('/')}
-              size="lg"
-              className="gap-2"
-            >
-              <ShoppingCart className="w-4 h-4" />
+            <Button onClick={() => navigate('/')} size="lg" className="gap-2">
+              <ShoppingCart className="h-4 w-4" />
               Continuar Comprando
             </Button>
           </div>
 
-          {/* Support */}
-          <p className="text-sm text-gray-500 mt-8">
+          <p className="mt-8 text-sm text-muted-foreground">
             Teve algum problema?{' '}
-            <a href="/contato" className="text-blue-600 hover:underline">
+            <a href="/sobre" className="text-accent hover:underline">
               Fale conosco
             </a>
           </p>

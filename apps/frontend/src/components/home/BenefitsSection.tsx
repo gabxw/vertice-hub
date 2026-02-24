@@ -3,48 +3,52 @@ import { Truck, Shield, RefreshCw, Headphones } from 'lucide-react';
 const benefits = [
   {
     icon: Truck,
-    title: 'Frete Grátis',
+    title: 'Frete Gratis',
     description: 'Acima de R$ 299',
-    accent: 'accent',
+    shellClass: 'bg-accent/15 group-hover:bg-accent/25',
+    iconClass: 'text-accent',
   },
   {
     icon: Shield,
     title: 'Compra Segura',
     description: '100% protegida',
-    accent: 'neon',
+    shellClass: 'bg-neon/15 group-hover:bg-neon/25',
+    iconClass: 'text-neon',
   },
   {
     icon: RefreshCw,
     title: '30 Dias',
     description: 'Para trocar',
-    accent: 'electric',
+    shellClass: 'bg-electric/15 group-hover:bg-electric/25',
+    iconClass: 'text-electric',
   },
   {
     icon: Headphones,
     title: 'Suporte',
-    description: 'Atendimento rápido',
-    accent: 'hot',
+    description: 'Atendimento rapido',
+    shellClass: 'bg-hot/15 group-hover:bg-hot/25',
+    iconClass: 'text-hot',
   },
 ];
 
 export const BenefitsSection = () => {
   return (
-    <section className="py-16 bg-secondary">
+    <section className="border-y border-border/70 bg-secondary/35 py-16 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
           {benefits.map((benefit, index) => (
             <div
               key={benefit.title}
-              className="flex flex-col items-center text-center animate-fade-in group"
+              className="group panel-surface flex flex-col items-center px-4 py-5 text-center animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className={`w-16 h-16 bg-${benefit.accent}/10 flex items-center justify-center mb-4 group-hover:bg-${benefit.accent} transition-colors`}>
-                <benefit.icon className={`w-7 h-7 text-${benefit.accent} group-hover:text-${benefit.accent}-foreground transition-colors`} />
+              <div className={`mb-4 flex h-16 w-16 items-center justify-center rounded-xl transition-colors ${benefit.shellClass}`}>
+                <benefit.icon className={`h-7 w-7 transition-colors ${benefit.iconClass}`} />
               </div>
-              <h3 className="font-display text-xl uppercase tracking-wider mb-1 text-secondary-foreground">
+              <h3 className="mb-1 font-display text-xl uppercase tracking-wider text-secondary-foreground">
                 {benefit.title}
               </h3>
-              <p className="text-xs text-secondary-foreground/60 uppercase tracking-wider">
+              <p className="text-xs uppercase tracking-wider text-secondary-foreground/65">
                 {benefit.description}
               </p>
             </div>

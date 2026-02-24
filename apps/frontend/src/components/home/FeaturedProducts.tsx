@@ -8,7 +8,7 @@ export const FeaturedProducts = () => {
   const featuredProducts = products.filter((p) => p.isBestSeller || p.isNew).slice(0, 8);
 
   return (
-    <section className="py-20 md:py-32 bg-muted">
+    <section className="bg-gradient-urban py-20 md:py-32">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
@@ -20,7 +20,7 @@ export const FeaturedProducts = () => {
               EM DESTAQUE
             </h2>
           </div>
-          <Button asChild variant="outline" className="self-start md:self-auto border-foreground/20 hover:bg-foreground hover:text-background uppercase tracking-wider font-bold h-12 px-8">
+          <Button asChild variant="outline" className="self-start border-border/70 bg-card/50 uppercase tracking-wider font-bold h-12 px-8 hover:bg-accent/20 md:self-auto">
             <Link to="/ofertas">
               Ver Todos
               <ArrowRight className="ml-2" size={18} />

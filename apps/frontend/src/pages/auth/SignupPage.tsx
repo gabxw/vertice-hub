@@ -4,8 +4,9 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AuthShell } from '@/components/auth/AuthShell';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -23,12 +24,12 @@ export default function SignupPage() {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('As senhas não coincidem');
+      setError('As senhas nao coincidem');
       return;
     }
 
     if (password.length < 8) {
-      setError('A senha deve ter no mínimo 8 caracteres');
+      setError('A senha deve ter no minimo 8 caracteres');
       return;
     }
 
@@ -46,107 +47,109 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">Verifique seu email</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Alert>
-              <AlertDescription>
-                Enviamos um link de confirmação para <strong>{email}</strong>.
-                Por favor, verifique sua caixa de entrada e clique no link para ativar sua conta.
-              </AlertDescription>
-            </Alert>
-          </CardContent>
-          <CardFooter>
-            <Button onClick={() => navigate('/login')} className="w-full">
-              Ir para Login
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+      <AuthShell>
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-bold">Verifique seu email</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Alert>
+            <AlertDescription>
+              Enviamos um link de confirmacao para <strong>{email}</strong>. Verifique a caixa de entrada e ative sua conta.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+        <CardFooter>
+          <Button onClick={() => navigate('/login')} className="w-full">
+            Ir para Login
+          </Button>
+        </CardFooter>
+      </AuthShell>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Criar conta</CardTitle>
-          <CardDescription className="text-center">
-            Preencha os dados abaixo para criar sua conta
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="name">Nome completo</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Seu nome"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                disabled={loading}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="seu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={loading}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Mínimo 8 caracteres"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={loading}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirmar senha</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Digite a senha novamente"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                disabled={loading}
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Criando conta...' : 'Criar conta'}
-            </Button>
-            <p className="text-sm text-center text-gray-600">
-              Já tem uma conta?{' '}
-              <Link to="/login" className="text-primary hover:underline font-medium">
-                Entrar
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
-    </div>
+    <AuthShell>
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-center text-2xl font-bold">Criar conta</CardTitle>
+        <CardDescription className="text-center">Preencha os dados abaixo para criar sua conta</CardDescription>
+      </CardHeader>
+      <form onSubmit={handleSubmit}>
+        <CardContent className="space-y-4">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          <div className="space-y-2">
+            <Label htmlFor="name">Nome completo</Label>
+            <Input
+              id="name"
+              type="text"
+              placeholder="Seu nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              disabled={loading}
+              className="bg-secondary/55"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+              className="bg-secondary/55"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Senha</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Minimo 8 caracteres"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+              className="bg-secondary/55"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirmar senha</Label>
+            <Input
+              id="confirmPassword"
+              type="password"
+              placeholder="Digite a senha novamente"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              disabled={loading}
+              className="bg-secondary/55"
+            />
+          </div>
+        </CardContent>
+
+        <CardFooter className="flex flex-col space-y-4">
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? 'Criando conta...' : 'Criar conta'}
+          </Button>
+          <p className="text-center text-sm text-muted-foreground">
+            Ja tem uma conta?{' '}
+            <Link to="/login" className="font-medium text-accent hover:underline">
+              Entrar
+            </Link>
+          </p>
+        </CardFooter>
+      </form>
+    </AuthShell>
   );
 }

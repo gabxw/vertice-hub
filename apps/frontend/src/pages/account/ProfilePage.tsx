@@ -29,8 +29,8 @@ export default function ProfilePage() {
       });
     } else {
       toast({
-        title: 'Perfil atualizado!',
-        description: 'Suas informações foram atualizadas com sucesso.',
+        title: 'Perfil atualizado',
+        description: 'Suas informacoes foram atualizadas com sucesso.',
       });
     }
 
@@ -41,23 +41,15 @@ export default function ProfilePage() {
     <AccountLayout>
       <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold">Meu Perfil</h2>
-          <p className="text-gray-600">Gerencie suas informações pessoais</p>
+          <h2 className="font-display text-3xl">Meu Perfil</h2>
+          <p className="text-muted-foreground">Gerencie suas informacoes pessoais</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">E-mail</Label>
-            <Input
-              id="email"
-              type="email"
-              value={user?.email || ''}
-              disabled
-              className="bg-gray-100"
-            />
-            <p className="text-sm text-gray-500">
-              O e-mail não pode ser alterado
-            </p>
+            <Input id="email" type="email" value={user?.email || ''} disabled className="bg-secondary/60" />
+            <p className="text-sm text-muted-foreground">O e-mail nao pode ser alterado</p>
           </div>
 
           <div className="space-y-2">
@@ -66,10 +58,9 @@ export default function ProfilePage() {
               id="full_name"
               type="text"
               value={formData.full_name || ''}
-              onChange={(e) =>
-                setFormData({ ...formData, full_name: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
               placeholder="Seu nome completo"
+              className="bg-secondary/50"
             />
           </div>
 
@@ -81,7 +72,7 @@ export default function ProfilePage() {
                   Salvando...
                 </>
               ) : (
-                'Salvar Alterações'
+                'Salvar Alteracoes'
               )}
             </Button>
           </div>

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ordersApi, CreateOrderData } from '@/api/orders';
+import { ordersApi, CreateOrderData, createOrder } from '@/api/orders';
 import { useToast } from './use-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,23 +24,28 @@ export const useCreateOrder = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (orderData: CreateOrderData) => ordersApi.create(orderData),
-    onSuccess: (data) => {
+    mutationFn: (orderData: CreateOrderData) => createOrder(orderData),
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      
+
+      const orderNumber = data?.orderNumber || data?.order?.orderNumber;
+      const orderId = data?.id || data?.order?.id;
+      const total = data?.total || data?.order?.total;
+
       toast({
         title: 'Pedido criado!',
-        description: `Pedido ${data.orderNumber} criado com sucesso.`,
+        description: orderNumber ? `Pedido ${orderNumber} criado com sucesso.` : 'Pedido criado com sucesso.',
       });
 
-      // Redirecionar para página de pagamento ou sucesso
-      navigate(`/pedido/${data.id}/pagamento`);
+      if (orderId) {
+        navigate('/pedido-confirmado', { state: { orderId, total } });
+      }
     },
     onError: (error: any) => {
       toast({
         title: 'Erro ao criar pedido',
-        description: error.response?.data?.message || 'Não foi possível criar o pedido.',
+        description: error.response?.data?.message || 'Nao foi possivel criar o pedido.',
         variant: 'destructive',
       });
     },
@@ -63,7 +68,7 @@ export const useCancelOrder = () => {
     onError: (error: any) => {
       toast({
         title: 'Erro ao cancelar',
-        description: error.response?.data?.message || 'Não foi possível cancelar o pedido.',
+        description: error.response?.data?.message || 'Nao foi possivel cancelar o pedido.',
         variant: 'destructive',
       });
     },
@@ -75,6 +80,6 @@ export const useOrderTracking = (orderId: string) => {
     queryKey: ['tracking', orderId],
     queryFn: () => ordersApi.getTracking(orderId),
     enabled: !!orderId,
-    refetchInterval: 5 * 60 * 1000, // Atualizar a cada 5 minutos
+    refetchInterval: 5 * 60 * 1000,
   });
 };

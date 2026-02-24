@@ -35,7 +35,7 @@ export const NewsletterSection = () => {
   };
 
   return (
-    <section className="py-20 md:py-32 bg-primary text-primary-foreground relative overflow-hidden">
+    <section className="relative overflow-hidden bg-primary py-20 text-primary-foreground md:py-32">
       {/* Urban Grid */}
       <div className="absolute inset-0 urban-grid opacity-10" />
       
@@ -45,10 +45,10 @@ export const NewsletterSection = () => {
       <div className="absolute bottom-0 right-0 w-32 h-1 bg-neon" />
       <div className="absolute bottom-0 right-0 w-1 h-32 bg-neon" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container relative z-10 mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 mb-8">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-accent-foreground">
             <Zap size={16} />
             <span className="text-xs font-bold uppercase tracking-[0.2em]">Oferta Exclusiva</span>
           </div>
@@ -61,7 +61,7 @@ export const NewsletterSection = () => {
             Inscreva-se e receba desconto na primeira compra + acesso antecipado a drops exclusivos.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+          <form onSubmit={handleSubmit} className="mx-auto flex max-w-lg flex-col gap-3 sm:flex-row">
             <div className="relative flex-1">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
               <Input
@@ -69,7 +69,7 @@ export const NewsletterSection = () => {
                 placeholder="Seu melhor e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-14 pl-12 bg-primary-foreground text-primary placeholder:text-muted-foreground border-none text-base"
+                className="h-14 border-border/70 bg-card/80 pl-12 text-base text-foreground placeholder:text-muted-foreground"
               />
             </div>
             <Button

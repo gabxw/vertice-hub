@@ -10,7 +10,6 @@ export default function OrderConfirmationPage() {
   const { orderId, total } = location.state || {};
 
   useEffect(() => {
-    // Redirect if no order data
     if (!orderId) {
       navigate('/');
     }
@@ -21,46 +20,39 @@ export default function OrderConfirmationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Success Message */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
-            <CheckCircle2 className="h-12 w-12 text-green-600" />
+    <div className="min-h-screen bg-background/20 py-12">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <div className="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-success/20">
+            <CheckCircle2 className="h-12 w-12 text-success" />
           </div>
-          <h1 className="text-3xl font-bold mb-2">Pedido Confirmado!</h1>
-          <p className="text-gray-600">
-            Seu pedido foi recebido e está sendo processado
-          </p>
+          <h1 className="font-display text-4xl">Pedido Confirmado!</h1>
+          <p className="mt-2 text-muted-foreground">Seu pedido foi recebido e esta sendo processado.</p>
         </div>
 
-        {/* Order Details Card */}
-        <Card className="mb-6">
+        <Card className="panel-surface mb-6 border-border/70">
           <CardHeader>
             <CardTitle>Detalhes do Pedido</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <p className="text-sm text-gray-600">Número do Pedido</p>
-                <p className="font-semibold text-lg">{orderId}</p>
+                <p className="text-sm text-muted-foreground">Numero do Pedido</p>
+                <p className="text-lg font-semibold">{orderId}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Valor Total</p>
-                <p className="font-semibold text-lg">R$ {total?.toFixed(2)}</p>
+                <p className="text-sm text-muted-foreground">Valor Total</p>
+                <p className="text-lg font-semibold">R$ {total?.toFixed(2)}</p>
               </div>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="rounded-lg border border-electric/40 bg-electric/10 p-4">
               <div className="flex items-start gap-3">
-                <Mail className="h-5 w-5 text-blue-600 mt-0.5" />
+                <Mail className="mt-0.5 h-5 w-5 text-electric" />
                 <div>
-                  <p className="font-medium text-blue-900">
-                    Confirmação enviada por email
-                  </p>
-                  <p className="text-sm text-blue-700 mt-1">
-                    Enviamos todos os detalhes do seu pedido para o email cadastrado.
-                    Você receberá atualizações sobre o status da entrega.
+                  <p className="font-medium text-electric">Confirmacao enviada por email</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Enviamos os detalhes do seu pedido para o email cadastrado. Voce recebera atualizacoes do status da entrega.
                   </p>
                 </div>
               </div>
@@ -68,54 +60,46 @@ export default function OrderConfirmationPage() {
           </CardContent>
         </Card>
 
-        {/* Next Steps */}
-        <Card className="mb-6">
+        <Card className="panel-surface mb-6 border-border/70">
           <CardHeader>
-            <CardTitle>Próximos Passos</CardTitle>
+            <CardTitle>Proximos Passos</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full flex-shrink-0">
-                  <span className="text-sm font-semibold text-primary">1</span>
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/20">
+                  <span className="text-sm font-semibold text-accent">1</span>
                 </div>
                 <div>
                   <p className="font-medium">Processamento do Pagamento</p>
-                  <p className="text-sm text-gray-600">
-                    Você receberá um link de pagamento por email em alguns minutos.
-                  </p>
+                  <p className="text-sm text-muted-foreground">Voce recebera um link de pagamento por email em alguns minutos.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full flex-shrink-0">
-                  <span className="text-sm font-semibold text-primary">2</span>
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/20">
+                  <span className="text-sm font-semibold text-accent">2</span>
                 </div>
                 <div>
-                  <p className="font-medium">Confirmação do Pagamento</p>
-                  <p className="text-sm text-gray-600">
-                    Após a confirmação, seu pedido será preparado para envio.
-                  </p>
+                  <p className="font-medium">Confirmacao do Pagamento</p>
+                  <p className="text-sm text-muted-foreground">Apos a confirmacao, seu pedido sera preparado para envio.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full flex-shrink-0">
-                  <span className="text-sm font-semibold text-primary">3</span>
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/20">
+                  <span className="text-sm font-semibold text-accent">3</span>
                 </div>
                 <div>
                   <p className="font-medium">Envio e Rastreamento</p>
-                  <p className="text-sm text-gray-600">
-                    Você receberá o código de rastreamento assim que o pedido for despachado.
-                  </p>
+                  <p className="text-sm text-muted-foreground">Voce recebera o codigo de rastreamento assim que o pedido for despachado.</p>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row">
           <Button asChild className="flex-1" size="lg">
             <Link to="/minha-conta/pedidos" className="flex items-center justify-center gap-2">
               <Package className="h-5 w-5" />
@@ -130,14 +114,11 @@ export default function OrderConfirmationPage() {
           </Button>
         </div>
 
-        {/* Help Section */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-600">
-            Precisa de ajuda?{' '}
-            <Link to="/contato" className="text-primary hover:underline font-medium">
-              Entre em contato
-            </Link>
-          </p>
+        <div className="mt-8 text-center text-sm text-muted-foreground">
+          Precisa de ajuda?{' '}
+          <Link to="/sobre" className="font-medium text-accent hover:underline">
+            Entre em contato
+          </Link>
         </div>
       </div>
     </div>

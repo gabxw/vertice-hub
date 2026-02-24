@@ -16,79 +16,60 @@ export default function PaymentSuccessPage() {
   }, [orderId, navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="max-w-2xl w-full">
-        <CardContent className="pt-12 pb-8 text-center">
-          {/* Success Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="bg-green-100 rounded-full p-6">
-              <CheckCircle className="w-16 h-16 text-green-600" />
+    <div className="flex min-h-screen items-center justify-center bg-background/20 p-4">
+      <Card className="panel-surface w-full max-w-2xl border-border/70">
+        <CardContent className="pb-8 pt-12 text-center">
+          <div className="mb-6 flex justify-center">
+            <div className="rounded-full bg-success/20 p-6">
+              <CheckCircle className="h-16 w-16 text-success" />
             </div>
           </div>
 
-          {/* Success Message */}
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Pagamento Confirmado!
-          </h1>
-          <p className="text-lg text-gray-600 mb-8">
-            Seu pedido foi processado com sucesso.
-          </p>
+          <h1 className="mb-4 font-display text-4xl">Pagamento Confirmado!</h1>
+          <p className="mb-8 text-lg text-muted-foreground">Seu pedido foi processado com sucesso.</p>
 
-          {/* Order Details */}
           {orderId && (
-            <div className="bg-gray-50 rounded-lg p-6 mb-8">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <Package className="w-5 h-5 text-gray-600" />
-                <span className="text-sm text-gray-600">Número do Pedido</span>
+            <div className="mb-8 rounded-lg border border-border/70 bg-secondary/45 p-6">
+              <div className="mb-4 flex items-center justify-center gap-2">
+                <Package className="h-5 w-5 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Numero do Pedido</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900">{orderId}</p>
+              <p className="text-2xl font-bold">{orderId}</p>
             </div>
           )}
 
-          {/* Next Steps */}
-          <div className="text-left bg-blue-50 rounded-lg p-6 mb-8">
-            <h2 className="font-semibold text-gray-900 mb-4">Próximos Passos:</h2>
-            <ul className="space-y-3 text-sm text-gray-700">
+          <div className="mb-8 rounded-lg border border-electric/35 bg-electric/10 p-6 text-left">
+            <h2 className="mb-4 font-semibold text-electric">Proximos Passos:</h2>
+            <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">1.</span>
-                <span>Você receberá um email de confirmação com os detalhes do pedido</span>
+                <span className="font-bold text-electric">1.</span>
+                <span>Voce recebera um email de confirmacao com os detalhes do pedido.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">2.</span>
-                <span>Seu pedido será processado e enviado em até 2 dias úteis</span>
+                <span className="font-bold text-electric">2.</span>
+                <span>Seu pedido sera processado e enviado em ate 2 dias uteis.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">3.</span>
-                <span>Você poderá acompanhar o status do pedido na sua conta</span>
+                <span className="font-bold text-electric">3.</span>
+                <span>Voce podera acompanhar o status do pedido na sua conta.</span>
               </li>
             </ul>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              onClick={() => navigate('/minha-conta/pedidos')}
-              variant="outline"
-              size="lg"
-              className="gap-2"
-            >
-              <Package className="w-4 h-4" />
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <Button onClick={() => navigate('/minha-conta/pedidos')} variant="outline" size="lg" className="gap-2">
+              <Package className="h-4 w-4" />
               Ver Meus Pedidos
             </Button>
-            <Button
-              onClick={() => navigate('/')}
-              size="lg"
-              className="gap-2"
-            >
+            <Button onClick={() => navigate('/')} size="lg" className="gap-2">
               Continuar Comprando
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
 
-          {/* Support */}
-          <p className="text-sm text-gray-500 mt-8">
+          <p className="mt-8 text-sm text-muted-foreground">
             Precisa de ajuda?{' '}
-            <a href="/contato" className="text-blue-600 hover:underline">
+            <a href="/sobre" className="text-accent hover:underline">
               Entre em contato
             </a>
           </p>

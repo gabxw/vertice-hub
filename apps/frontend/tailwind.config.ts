@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Bebas Neue", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        display: ["Bricolage Grotesque", "sans-serif"],
+        body: ["Manrope", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
