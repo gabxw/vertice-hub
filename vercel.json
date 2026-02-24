@@ -1,0 +1,9 @@
+{
+  "framework": "vite",
+  "buildCommand": "pnpm --filter @vertice/frontend build",
+  "outputDirectory": "apps/frontend/dist",
+  "installCommand": "pnpm install",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
