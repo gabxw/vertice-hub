@@ -1,25 +1,25 @@
-# 🔐 Configuração de Variáveis de Ambiente
+# ðŸ” ConfiguraÃ§Ã£o de VariÃ¡veis de Ambiente
 
-## 📋 Estrutura Correta
+## ðŸ“‹ Estrutura Correta
 
 O projeto usa **2 arquivos `.env` separados**:
 
 ```
 vertice-hub/
-├── apps/
-│   ├── backend/
-│   │   └── .env          ← Variáveis do back-end
-│   └── frontend/
-│       └── .env.local    ← Variáveis do front-end
+â”œâ”€â”€ apps/
+â”‚   â”œâ”€â”€ backend/
+â”‚   â”‚   â””â”€â”€ .env          â† VariÃ¡veis do back-end
+â”‚   â””â”€â”€ frontend/
+â”‚       â””â”€â”€ .env.local    â† VariÃ¡veis do front-end
 ```
 
-⚠️ **IMPORTANTE:** Não crie `.env` na raiz do projeto!
+âš ï¸ **IMPORTANTE:** NÃ£o crie `.env` na raiz do projeto!
 
 ---
 
-## 🖥️ Backend (.env)
+## ðŸ–¥ï¸ Backend (.env)
 
-**Localização:** `apps/backend/.env`
+**LocalizaÃ§Ã£o:** `apps/backend/.env`
 
 ```env
 # Database (Supabase PostgreSQL)
@@ -29,7 +29,7 @@ DIRECT_URL="postgresql://postgres.pwtwnypkbxcuorqtkksn:Fu130406!@aws-0-us-east-1
 # Supabase
 SUPABASE_URL=https://pwtwnypkbxcuorqtkksn.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3dHdueXBrYnhjdW9ycXRra3NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4MzMxNjgsImV4cCI6MjA4MTQwOTE2OH0.I41skP3C8rj2srQaQLCRrB6M1P-WFEivbD-lDgzZ7Io
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3dHdueXBrYnhjdW9ycXRra3NuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NTgzMzE2OCwiZXhwIjoyMDgxNDA5MTY4fQ.54WyTK6SmdTdcO5z2P1vIEJdHuJ84ijWdxZQJlgb3pg
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
 SUPABASE_JWT_SECRET=Xk+3YGP8TdlBRi2MDxnKgVXK13/yBjPUgeZfGB1nV+UTeRH7R4qmILUt2YkDW5sgHeP7Otq6Zojr1HcqRLGlxg==
 
 # Server
@@ -54,9 +54,9 @@ RATE_LIMIT_MAX_REQUESTS=100
 
 ---
 
-## 🎨 Frontend (.env.local)
+## ðŸŽ¨ Frontend (.env.local)
 
-**Localização:** `apps/frontend/.env.local`
+**LocalizaÃ§Ã£o:** `apps/frontend/.env.local`
 
 ```env
 # API
@@ -69,12 +69,12 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 
 ---
 
-## 🚀 Como Configurar
+## ðŸš€ Como Configurar
 
 ### Windows (PowerShell)
 
 ```powershell
-# 1. Ir para o diretório do projeto
+# 1. Ir para o diretÃ³rio do projeto
 cd C:\xampp\htdocs\vertice\vertice-hub
 
 # 2. Criar .env do backend
@@ -84,12 +84,12 @@ New-Item -Path "apps\backend\.env" -ItemType File -Force
 New-Item -Path "apps\frontend\.env.local" -ItemType File -Force
 ```
 
-Depois copie e cole o conteúdo acima em cada arquivo.
+Depois copie e cole o conteÃºdo acima em cada arquivo.
 
 ### Linux/Mac
 
 ```bash
-# 1. Ir para o diretório do projeto
+# 1. Ir para o diretÃ³rio do projeto
 cd ~/vertice-hub
 
 # 2. Criar .env do backend
@@ -99,11 +99,11 @@ touch apps/backend/.env
 touch apps/frontend/.env.local
 ```
 
-Depois copie e cole o conteúdo acima em cada arquivo.
+Depois copie e cole o conteÃºdo acima em cada arquivo.
 
 ---
 
-## ✅ Verificar se Está Correto
+## âœ… Verificar se EstÃ¡ Correto
 
 ### Backend
 
@@ -112,7 +112,7 @@ cd apps/backend
 cat .env
 ```
 
-Deve mostrar as variáveis do Supabase, DATABASE_URL, etc.
+Deve mostrar as variÃ¡veis do Supabase, DATABASE_URL, etc.
 
 ### Frontend
 
@@ -125,18 +125,18 @@ Deve mostrar VITE_API_URL e VITE_SUPABASE_*.
 
 ---
 
-## 🔒 Segurança
+## ðŸ”’ SeguranÃ§a
 
-⚠️ **NUNCA faça commit dos arquivos `.env`!**
+âš ï¸ **NUNCA faÃ§a commit dos arquivos `.env`!**
 
-Eles já estão no `.gitignore`:
+Eles jÃ¡ estÃ£o no `.gitignore`:
 
 ```
 apps/backend/.env
 apps/frontend/.env.local
 ```
 
-Se você acidentalmente fez commit, remova com:
+Se vocÃª acidentalmente fez commit, remova com:
 
 ```bash
 git rm --cached apps/backend/.env
@@ -146,11 +146,11 @@ git commit -m "Remove env files"
 
 ---
 
-## 🐛 Troubleshooting
+## ðŸ› Troubleshooting
 
 ### Erro: "Cannot find module '@supabase/supabase-js'"
 
-**Solução:** Instale as dependências
+**SoluÃ§Ã£o:** Instale as dependÃªncias
 
 ```bash
 pnpm install
@@ -158,49 +158,50 @@ pnpm install
 
 ### Erro: "DATABASE_URL is not defined"
 
-**Solução:** Verifique se o arquivo `apps/backend/.env` existe e tem a variável DATABASE_URL
+**SoluÃ§Ã£o:** Verifique se o arquivo `apps/backend/.env` existe e tem a variÃ¡vel DATABASE_URL
 
 ### Erro: "VITE_API_URL is not defined"
 
-**Solução:** Verifique se o arquivo `apps/frontend/.env.local` existe
+**SoluÃ§Ã£o:** Verifique se o arquivo `apps/frontend/.env.local` existe
 
 ### Erro: "CORS blocked"
 
-**Solução:** Verifique se FRONTEND_URL e CORS_ORIGIN estão corretos no `apps/backend/.env`
+**SoluÃ§Ã£o:** Verifique se FRONTEND_URL e CORS_ORIGIN estÃ£o corretos no `apps/backend/.env`
 
 ---
 
-## 📝 Variáveis Explicadas
+## ðŸ“ VariÃ¡veis Explicadas
 
 ### Backend
 
-| Variável | Descrição |
+| VariÃ¡vel | DescriÃ§Ã£o |
 |----------|-----------|
-| `DATABASE_URL` | URL de conexão direta com PostgreSQL (para migrations) |
-| `DIRECT_URL` | URL com pooling (para aplicação) |
+| `DATABASE_URL` | URL de conexÃ£o direta com PostgreSQL (para migrations) |
+| `DIRECT_URL` | URL com pooling (para aplicaÃ§Ã£o) |
 | `SUPABASE_URL` | URL do projeto Supabase |
-| `SUPABASE_ANON_KEY` | Chave pública do Supabase |
+| `SUPABASE_ANON_KEY` | Chave pÃºblica do Supabase |
 | `SUPABASE_SERVICE_ROLE_KEY` | Chave privada do Supabase (admin) |
 | `SUPABASE_JWT_SECRET` | Secret para validar tokens JWT |
-| `PORT` | Porta do servidor (padrão: 3000) |
+| `PORT` | Porta do servidor (padrÃ£o: 3000) |
 | `FRONTEND_URL` | URL do front-end (para CORS) |
 
 ### Frontend
 
-| Variável | Descrição |
+| VariÃ¡vel | DescriÃ§Ã£o |
 |----------|-----------|
 | `VITE_API_URL` | URL da API do back-end |
 | `VITE_SUPABASE_URL` | URL do projeto Supabase |
-| `VITE_SUPABASE_ANON_KEY` | Chave pública do Supabase |
+| `VITE_SUPABASE_ANON_KEY` | Chave pÃºblica do Supabase |
 
 ---
 
-## 🎯 Próximos Passos
+## ðŸŽ¯ PrÃ³ximos Passos
 
-Após configurar os arquivos `.env`:
+ApÃ³s configurar os arquivos `.env`:
 
-1. Instalar dependências: `pnpm install`
+1. Instalar dependÃªncias: `pnpm install`
 2. Iniciar back-end: `cd apps/backend && pnpm dev`
 3. Iniciar front-end: `cd apps/frontend && pnpm dev`
 
 Consulte o `START_HERE.md` para mais detalhes!
+

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,7 @@ import { AuthShell } from '@/components/auth/AuthShell';
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signUp } = useAuth();
   const { toast } = useToast();
   const [name, setName] = useState('');
@@ -19,6 +20,11 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const redirectFromQuery = new URLSearchParams(location.search).get('redirect');
+  const redirectTo =
+    redirectFromQuery && redirectFromQuery.startsWith('/') && !redirectFromQuery.startsWith('//')
+      ? redirectFromQuery
+      : '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +48,7 @@ export default function SignupPage() {
         title: 'Conta criada com sucesso!',
         description: 'Bem-vindo(a) a VERTICE! Voce ja pode fazer login.',
       });
-      navigate('/login');
+      navigate(`/login${redirectTo !== '/' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`);
     } catch (err: any) {
       setError(err.message || 'Erro ao criar conta');
     } finally {
@@ -130,7 +136,10 @@ export default function SignupPage() {
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             Ja tem uma conta?{' '}
-            <Link to="/login" className="font-medium text-accent hover:underline">
+            <Link
+              to={`/login${redirectTo !== '/' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
+              className="font-medium text-accent hover:underline"
+            >
               Entrar
             </Link>
           </p>

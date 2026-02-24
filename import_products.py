@@ -5,13 +5,14 @@ import uuid
 from datetime import datetime
 import unicodedata
 import re
+import os
 
 # Configuracoes do Supabase
-SUPABASE_URL = "https://pwtwnypkbxcuorqtkksn.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3dHdueXBrYnhjdW9ycXRra3NuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NTgzMzE2OCwiZXhwIjoyMDgxNDA5MTY4fQ.54WyTK6SmdTdcO5z2P1vIEJdHuJ84ijWdxZQJlgb3pg"
+SUPABASE_URL = os.getenv("SUPABASE_URL", "").strip()
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip()
 
 # CJ Dropshipping
-CJ_TOKEN = "API@CJ5013914@CJ:eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMTMwMiIsInR5cGUiOiJBQ0NFU1NfVE9LRU4iLCJzdWIiOiJicUxvYnFRMGxtTm55UXB4UFdMWnlraGVDbDJhVlliZHR1d0xmUlBqMDNvYVlDcFp5cXRBcCt3RSt4SXVPSmZzMFVNTVJEMjNrY1JUeWJsWDlvekorcGpRQ1plWUcya1AwWlRTeGhKZlp5NWl2ZWVOYk1Xd1hFTlB5bWFVejhWcW4vLzdNQ3krU004bFlrWDdkNlhwdXJBY0UxaE5EMnZGQkU2MGhOY29uV1RBSGtUS0FlUWVNLzYwanR4N2UwY0EwOVpFWml4WmJ2WENtQ3ZFVWsreWJlZHZxWjdlQTlCRDRFM1hTMDRKSitrS05FYXNVRkg0aUpuODdKYWM2ZWZwL2FXcTM4amtUREJOSlA5VVdyK2d6QlhLSXhyUkVEVkx1VFY1aTc5ODBlMzFKUG1nV2d6MDdvYjhFbGtlUGhsUzF0ZXIwQ2phUTJJVlBOK3pkNlcyWHc9PSIsImlhdCI6MTc2NjQxMzQ4Mn0.wsywvEct0PGnH6yIK3rbTmdecp6FPqvPZd2Uy6oSuZU"
+CJ_TOKEN = os.getenv("CJ_ACCESS_TOKEN", "").strip()
 CJ_BASE_URL = "https://developers.cjdropshipping.com/api2.0/v1"
 
 USD_TO_BRL = 5.0
@@ -23,6 +24,11 @@ headers = {
     "Content-Type": "application/json",
     "Prefer": "return=representation"
 }
+
+if not SUPABASE_URL or not SUPABASE_KEY or not CJ_TOKEN:
+    raise RuntimeError(
+        "Variaveis obrigatorias ausentes. Defina SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY e CJ_ACCESS_TOKEN."
+    )
 
 def slugify(text):
     text = unicodedata.normalize('NFD', text.lower())

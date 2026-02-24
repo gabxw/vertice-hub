@@ -1,7 +1,9 @@
 /**
  * Script para importar produtos da CJ Dropshipping
- * 
- * Uso: npx ts-node scripts/import-cj-products.ts
+ *
+ * Uso:
+ * 1) Defina CJ_API_KEY no ambiente
+ * 2) Rode: npx ts-node scripts/import-cj-products.ts
  */
 
 import { PrismaClient } from '@prisma/client';
@@ -9,11 +11,9 @@ import axios from 'axios';
 
 const prisma = new PrismaClient();
 
-// Configurações
-const CJ_API_KEY = process.env.CJ_API_KEY || 'CJ5013914@api@086dfe67b50f4a1ca1ce0255e2557fe1';
+const CJ_API_KEY = process.env.CJ_API_KEY;
 const CJ_BASE_URL = 'https://developers.cjdropshipping.com/api2.0/v1';
 
-// Taxa de conversão e margem
 const USD_TO_BRL = 5.0;
 const PROFIT_MARGIN = 2.5;
 
@@ -27,6 +27,10 @@ interface CJProduct {
 }
 
 async function getAccessToken(): Promise<string> {
+  if (!CJ_API_KEY) {
+    throw new Error('CJ_API_KEY nao definido. Configure a variavel de ambiente antes de executar o script.');
+  }
+
   const response = await axios.post(`${CJ_BASE_URL}/authentication/getAccessToken`, {
     apiKey: CJ_API_KEY,
   });
@@ -35,7 +39,7 @@ async function getAccessToken(): Promise<string> {
     return response.data.data.accessToken;
   }
 
-  throw new Error('Falha ao obter token');
+  throw new Error('Falha ao obter token da CJ Dropshipping');
 }
 
 async function searchProducts(token: string, keyword: string, size = 5): Promise<CJProduct[]> {
@@ -58,7 +62,7 @@ async function searchProducts(token: string, keyword: string, size = 5): Promise
 function convertPrice(usdPrice: string): number {
   const price = parseFloat(usdPrice.split(' -- ')[0]);
   const brlPrice = price * USD_TO_BRL * PROFIT_MARGIN;
-  return Math.ceil(brlPrice / 10) * 10 - 0.10;
+  return Math.ceil(brlPrice / 10) * 10 - 0.1;
 }
 
 function slugify(text: string): string {
@@ -75,15 +79,15 @@ function slugify(text: string): string {
 
 function translateName(name: string): string {
   const translations: Record<string, string> = {
-    'hoodie': 'Moletom',
-    'sweatshirt': 'Moletom',
+    hoodie: 'Moletom',
+    sweatshirt: 'Moletom',
     't-shirt': 'Camiseta',
-    'cargo pants': 'Calça Cargo',
-    'jogger': 'Calça Jogger',
-    'pants': 'Calça',
-    'sneakers': 'Tênis',
-    'oversized': 'Oversized',
-    'streetwear': 'Streetwear',
+    'cargo pants': 'Calca Cargo',
+    jogger: 'Calca Jogger',
+    pants: 'Calca',
+    sneakers: 'Tenis',
+    oversized: 'Oversized',
+    streetwear: 'Streetwear',
   };
 
   let translated = name;
@@ -94,24 +98,14 @@ function translateName(name: string): string {
 }
 
 async function main() {
-  console.log('🚀 Iniciando importação de produtos da CJ Dropshipping...\n');
+  console.log('Iniciando importacao de produtos da CJ Dropshipping...\n');
 
-  // Obter token
-  console.log('🔑 Obtendo Access Token...');
-  let token: string;
-  try {
-    token = await getAccessToken();
-    console.log('✅ Token obtido com sucesso!\n');
-  } catch (error) {
-    console.error('❌ Erro ao obter token. Usando token existente...');
-    token = 'API@CJ5013914@CJ:eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMTMwMiIsInR5cGUiOiJBQ0NFU1NfVE9LRU4iLCJzdWIiOiJicUxvYnFRMGxtTm55UXB4UFdMWnlraGVDbDJhVlliZHR1d0xmUlBqMDNvYVlDcFp5cXRBcCt3RSt4SXVPSmZzMFVNTVJEMjNrY1JUeWJsWDlvekorcGpRQ1plWUcya1AwWlRTeGhKZlp5NWl2ZWVOYk1Xd1hFTlB5bWFVejhWcW4vLzdNQ3krU004bFlrWDdkNlhwdXJBY0UxaE5EMnZGQkU2MGhOY29uV1RBSGtUS0FlUWVNLzYwanR4N2UwY0EwOVpFWml4WmJ2WENtQ3ZFVWsreWJlZHZxWjdlQTlCRDRFM1hTMDRKSitrS05FYXNVRkg0aUpuODdKYWM2ZWZwL2FXcTM4amtUREJOSlA5VVdyK2d6QlhLSXhyUkVEVkx1VFY1aTc5ODBlMzFKUG1nV2d6MDdvYjhFbGtlUGhsUzF0ZXIwQ2phUTJJVlBOK3pkNlcyWHc9PSIsImlhdCI6MTc2NjQxMzQ4Mn0.wsywvEct0PGnH6yIK3rbTmdecp6FPqvPZd2Uy6oSuZU';
-  }
+  console.log('Obtendo access token...');
+  const token = await getAccessToken();
+  console.log('Token obtido com sucesso.\n');
 
-  // Criar fornecedor CJ Dropshipping
-  console.log('📦 Criando/verificando fornecedor...');
-  let supplier = await prisma.supplier.findFirst({
-    where: { name: 'CJ Dropshipping' },
-  });
+  console.log('Criando/verificando fornecedor...');
+  let supplier = await prisma.supplier.findFirst({ where: { name: 'CJ Dropshipping' } });
 
   if (!supplier) {
     supplier = await prisma.supplier.create({
@@ -122,16 +116,14 @@ async function main() {
         isActive: true,
       },
     });
-    console.log('✅ Fornecedor criado!\n');
+    console.log('Fornecedor criado.\n');
   } else {
-    console.log('✅ Fornecedor já existe!\n');
+    console.log('Fornecedor ja existe.\n');
   }
 
-  // Buscar categorias existentes
   const categories = await prisma.category.findMany();
-  console.log(`📁 Categorias encontradas: ${categories.map(c => c.slug).join(', ')}\n`);
+  console.log(`Categorias encontradas: ${categories.map((c) => c.slug).join(', ')}\n`);
 
-  // Palavras-chave para buscar produtos
   const keywords = [
     { keyword: 'hoodie streetwear', categorySlug: 'blusas' },
     { keyword: 'oversized t-shirt', categorySlug: 'blusas' },
@@ -142,48 +134,44 @@ async function main() {
   let importedCount = 0;
 
   for (const { keyword, categorySlug } of keywords) {
-    console.log(`\n🔍 Buscando: "${keyword}"...`);
-    
-    const category = categories.find(c => c.slug === categorySlug);
+    console.log(`\nBuscando: "${keyword}"...`);
+
+    const category = categories.find((c) => c.slug === categorySlug);
     if (!category) {
-      console.log(`⚠️ Categoria "${categorySlug}" não encontrada, pulando...`);
+      console.log(`Categoria "${categorySlug}" nao encontrada, pulando...`);
       continue;
     }
 
     try {
       const products = await searchProducts(token, keyword, 4);
-      console.log(`   Encontrados: ${products.length} produtos`);
+      console.log(`Encontrados: ${products.length} produtos`);
 
       for (const cjProduct of products) {
-        // Verificar se já existe
         const existingSku = await prisma.productVariant.findFirst({
           where: { sku: { startsWith: cjProduct.sku } },
         });
 
         if (existingSku) {
-          console.log(`   ⏭️ ${cjProduct.nameEn} (já existe)`);
+          console.log(`  ${cjProduct.nameEn} (ja existe)`);
           continue;
         }
 
-        // Gerar slug único
         let slug = slugify(cjProduct.nameEn);
         let counter = 1;
         while (await prisma.product.findUnique({ where: { slug } })) {
           slug = `${slugify(cjProduct.nameEn)}-${counter}`;
-          counter++;
+          counter += 1;
         }
 
-        // Calcular preços
         const price = convertPrice(cjProduct.sellPrice);
-        const originalPrice = Math.ceil((price * 1.3) / 10) * 10 - 0.10;
+        const originalPrice = Math.ceil((price * 1.3) / 10) * 10 - 0.1;
 
-        // Criar produto
         const product = await prisma.product.create({
           data: {
             name: translateName(cjProduct.nameEn),
             slug,
-            description: `Peça exclusiva da coleção Vértice. Design moderno e materiais de alta qualidade.`,
-            story: `Uma peça que representa a essência da Vértice: autenticidade, qualidade e estilo urbano.`,
+            description: 'Peca exclusiva da colecao Vertice. Design moderno e materiais de alta qualidade.',
+            story: 'Uma peca que representa a essencia da Vertice: autenticidade, qualidade e estilo urbano.',
             price,
             originalPrice,
             categoryId: category.id,
@@ -194,11 +182,13 @@ async function main() {
             isBestSeller: Math.random() > 0.7,
             isActive: true,
             images: {
-              create: [{
-                url: cjProduct.bigImage,
-                alt: cjProduct.nameEn,
-                order: 0,
-              }],
+              create: [
+                {
+                  url: cjProduct.bigImage,
+                  alt: cjProduct.nameEn,
+                  order: 0,
+                },
+              ],
             },
             variants: {
               create: [
@@ -209,33 +199,31 @@ async function main() {
               ],
             },
             tags: {
-              create: [
-                { name: 'Streetwear' },
-                { name: 'Urbano' },
-                { name: 'Exclusivo' },
-              ],
+              create: [{ name: 'Streetwear' }, { name: 'Urbano' }, { name: 'Exclusivo' }],
             },
           },
         });
 
-        importedCount++;
-        console.log(`   ✅ ${product.name} - R$ ${price.toFixed(2)}`);
+        importedCount += 1;
+        console.log(`  ${product.name} - R$ ${price.toFixed(2)}`);
 
-        // Delay para não exceder rate limit
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        await new Promise((resolve) => setTimeout(resolve, 1200));
       }
     } catch (error: any) {
-      console.log(`   ❌ Erro: ${error.message}`);
+      console.log(`Erro: ${error.message}`);
     }
   }
 
-  console.log(`\n\n🎉 Importação concluída! ${importedCount} produtos importados.`);
-  
-  // Mostrar total de produtos
+  console.log(`\nImportacao concluida. ${importedCount} produtos importados.`);
   const totalProducts = await prisma.product.count();
-  console.log(`📊 Total de produtos no banco: ${totalProducts}`);
-
-  await prisma.$disconnect();
+  console.log(`Total de produtos no banco: ${totalProducts}`);
 }
 
-main().catch(console.error);
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

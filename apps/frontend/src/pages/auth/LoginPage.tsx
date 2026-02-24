@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,11 +10,19 @@ import { AuthShell } from '@/components/auth/AuthShell';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const fromPath = (location.state as { from?: { pathname: string; search?: string } } | null)?.from;
+  const redirectFromQuery = new URLSearchParams(location.search).get('redirect');
+  const safeRedirectFromQuery =
+    redirectFromQuery && redirectFromQuery.startsWith('/') && !redirectFromQuery.startsWith('//')
+      ? redirectFromQuery
+      : null;
+  const redirectTo = safeRedirectFromQuery || (fromPath ? `${fromPath.pathname}${fromPath.search || ''}` : '/');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +31,7 @@ export default function LoginPage() {
 
     try {
       await signIn(email, password);
-      navigate('/');
+      navigate(redirectTo, { replace: true });
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login');
     } finally {
@@ -36,7 +44,9 @@ export default function LoginPage() {
       <CardHeader className="space-y-1">
         <CardTitle className="text-center text-2xl font-bold">Entrar</CardTitle>
         <CardDescription className="text-center">
-          Entre com seu email e senha para acessar sua conta
+          {redirectTo === '/checkout'
+            ? 'Entre para continuar seu checkout com seguranca'
+            : 'Entre com seu email e senha para acessar sua conta'}
         </CardDescription>
       </CardHeader>
 
@@ -88,7 +98,10 @@ export default function LoginPage() {
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             Nao tem uma conta?{' '}
-            <Link to="/cadastro" className="font-medium text-accent hover:underline">
+            <Link
+              to={`/cadastro${redirectTo !== '/' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
+              className="font-medium text-accent hover:underline"
+            >
               Criar conta
             </Link>
           </p>
