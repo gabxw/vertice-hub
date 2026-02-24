@@ -1,14 +1,17 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "vertice-hub",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "pnpm --filter @vertice/frontend dev",
+    "dev:frontend": "pnpm --filter @vertice/frontend dev",
+    "dev:backend": "pnpm --filter @vertice/backend dev",
+    "build": "pnpm --filter @vertice/frontend build",
+    "build:frontend": "pnpm --filter @vertice/frontend build",
+    "build:backend": "pnpm --filter @vertice/backend build",
+    "lint": "pnpm --filter @vertice/frontend lint && pnpm --filter @vertice/backend lint",
+    "preview": "pnpm --filter @vertice/frontend preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -5,16 +5,16 @@ Monorepo de e-commerce com frontend React + Vite e backend Node + Express + Pris
 ## Estrutura
 
 - `apps/frontend`: loja web
-- `apps/backend`: API, autenticação, pedidos e integrações
+- `apps/backend`: API, autenticacao, pedidos e integracoes
 
 ## Requisitos
 
 - Node.js 20+
-- npm ou pnpm
+- pnpm
 
 ## Rodando localmente
 
-### 1) Instalar dependências
+### 1) Instalar dependencias
 
 ```bash
 pnpm install
@@ -23,8 +23,7 @@ pnpm install
 ### 2) Subir backend
 
 ```bash
-cd apps/backend
-pnpm dev
+pnpm dev:backend
 ```
 
 API esperada em `http://localhost:3000`.
@@ -32,7 +31,6 @@ API esperada em `http://localhost:3000`.
 ### 3) Subir frontend
 
 ```bash
-cd apps/frontend
 pnpm dev
 ```
 
@@ -43,18 +41,16 @@ App esperado em `http://localhost:5173`.
 ### Frontend
 
 ```bash
-cd apps/frontend
-npm run build
+pnpm build
 ```
 
 ### Backend
 
 ```bash
-cd apps/backend
-npm run build
+pnpm build:backend
 ```
 
-## Observações
+## Observacoes
 
-- O código legado na raiz (`src/`) existe por compatibilidade histórica.
-- O frontend ativo para evolução está em `apps/frontend`.
+- O projeto usa uma unica base de frontend em `apps/frontend`.
+- Os comandos na raiz ja estao roteados para os apps corretos via workspace.
