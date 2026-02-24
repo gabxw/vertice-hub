@@ -12,10 +12,7 @@ export const HeroSection = () => {
       <div className="flex-1 relative">
         <div
           className="absolute inset-0 bg-cover bg-center img-grunge"
-          style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1920&q=80)',
-          }}
+          style={{ backgroundImage: 'url(/backgroud-ft1.jpg)' }}
         />
 
         <div className="absolute inset-0 bg-background/84" />
@@ -71,7 +68,7 @@ export const HeroSection = () => {
             <div className="order-1 lg:order-2 animate-fade-up delay-200">
               <div className="relative aspect-[9/16] max-w-sm mx-auto lg:max-w-none">
                 <img
-                  src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80"
+                  src="/foto2.avif"
                   alt="Editorial streetwear 90s"
                   className="w-full h-full object-cover img-grunge"
                 />

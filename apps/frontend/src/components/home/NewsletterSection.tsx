@@ -39,8 +39,7 @@ export const NewsletterSection = () => {
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10"
         style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1920&q=80)',
+          backgroundImage: 'url(/backgroud-ft1.jpg)',
         }}
       />
 

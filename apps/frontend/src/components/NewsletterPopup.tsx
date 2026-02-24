@@ -61,7 +61,7 @@ export const NewsletterPopup = () => {
         {/* Image */}
         <div className="h-40 relative overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=80"
+            src="/foto2.avif"
             alt="Oferta de boas-vindas"
             className="w-full h-full object-cover"
           />
