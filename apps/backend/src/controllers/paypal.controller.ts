@@ -3,12 +3,21 @@ import { PayPalService } from '../services/paypal.service';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 
+// Extend Request type to include user
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+    email: string;
+    role: string;
+  };
+}
+
 export class PayPalController {
   /**
    * Create PayPal order
    * POST /api/v1/payments/paypal/create-order
    */
-  static async createOrder(req: Request, res: Response) {
+  static async createOrder(req: AuthenticatedRequest, res: Response) {
     try {
       const { orderId } = req.body;
 
@@ -68,20 +77,24 @@ export class PayPalController {
         orderId: order.orderNumber,
       });
 
-      // Update order with PayPal order ID
-      await prisma.order.update({
-        where: { id: orderId },
-        data: {
-          payment: {
-            update: {
-              externalId: paypalOrder.id,
-            },
-          },
+      // Create or update payment with PayPal order ID
+      await prisma.payment.upsert({
+        where: { orderId: orderId },
+        create: {
+          orderId: orderId,
+          provider: 'paypal',
+          transactionId: paypalOrder.id,
+          status: 'PENDING',
+          amount: order.total,
+          paymentMethod: 'paypal',
+        },
+        update: {
+          transactionId: paypalOrder.id,
         },
       });
 
       // Find approval URL
-      const approvalUrl = paypalOrder.links?.find((link: any) => link.rel === 'approve')?.href;
+      const approvalUrl = paypalOrder.links?.find((link: { rel: string; href: string }) => link.rel === 'approve')?.href;
 
       return res.json({
         success: true,
@@ -91,11 +104,12 @@ export class PayPalController {
           approvalUrl,
         },
       });
-    } catch (error: any) {
-      logger.error('Error in createOrder controller', { error: error.message });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      logger.error('Error in createOrder controller', { error: errorMessage });
       return res.status(500).json({
         success: false,
-        message: error.message || 'Erro ao criar pedido no PayPal',
+        message: errorMessage || 'Erro ao criar pedido no PayPal',
       });
     }
   }
@@ -118,9 +132,9 @@ export class PayPalController {
       // Capture the order
       const capturedOrder = await PayPalService.captureOrder(paypalOrderId);
 
-      // Find our order by PayPal order ID
+      // Find our order by PayPal order ID (using transactionId instead of externalId)
       const payment = await prisma.payment.findFirst({
-        where: { externalId: paypalOrderId },
+        where: { transactionId: paypalOrderId },
         include: { order: true },
       });
 
@@ -131,26 +145,26 @@ export class PayPalController {
         });
       }
 
-      // Update payment and order status
+      // Update payment and order status (using APPROVED instead of COMPLETED, CONFIRMED instead of PAID)
       await prisma.$transaction([
         prisma.payment.update({
           where: { id: payment.id },
           data: {
-            status: 'COMPLETED',
-            paidAt: new Date(),
+            status: 'APPROVED',
           },
         }),
         prisma.order.update({
           where: { id: payment.orderId },
           data: {
-            status: 'PAID',
+            status: 'CONFIRMED',
+            paymentStatus: 'APPROVED',
           },
         }),
         prisma.orderStatusHistory.create({
           data: {
             orderId: payment.orderId,
-            status: 'PAID',
-            note: 'Pagamento confirmado via PayPal',
+            status: 'CONFIRMED',
+            notes: 'Pagamento confirmado via PayPal',
           },
         }),
       ]);
@@ -163,11 +177,12 @@ export class PayPalController {
           orderId: payment.order.orderNumber,
         },
       });
-    } catch (error: any) {
-      logger.error('Error in captureOrder controller', { error: error.message });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      logger.error('Error in captureOrder controller', { error: errorMessage });
       return res.status(500).json({
         success: false,
-        message: error.message || 'Erro ao capturar pagamento no PayPal',
+        message: errorMessage || 'Erro ao capturar pagamento no PayPal',
       });
     }
   }
@@ -186,11 +201,12 @@ export class PayPalController {
         success: true,
         data: order,
       });
-    } catch (error: any) {
-      logger.error('Error in getOrderStatus controller', { error: error.message });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      logger.error('Error in getOrderStatus controller', { error: errorMessage });
       return res.status(500).json({
         success: false,
-        message: error.message || 'Erro ao buscar status do pedido',
+        message: errorMessage || 'Erro ao buscar status do pedido',
       });
     }
   }
@@ -224,8 +240,9 @@ export class PayPalController {
       }
 
       return res.status(200).json({ received: true });
-    } catch (error: any) {
-      logger.error('Error in handleWebhook controller', { error: error.message });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      logger.error('Error in handleWebhook controller', { error: errorMessage });
       return res.status(500).json({
         success: false,
         message: 'Erro ao processar webhook',
@@ -233,15 +250,15 @@ export class PayPalController {
     }
   }
 
-  private static async handlePaymentCaptured(event: any) {
+  private static async handlePaymentCaptured(event: { resource: { id: string; custom_id?: string; supplementary_data?: { related_ids?: { order_id?: string } } } }) {
     const captureId = event.resource.id;
     const customId = event.resource.custom_id;
 
     logger.info('Payment captured', { captureId, customId });
 
-    // Update payment status in database
+    // Update payment status in database (using transactionId instead of externalId)
     const payment = await prisma.payment.findFirst({
-      where: { externalId: event.resource.supplementary_data?.related_ids?.order_id },
+      where: { transactionId: event.resource.supplementary_data?.related_ids?.order_id },
     });
 
     if (payment) {
@@ -249,46 +266,51 @@ export class PayPalController {
         prisma.payment.update({
           where: { id: payment.id },
           data: {
-            status: 'COMPLETED',
-            paidAt: new Date(),
+            status: 'APPROVED',
           },
         }),
         prisma.order.update({
           where: { id: payment.orderId },
-          data: { status: 'PAID' },
+          data: { 
+            status: 'CONFIRMED',
+            paymentStatus: 'APPROVED',
+          },
         }),
       ]);
     }
   }
 
-  private static async handlePaymentDenied(event: any) {
+  private static async handlePaymentDenied(event: { resource: { id: string; supplementary_data?: { related_ids?: { order_id?: string } } } }) {
     const captureId = event.resource.id;
     logger.info('Payment denied', { captureId });
 
     const payment = await prisma.payment.findFirst({
-      where: { externalId: event.resource.supplementary_data?.related_ids?.order_id },
+      where: { transactionId: event.resource.supplementary_data?.related_ids?.order_id },
     });
 
     if (payment) {
       await prisma.$transaction([
         prisma.payment.update({
           where: { id: payment.id },
-          data: { status: 'FAILED' },
+          data: { status: 'REJECTED' },
         }),
         prisma.order.update({
           where: { id: payment.orderId },
-          data: { status: 'CANCELLED' },
+          data: { 
+            status: 'CANCELLED',
+            paymentStatus: 'REJECTED',
+          },
         }),
       ]);
     }
   }
 
-  private static async handlePaymentRefunded(event: any) {
+  private static async handlePaymentRefunded(event: { resource: { id: string; supplementary_data?: { related_ids?: { order_id?: string } } } }) {
     const refundId = event.resource.id;
     logger.info('Payment refunded', { refundId });
 
     const payment = await prisma.payment.findFirst({
-      where: { externalId: event.resource.supplementary_data?.related_ids?.order_id },
+      where: { transactionId: event.resource.supplementary_data?.related_ids?.order_id },
     });
 
     if (payment) {
@@ -299,7 +321,10 @@ export class PayPalController {
         }),
         prisma.order.update({
           where: { id: payment.orderId },
-          data: { status: 'REFUNDED' },
+          data: { 
+            status: 'REFUNDED',
+            paymentStatus: 'REFUNDED',
+          },
         }),
       ]);
     }

@@ -1,0 +1,357 @@
+[
+  {
+    "id": "alt-001",
+    "name": "Camiseta Oversized Dark Anime",
+    "slug": "camiseta-oversized-dark-anime",
+    "category": "blusas",
+    "price": 149.90,
+    "originalPrice": 199.90,
+    "images": [
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800"
+    ],
+    "description": "Camiseta oversized com estampa de anime dark, perfeita para o estilo alternativo",
+    "story": "Inspirada na cultura anime dark e estética gótica japonesa. Uma peça que expressa sua personalidade única.",
+    "benefits": [
+      "Algodão premium 100%",
+      "Corte oversized confortável",
+      "Estampa exclusiva de alta qualidade",
+      "Ideal para looks alternativos"
+    ],
+    "sizes": ["P", "M", "G", "GG", "XGG"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" },
+      { "name": "Cinza Escuro", "hex": "#2c2c2c" }
+    ],
+    "stock": 25,
+    "rating": 4.8,
+    "reviews": 87,
+    "tags": ["alternativo", "anime", "dark", "oversized"],
+    "isNew": true,
+    "isBestSeller": false
+  },
+  {
+    "id": "alt-002",
+    "name": "Moletom Gothic Cross Oversized",
+    "slug": "moletom-gothic-cross-oversized",
+    "category": "blusas",
+    "price": 269.90,
+    "originalPrice": 349.90,
+    "images": [
+      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800"
+    ],
+    "description": "Moletom oversized com estampa de cruz gótica, perfeito para o inverno",
+    "story": "Design inspirado na arquitetura gótica medieval. Conforto e atitude em uma peça só.",
+    "benefits": [
+      "Forro interno macio e quente",
+      "Estampa gótica exclusiva",
+      "Corte oversized moderno",
+      "Capuz com cordão ajustável"
+    ],
+    "sizes": ["P", "M", "G", "GG", "XGG"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" },
+      { "name": "Cinza Chumbo", "hex": "#4a4a4a" }
+    ],
+    "stock": 18,
+    "rating": 4.9,
+    "reviews": 124,
+    "tags": ["gótico", "inverno", "oversized", "dark"],
+    "isNew": true,
+    "isBestSeller": true
+  },
+  {
+    "id": "alt-003",
+    "name": "Calça Cargo Patchwork Gothic",
+    "slug": "calca-cargo-patchwork-gothic",
+    "category": "calcas",
+    "price": 299.90,
+    "originalPrice": 399.90,
+    "images": [
+      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800"
+    ],
+    "description": "Calça cargo com detalhes patchwork e estética gótica urbana",
+    "story": "Fusão perfeita entre funcionalidade cargo e estética dark. Para quem não tem medo de ousar.",
+    "benefits": [
+      "Múltiplos bolsos funcionais",
+      "Detalhes patchwork exclusivos",
+      "Tecido resistente e confortável",
+      "Estilo gótico urbano"
+    ],
+    "sizes": ["36", "38", "40", "42", "44", "46"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" },
+      { "name": "Preto/Vermelho", "hex": "#1a0000" }
+    ],
+    "stock": 15,
+    "rating": 4.7,
+    "reviews": 92,
+    "tags": ["gótico", "cargo", "alternativo", "patchwork"],
+    "isNew": true,
+    "isBestSeller": false
+  },
+  {
+    "id": "alt-004",
+    "name": "Calça Baggy Streetwear Dark",
+    "slug": "calca-baggy-streetwear-dark",
+    "category": "calcas",
+    "price": 249.90,
+    "images": [
+      "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800"
+    ],
+    "description": "Calça baggy com estética dark streetwear, perfeita para looks alternativos",
+    "story": "O encontro entre o streetwear e a cultura alternativa. Conforto e atitude em cada passo.",
+    "benefits": [
+      "Corte baggy moderno",
+      "Cintura ajustável com cordão",
+      "Tecido de alta qualidade",
+      "Versatilidade para diversos looks"
+    ],
+    "sizes": ["P", "M", "G", "GG"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" },
+      { "name": "Cinza Escuro", "hex": "#2c2c2c" }
+    ],
+    "stock": 22,
+    "rating": 4.6,
+    "reviews": 76,
+    "tags": ["streetwear", "baggy", "dark", "alternativo"],
+    "isNew": true,
+    "isBestSeller": false
+  },
+  {
+    "id": "alt-005",
+    "name": "Camiseta Rock Vintage Destroyed",
+    "slug": "camiseta-rock-vintage-destroyed",
+    "category": "blusas",
+    "price": 139.90,
+    "originalPrice": 189.90,
+    "images": [
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800"
+    ],
+    "description": "Camiseta com estética rock vintage e efeito destroyed",
+    "story": "Inspirada nos ícones do rock dos anos 80 e 90. Cada peça tem seu próprio caráter único.",
+    "benefits": [
+      "Algodão envelhecido premium",
+      "Efeito destroyed autêntico",
+      "Estampa vintage exclusiva",
+      "Conforto e estilo rock"
+    ],
+    "sizes": ["P", "M", "G", "GG"],
+    "colors": [
+      { "name": "Preto Desbotado", "hex": "#1a1a1a" },
+      { "name": "Cinza Vintage", "hex": "#6a6a6a" }
+    ],
+    "stock": 30,
+    "rating": 4.8,
+    "reviews": 145,
+    "tags": ["rock", "vintage", "destroyed", "alternativo"],
+    "isNew": false,
+    "isBestSeller": true
+  },
+  {
+    "id": "acc-001",
+    "name": "Colar Corrente Espinhos Gothic",
+    "slug": "colar-corrente-espinhos-gothic",
+    "category": "acessorios",
+    "price": 89.90,
+    "originalPrice": 129.90,
+    "images": [
+      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800"
+    ],
+    "description": "Colar com corrente e pingente de espinhos, perfeito para o estilo gótico",
+    "story": "Inspirado na estética gótica medieval. Um acessório que completa qualquer look dark.",
+    "benefits": [
+      "Aço inoxidável de alta qualidade",
+      "Design gótico exclusivo",
+      "Resistente e durável",
+      "Ajustável"
+    ],
+    "sizes": ["Único"],
+    "colors": [
+      { "name": "Prata Envelhecida", "hex": "#8c8c8c" },
+      { "name": "Preto Fosco", "hex": "#1a1a1a" }
+    ],
+    "stock": 45,
+    "rating": 4.9,
+    "reviews": 203,
+    "tags": ["gótico", "colar", "acessório", "corrente"],
+    "isNew": true,
+    "isBestSeller": true
+  },
+  {
+    "id": "acc-002",
+    "name": "Kit Anéis Gothic Dark (5 peças)",
+    "slug": "kit-aneis-gothic-dark-5-pecas",
+    "category": "acessorios",
+    "price": 119.90,
+    "originalPrice": 179.90,
+    "images": [
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800"
+    ],
+    "description": "Kit com 5 anéis de design gótico variado, perfeito para compor seu look",
+    "story": "Uma coleção cuidadosamente selecionada de anéis góticos. Cada um com seu próprio simbolismo dark.",
+    "benefits": [
+      "5 anéis de designs variados",
+      "Liga metálica de qualidade",
+      "Tamanhos ajustáveis",
+      "Acabamento premium"
+    ],
+    "sizes": ["Ajustável"],
+    "colors": [
+      { "name": "Preto/Prata", "hex": "#2c2c2c" }
+    ],
+    "stock": 38,
+    "rating": 4.7,
+    "reviews": 167,
+    "tags": ["gótico", "anéis", "kit", "acessório"],
+    "isNew": true,
+    "isBestSeller": false
+  },
+  {
+    "id": "acc-003",
+    "name": "Bolsa Crossbody Gothic Skull",
+    "slug": "bolsa-crossbody-gothic-skull",
+    "category": "acessorios",
+    "price": 189.90,
+    "originalPrice": 259.90,
+    "images": [
+      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800"
+    ],
+    "description": "Bolsa crossbody com detalhes de caveira e estética gótica",
+    "story": "Funcionalidade encontra estilo dark. Perfeita para carregar seus essenciais com atitude.",
+    "benefits": [
+      "Couro sintético de alta qualidade",
+      "Múltiplos compartimentos",
+      "Alça ajustável",
+      "Design gótico exclusivo"
+    ],
+    "sizes": ["Único"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" },
+      { "name": "Preto/Rosa", "hex": "#1a0a0f" }
+    ],
+    "stock": 20,
+    "rating": 4.8,
+    "reviews": 134,
+    "tags": ["gótico", "bolsa", "crossbody", "skull"],
+    "isNew": true,
+    "isBestSeller": true
+  },
+  {
+    "id": "acc-004",
+    "name": "Cinto Fivela Dupla Gothic",
+    "slug": "cinto-fivela-dupla-gothic",
+    "category": "acessorios",
+    "price": 79.90,
+    "images": [
+      "https://images.unsplash.com/photo-1624222247344-550fb60583c2?w=800"
+    ],
+    "description": "Cinto com fivela dupla e detalhes metálicos góticos",
+    "story": "Um acessório essencial para qualquer guarda-roupa alternativo. Funcional e estiloso.",
+    "benefits": [
+      "Couro sintético resistente",
+      "Fivela dupla metálica",
+      "Ajustável",
+      "Design gótico urbano"
+    ],
+    "sizes": ["P/M", "G/GG"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" }
+    ],
+    "stock": 32,
+    "rating": 4.6,
+    "reviews": 89,
+    "tags": ["gótico", "cinto", "acessório", "metal"],
+    "isNew": false,
+    "isBestSeller": false
+  },
+  {
+    "id": "acc-005",
+    "name": "Choker Veludo com Pingente Lua",
+    "slug": "choker-veludo-pingente-lua",
+    "category": "acessorios",
+    "price": 59.90,
+    "originalPrice": 89.90,
+    "images": [
+      "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800"
+    ],
+    "description": "Choker de veludo preto com pingente de lua crescente",
+    "story": "Elegância gótica em sua forma mais pura. Um clássico que nunca sai de moda.",
+    "benefits": [
+      "Veludo macio e confortável",
+      "Pingente de lua em metal",
+      "Ajustável",
+      "Design minimalista gótico"
+    ],
+    "sizes": ["Único"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" }
+    ],
+    "stock": 50,
+    "rating": 4.9,
+    "reviews": 278,
+    "tags": ["gótico", "choker", "veludo", "lua"],
+    "isNew": false,
+    "isBestSeller": true
+  },
+  {
+    "id": "acc-006",
+    "name": "Mochila Techwear Dark Urban",
+    "slug": "mochila-techwear-dark-urban",
+    "category": "acessorios",
+    "price": 349.90,
+    "originalPrice": 499.90,
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800"
+    ],
+    "description": "Mochila techwear com múltiplos compartimentos e estética dark urbana",
+    "story": "Funcionalidade futurista encontra estética dark. Para quem vive na cidade e precisa de praticidade com estilo.",
+    "benefits": [
+      "Material impermeável",
+      "Múltiplos compartimentos",
+      "Alças ergonômicas",
+      "Design techwear exclusivo"
+    ],
+    "sizes": ["Único"],
+    "colors": [
+      { "name": "Preto Total", "hex": "#000000" },
+      { "name": "Preto/Vermelho", "hex": "#1a0000" }
+    ],
+    "stock": 12,
+    "rating": 4.8,
+    "reviews": 156,
+    "tags": ["techwear", "mochila", "urbano", "funcional"],
+    "isNew": true,
+    "isBestSeller": true
+  },
+  {
+    "id": "acc-007",
+    "name": "Óculos de Sol Retro Gothic",
+    "slug": "oculos-sol-retro-gothic",
+    "category": "acessorios",
+    "price": 149.90,
+    "images": [
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800"
+    ],
+    "description": "Óculos de sol com armação retrô e lentes escuras, estilo gótico",
+    "story": "Inspirado nos ícones góticos dos anos 90. Proteção UV e muito estilo.",
+    "benefits": [
+      "Proteção UV400",
+      "Armação resistente",
+      "Design retrô gótico",
+      "Lentes de alta qualidade"
+    ],
+    "sizes": ["Único"],
+    "colors": [
+      { "name": "Preto", "hex": "#000000" },
+      { "name": "Tartaruga Escuro", "hex": "#3d2817" }
+    ],
+    "stock": 28,
+    "rating": 4.7,
+    "reviews": 112,
+    "tags": ["gótico", "óculos", "retro", "acessório"],
+    "isNew": false,
+    "isBestSeller": false
+  }
+]

@@ -7,7 +7,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "1rem",
+      padding: "1.5rem",
       screens: {
         sm: "640px",
         md: "768px",
@@ -18,8 +18,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Bricolage Grotesque", "sans-serif"],
-        body: ["Manrope", "sans-serif"],
+        display: ["Barlow Condensed", "sans-serif"],
+        gothic: ["Cinzel", "serif"],
+        body: ["Barlow", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -51,18 +52,6 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        neon: {
-          DEFAULT: "hsl(var(--neon))",
-          foreground: "hsl(var(--neon-foreground))",
-        },
-        electric: {
-          DEFAULT: "hsl(var(--electric))",
-          foreground: "hsl(var(--electric-foreground))",
-        },
-        hot: {
-          DEFAULT: "hsl(var(--hot))",
-          foreground: "hsl(var(--hot-foreground))",
-        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -90,9 +79,6 @@ export default {
       boxShadow: {
         card: "var(--card-shadow)",
         "card-hover": "var(--card-shadow-hover)",
-        "glow-red": "var(--glow-red)",
-        "glow-neon": "var(--glow-neon)",
-        "glow-purple": "var(--glow-purple)",
       },
       keyframes: {
         "accordion-down": {
@@ -103,48 +89,41 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in": {
-          from: { opacity: "0", transform: "translateY(10px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
-        "fade-in-up": {
+        "fade-up": {
           from: { opacity: "0", transform: "translateY(30px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
-        "slide-in-right": {
-          from: { opacity: "0", transform: "translateX(30px)" },
-          to: { opacity: "1", transform: "translateX(0)" },
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
         },
         "scale-in": {
           from: { opacity: "0", transform: "scale(0.95)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
+        "slide-up": {
+          from: { opacity: "0", transform: "translateY(100%)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
-        countdown: {
-          "0%, 100%": { transform: "scale(1)" },
-          "50%": { transform: "scale(1.05)" },
-        },
-        glitch: {
-          "0%, 100%": { transform: "translate(0)" },
-          "20%": { transform: "translate(-2px, 2px)" },
-          "40%": { transform: "translate(-2px, -2px)" },
-          "60%": { transform: "translate(2px, 2px)" },
-          "80%": { transform: "translate(2px, -2px)" },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-up": "fade-up 0.6s ease-out forwards",
         "fade-in": "fade-in 0.5s ease-out forwards",
-        "fade-in-up": "fade-in-up 0.6s ease-out forwards",
-        "slide-in-right": "slide-in-right 0.5s ease-out forwards",
-        "scale-in": "scale-in 0.3s ease-out forwards",
-        shimmer: "shimmer 2s linear infinite",
-        countdown: "countdown 1s ease-in-out infinite",
-        glitch: "glitch 0.3s ease-in-out infinite",
+        "scale-in": "scale-in 0.5s ease-out forwards",
+        "slide-up": "slide-up 0.5s ease-out forwards",
+        marquee: "marquee 40s linear infinite",
+        "marquee-slow": "marquee 60s linear infinite",
+      },
+      aspectRatio: {
+        'editorial': '3/4',
+        'banner': '21/9',
+        'portrait': '2/3',
       },
     },
   },

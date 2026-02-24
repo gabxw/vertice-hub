@@ -1,8 +1,8 @@
-import { prisma } from '@/config/database';
-import { cache, CACHE_KEYS, CACHE_TTL } from '@/config/cache';
-import { logger } from '@/config/logger';
-import { slugify, calculatePagination, createPaginatedResponse } from '@/utils/helpers';
-import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '@/validators/product.validator';
+import { prisma } from '../config/database';
+import { cache, CACHE_KEYS, CACHE_TTL } from '../config/cache';
+import { logger } from '../config/logger';
+import { slugify, calculatePagination, createPaginatedResponse } from '../utils/helpers';
+import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '../validators/product.validator';
 
 export class ProductService {
   /**
@@ -128,6 +128,52 @@ export class ProductService {
     }
 
     cache.set(cacheKey, product, CACHE_TTL.MEDIUM);
+
+    return product;
+  }
+
+  /**
+   * Get product by ID (for admin)
+   */
+  async getProductById(id: string) {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        category: {
+          select: { id: true, name: true, slug: true },
+        },
+        images: {
+          orderBy: { order: 'asc' },
+        },
+        variants: {
+          select: {
+            id: true,
+            size: true,
+            colorName: true,
+            colorHex: true,
+            sku: true,
+            stock: true,
+          },
+        },
+        benefits: {
+          orderBy: { order: 'asc' },
+          select: { text: true },
+        },
+        tags: {
+          select: { name: true },
+        },
+        supplier: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      throw new Error('Produto não encontrado');
+    }
 
     return product;
   }

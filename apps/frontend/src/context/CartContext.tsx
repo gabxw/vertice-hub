@@ -1,8 +1,29 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product } from '@/data/products';
+
+// Interface flexível para aceitar produtos mockados ou da API
+export interface CartProduct {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  price: number;
+  originalPrice?: number;
+  images: string[];
+  description?: string;
+  story?: string;
+  benefits?: string[];
+  sizes?: string[];
+  colors?: { name: string; hex: string }[];
+  stock?: number;
+  rating?: number;
+  reviews?: number;
+  tags?: string[];
+  isNew?: boolean;
+  isBestSeller?: boolean;
+}
 
 export interface CartItem {
-  product: Product;
+  product: CartProduct;
   quantity: number;
   size: string;
   color: string;
@@ -10,7 +31,7 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: Product, size: string, color: string, quantity?: number) => void;
+  addItem: (product: CartProduct, size: string, color: string, quantity?: number) => void;
   removeItem: (productId: string, size: string, color: string) => void;
   updateQuantity: (productId: string, size: string, color: string, quantity: number) => void;
   clearCart: () => void;
@@ -33,7 +54,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (product: Product, size: string, color: string, quantity = 1) => {
+  const addItem = (product: CartProduct, size: string, color: string, quantity = 1) => {
     setItems((prev) => {
       const existingIndex = prev.findIndex(
         (item) => item.product.id === product.id && item.size === size && item.color === color

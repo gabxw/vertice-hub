@@ -1,6 +1,6 @@
-import { prisma } from '@/config/database';
-import { logger } from '@/config/logger';
-import type { UpdateProfileInput, CreateAddressInput, UpdateAddressInput } from '@/validators/user.validator';
+import { prisma } from '../config/database';
+import { logger } from '../config/logger';
+import type { UpdateProfileInput, CreateAddressInput, UpdateAddressInput } from '../validators/user.validator';
 
 export class UserService {
   /**

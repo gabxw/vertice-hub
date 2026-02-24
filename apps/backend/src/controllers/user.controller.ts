@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { userService } from '@/services/user.service';
-import { AuthRequest } from '@/types';
-import type { UpdateProfileInput, CreateAddressInput, UpdateAddressInput } from '@/validators/user.validator';
+import { userService } from '../services/user.service';
+import { AuthRequest } from '../types';
+import type { UpdateProfileInput, CreateAddressInput, UpdateAddressInput } from '../validators/user.validator';
 
 export class UserController {
   /**

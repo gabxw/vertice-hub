@@ -1,41 +1,57 @@
 import { Link } from 'react-router-dom';
 import { products } from '@/data/products';
 import { ProductCard } from '@/components/products/ProductCard';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const FeaturedProducts = () => {
-  const featuredProducts = products.filter((p) => p.isBestSeller || p.isNew).slice(0, 4);
+  const featuredProducts = products.filter((p) => p.isBestSeller || p.isNew).slice(0, 8);
 
   return (
-    <section className="py-20 md:py-32 bg-muted/30 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-1/2 left-0 w-72 h-72 bg-accent/5 rounded-full blur-[100px] -translate-y-1/2" />
-      
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-16 md:py-24 bg-muted/50">
+      <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-          <div>
-            <span className="text-accent font-bold uppercase tracking-[0.3em] text-xs mb-4 block">
-              🔥 Mais Vendidos
-            </span>
-            <h2 className="font-display text-4xl md:text-6xl font-bold">
-              PEÇAS EM <span className="text-gradient-neon">DESTAQUE</span>
-            </h2>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-destructive/10 rounded-xl flex items-center justify-center">
+              <Flame size={20} className="text-destructive" />
+            </div>
+            <div>
+              <h2 className="font-display text-2xl md:text-3xl font-bold">Mais Vendidos</h2>
+              <p className="text-muted-foreground text-sm">Os favoritos dos nossos clientes</p>
+            </div>
           </div>
-          <Button asChild variant="outline" className="self-start md:self-auto h-12 px-8 rounded-full border-2 font-bold uppercase tracking-wider hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all">
+          <Button 
+            asChild 
+            variant="ghost" 
+            className="self-start md:self-auto text-accent hover:text-accent hover:bg-accent/10"
+          >
             <Link to="/ofertas">
-              Ver Todos
-              <ArrowRight className="ml-2" size={18} />
+              Ver todos
+              <ArrowRight className="ml-2" size={16} />
             </Link>
           </Button>
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {featuredProducts.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-12">
+          <Button 
+            asChild 
+            size="lg"
+            className="h-12 px-8 bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl font-semibold"
+          >
+            <Link to="/ofertas">
+              Ver catálogo completo
+              <ArrowRight className="ml-2" size={18} />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

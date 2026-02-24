@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { categoryService } from '@/services/category.service';
-import type { CreateCategoryInput, UpdateCategoryInput } from '@/validators/category.validator';
+import { categoryService } from '../services/category.service';
+import type { CreateCategoryInput, UpdateCategoryInput } from '../validators/category.validator';
 
 export class CategoryController {
   /**

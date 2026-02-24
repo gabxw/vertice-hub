@@ -1,60 +1,62 @@
-import { Truck, Shield, RefreshCw, Headphones } from 'lucide-react';
+import { Truck, Shield, RefreshCw, CreditCard } from 'lucide-react';
 
 const benefits = [
   {
     icon: Truck,
-    title: 'Frete Gratis',
-    description: 'Acima de R$ 299',
-    shellClass: 'bg-accent/15 group-hover:bg-accent/25',
-    iconClass: 'text-accent',
+    title: 'Frete Grátis',
+    description: 'Acima de R$299',
   },
   {
     icon: Shield,
     title: 'Compra Segura',
-    description: '100% protegida',
-    shellClass: 'bg-neon/15 group-hover:bg-neon/25',
-    iconClass: 'text-neon',
+    description: 'Dados protegidos',
   },
   {
     icon: RefreshCw,
-    title: '30 Dias',
-    description: 'Para trocar',
-    shellClass: 'bg-electric/15 group-hover:bg-electric/25',
-    iconClass: 'text-electric',
+    title: 'Troca Fácil',
+    description: 'Até 30 dias',
   },
   {
-    icon: Headphones,
-    title: 'Suporte',
-    description: 'Atendimento rapido',
-    shellClass: 'bg-hot/15 group-hover:bg-hot/25',
-    iconClass: 'text-hot',
+    icon: CreditCard,
+    title: 'Parcelamento',
+    description: 'Até 6x sem juros',
   },
 ];
 
 export const BenefitsSection = () => {
   return (
-    <section className="border-y border-border/70 bg-secondary/35 py-16 backdrop-blur-sm">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+    <section className="bg-secondary py-6 border-y border-border relative overflow-hidden">
+      {/* Subtle accent line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+      
+      <div className="container">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {benefits.map((benefit, index) => (
-            <div
-              key={benefit.title}
-              className="group panel-surface flex flex-col items-center px-4 py-5 text-center animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+            <div 
+              key={benefit.title} 
+              className="flex items-center gap-4 py-2"
             >
-              <div className={`mb-4 flex h-16 w-16 items-center justify-center rounded-xl transition-colors ${benefit.shellClass}`}>
-                <benefit.icon className={`h-7 w-7 transition-colors ${benefit.iconClass}`} />
+              {/* Icon */}
+              <div className="flex-shrink-0 w-12 h-12 border border-border flex items-center justify-center group-hover:border-accent transition-colors">
+                <benefit.icon size={20} className="text-accent" strokeWidth={1.5} />
               </div>
-              <h3 className="mb-1 font-display text-xl uppercase tracking-wider text-secondary-foreground">
-                {benefit.title}
-              </h3>
-              <p className="text-xs uppercase tracking-wider text-secondary-foreground/65">
-                {benefit.description}
-              </p>
+              
+              {/* Text */}
+              <div>
+                <p className="font-display text-sm text-foreground tracking-[0.1em] uppercase">
+                  {benefit.title}
+                </p>
+                <p className="text-xs text-muted-foreground font-body mt-0.5">
+                  {benefit.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Subtle accent line */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
     </section>
   );
 };

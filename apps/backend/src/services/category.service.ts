@@ -1,8 +1,29 @@
-import { prisma } from '@/config/database';
-import { cache, CACHE_KEYS, CACHE_TTL } from '@/config/cache';
-import { logger } from '@/config/logger';
-import { slugify } from '@/utils/helpers';
-import type { CreateCategoryInput, UpdateCategoryInput } from '@/validators/category.validator';
+import { prisma } from '../config/database';
+import { cache, CACHE_KEYS, CACHE_TTL } from '../config/cache';
+import { logger } from '../config/logger';
+import { slugify } from '../utils/helpers';
+import type { CreateCategoryInput, UpdateCategoryInput } from '../validators/category.validator';
+
+// Type for category with id
+interface CategoryWithId {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  image: string | null;
+  parentId: string | null;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  _count?: {
+    products: number;
+  };
+  children?: Array<{
+    id: string;
+    name: string;
+    slug: string;
+  }>;
+}
 
 export class CategoryService {
   /**
@@ -35,9 +56,9 @@ export class CategoryService {
   /**
    * Get category by slug
    */
-  async getCategoryBySlug(slug: string) {
+  async getCategoryBySlug(slug: string): Promise<CategoryWithId> {
     const cacheKey = CACHE_KEYS.CATEGORY(slug);
-    const cached = cache.get(cacheKey);
+    const cached = cache.get<CategoryWithId>(cacheKey);
 
     if (cached) {
       logger.debug(`Category cache hit: ${slug}`);

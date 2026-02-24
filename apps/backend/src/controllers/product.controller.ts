@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { productService } from '@/services/product.service';
-import { AuthRequest } from '@/types';
-import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '@/validators/product.validator';
+import { productService } from '../services/product.service';
+import { AuthRequest } from '../types';
+import type { CreateProductInput, UpdateProductInput, ProductQueryInput, CreateReviewInput } from '../validators/product.validator';
 
 export class ProductController {
   /**
@@ -31,6 +31,26 @@ export class ProductController {
   async getProductBySlug(req: Request<{ slug: string }>, res: Response) {
     try {
       const product = await productService.getProductBySlug(req.params.slug);
+
+      res.json({
+        success: true,
+        data: product,
+      });
+    } catch (error: any) {
+      res.status(404).json({
+        success: false,
+        error: 'Not Found',
+        message: error.message,
+      });
+    }
+  }
+
+  /**
+   * Get product by ID (for admin)
+   */
+  async getProductById(req: Request<{ id: string }>, res: Response) {
+    try {
+      const product = await productService.getProductById(req.params.id);
 
       res.json({
         success: true,

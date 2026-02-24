@@ -1,128 +1,118 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const calculateTimeLeft = () => {
-  const endDate = new Date();
-  endDate.setDate(endDate.getDate() + 2);
-  endDate.setHours(23, 59, 59, 999);
-
-  const difference = endDate.getTime() - new Date().getTime();
-
-  if (difference <= 0) {
-    return { hours: 0, minutes: 0, seconds: 0 };
-  }
-
-  return {
-    hours: Math.floor((difference / (1000 * 60 * 60)) % 24) + Math.floor(difference / (1000 * 60 * 60 * 24)) * 24,
-    minutes: Math.floor((difference / 1000 / 60) % 60),
-    seconds: Math.floor((difference / 1000) % 60),
-  };
-};
-
 export const HeroSection = () => {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+  const scrollToContent = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+  };
 
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden bg-gradient-hero">
-      <div className="urban-grid absolute inset-0 opacity-30" />
-      <div className="absolute right-0 top-0 h-full w-1/2 -skew-x-12 bg-accent/7 origin-top-right" />
+    <section className="relative min-h-screen flex flex-col bg-background overflow-hidden">
+      {/* Main Hero */}
+      <div className="flex-1 relative">
+        {/* Background Image - Grunge aesthetic */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center img-grunge"
+          style={{ 
+            backgroundImage: 'url(https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80)',
+          }}
+        />
+        
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-background/90" />
+        
+        {/* Texture */}
+        <div className="absolute inset-0 texture-grunge" />
 
-      <div className="animate-float absolute left-[10%] top-20 h-20 w-20 rotate-45 border-2 border-accent/30" />
-      <div className="absolute bottom-32 left-[5%] h-12 w-12 rotate-12 bg-neon/20" />
-      <div className="absolute right-[15%] top-1/3 h-1 w-32 bg-accent" />
-      <div className="absolute bottom-1/4 right-[10%] h-32 w-1 bg-electric/60" />
+        {/* Content Grid */}
+        <div className="container h-full relative z-10 flex items-center py-20">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
+            
+            {/* Left - Text Content */}
+            <div className="order-2 lg:order-1">
+              {/* Collection Tag */}
+              <div className="animate-fade-up mb-6">
+                <span className="inline-block font-gothic text-sm text-accent tracking-[0.3em] uppercase border border-accent px-5 py-2.5">
+                  Nova Coleção 2024
+                </span>
+              </div>
 
-      <div className="container relative z-10 mx-auto px-4">
-        <div className="grid items-center gap-8 lg:grid-cols-2">
-          <div className="text-primary-foreground">
-            <div className="mb-8 inline-flex animate-fade-in items-center gap-2 rounded-full bg-accent px-4 py-2 text-accent-foreground">
-              <Zap size={16} className="animate-pulse" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em]">Drop Limitado</span>
-            </div>
+              {/* Headline */}
+              <h1 className="animate-fade-up delay-100">
+                <span className="block font-display text-[4.5rem] sm:text-[6rem] md:text-[7rem] lg:text-[8rem] text-foreground leading-[0.9] tracking-tight">
+                  GRUNGE
+                </span>
+                <span className="block font-display text-[4.5rem] sm:text-[6rem] md:text-[7rem] lg:text-[8rem] text-accent leading-[0.9] tracking-tight">
+                  STREET
+                </span>
+                <span className="block font-display text-[4.5rem] sm:text-[6rem] md:text-[7rem] lg:text-[8rem] text-foreground leading-[0.9] tracking-tight">
+                  WEAR
+                </span>
+              </h1>
 
-            <h1 className="mb-6 font-display text-6xl leading-[0.85] animate-fade-in sm:text-7xl md:text-8xl lg:text-[7rem]">
-              ESTILO QUE
-              <br />
-              <span className="text-accent">IMPOE</span>
-              <br />
-              PRESENCA
-            </h1>
+              {/* Subtitle */}
+              <p className="animate-fade-up delay-200 text-muted-foreground font-body text-lg md:text-xl mt-8 max-w-md leading-relaxed">
+                Confiança, agilidade e segurança em um só lugar.
+              </p>
 
-            <p className="mb-8 max-w-md font-body text-lg font-light text-primary-foreground/72 animate-fade-in md:text-xl">
-              Pecas exclusivas para quem nao segue tendencias e cria as proprias regras.
-            </p>
-
-            <div className="mb-10 flex flex-col gap-4 animate-fade-in sm:flex-row sm:items-center">
-              <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary-foreground/55">Termina em:</span>
-              <div className="flex gap-2">
-                {[
-                  { value: timeLeft.hours, label: 'H' },
-                  { value: timeLeft.minutes, label: 'M' },
-                  { value: timeLeft.seconds, label: 'S' },
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-1">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-lg bg-accent font-display text-3xl text-accent-foreground">
-                      {String(item.value).padStart(2, '0')}
-                    </span>
-                    <span className="text-xs font-bold text-primary-foreground/60">{item.label}</span>
-                    {index < 2 && <span className="ml-1 font-bold text-accent">:</span>}
-                  </div>
-                ))}
+              {/* CTAs */}
+              <div className="animate-fade-up delay-300 flex flex-col sm:flex-row gap-4 mt-10">
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="h-14 px-10 bg-accent text-accent-foreground hover:bg-accent/90 font-display text-lg tracking-[0.15em] transition-all duration-300"
+                >
+                  <Link to="/ofertas" className="flex items-center gap-3">
+                    VER COLEÇÃO
+                    <ArrowRight size={20} />
+                  </Link>
+                </Button>
+                <Button 
+                  asChild 
+                  size="lg" 
+                  variant="outline" 
+                  className="h-14 px-10 border-foreground/30 text-foreground hover:border-accent hover:text-accent bg-transparent font-display text-lg tracking-[0.15em] transition-all duration-300"
+                >
+                  <Link to="/categoria/tenis">
+                    NOVO DROP
+                  </Link>
+                </Button>
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 animate-fade-in sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="h-14 bg-accent px-10 text-base font-bold uppercase tracking-wider text-accent-foreground hover:bg-accent/90"
-              >
-                <Link to="/ofertas">
-                  Comprar Agora
-                  <ArrowRight className="ml-2" size={20} />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-14 border-2 border-primary-foreground/30 px-10 text-base font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary-foreground/10"
-              >
-                <Link to="/categoria/tenis">Ver Drop</Link>
-              </Button>
+            {/* Right - Featured Image - Grunge person */}
+            <div className="order-1 lg:order-2 animate-fade-up delay-200">
+              <div className="relative aspect-[3/4] max-w-md mx-auto lg:max-w-none">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80"
+                  alt="Coleção Grunge Streetwear"
+                  className="w-full h-full object-cover img-grunge"
+                />
+                {/* Accent border */}
+                <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-accent -z-10" />
+                
+                {/* Floating badge */}
+                <div className="absolute -left-4 bottom-12 bg-accent text-accent-foreground px-6 py-3">
+                  <span className="font-display text-base tracking-[0.15em]">NOVO DROP</span>
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div className="relative hidden lg:block">
-            <div className="absolute inset-0 rotate-3 rounded-3xl bg-accent/10" />
-
-            <div className="relative z-10 p-8">
-              <img
-                src="https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=800"
-                alt="Tenis em destaque"
-                className="animate-float w-full drop-shadow-2xl"
-              />
-            </div>
-
-            <div className="absolute -bottom-4 -left-4 h-1 w-24 bg-accent" />
-            <div className="absolute -bottom-4 -left-4 h-24 w-1 bg-accent" />
-            <div className="absolute -right-4 -top-4 h-1 w-24 bg-neon" />
-            <div className="absolute -right-4 -top-4 h-24 w-1 bg-neon" />
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+        <button 
+          onClick={scrollToContent}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-accent transition-colors animate-fade-in delay-500"
+          aria-label="Scroll down"
+        >
+          <ChevronDown size={28} className="animate-bounce" />
+        </button>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-neon to-electric" />
+      {/* Bottom Line */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent" />
     </section>
   );
 };

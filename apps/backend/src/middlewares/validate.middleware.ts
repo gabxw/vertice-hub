@@ -13,10 +13,10 @@ export function validate(schema: ZodSchema) {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = error.errors ? error.errors.map((err) => ({
-          field: err.path.join('.'),
-          message: err.message,
-        })) : [];
+        const errors = error.issues.map((issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        }));
 
         return res.status(400).json({
           error: 'Validation Error',
@@ -40,10 +40,10 @@ export function validateQuery(schema: ZodSchema) {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = error.errors ? error.errors.map((err) => ({
-          field: err.path.join('.'),
-          message: err.message,
-        })) : [];
+        const errors = error.issues.map((issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        }));
 
         return res.status(400).json({
           error: 'Validation Error',
@@ -67,10 +67,10 @@ export function validateParams(schema: ZodSchema) {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = error.errors ? error.errors.map((err) => ({
-          field: err.path.join('.'),
-          message: err.message,
-        })) : [];
+        const errors = error.issues.map((issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        }));
 
         return res.status(400).json({
           error: 'Validation Error',

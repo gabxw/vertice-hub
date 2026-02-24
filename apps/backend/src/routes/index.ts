@@ -6,7 +6,8 @@ import categoryRoutes from './category.routes';
 import cartRoutes from './cart.routes';
 import orderRoutes from './order.routes';
 import paypalRoutes from './paypal.routes';
-import { authenticate } from '@/middlewares/auth.middleware';
+import adminRoutes from './admin.routes';
+import { authenticate } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -27,5 +28,6 @@ router.use('/categories', categoryRoutes);
 router.use('/cart', cartRoutes);
 router.use('/orders', orderRoutes);
 router.use('/payments/paypal', paypalRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

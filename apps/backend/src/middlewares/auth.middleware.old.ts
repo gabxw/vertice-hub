@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
-import { verifyAccessToken } from '@/utils/jwt';
-import { AuthRequest } from '@/types';
+import { verifyAccessToken } from '../utils/jwt';
+import { AuthRequest } from '../types';
 import { Role } from '@prisma/client';
 
 /**

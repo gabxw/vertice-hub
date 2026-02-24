@@ -1,87 +1,132 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { categories } from '@/data/products';
-import { cn } from '@/lib/utils';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
-const accentStyles = [
+// Style collections for the editorial grid - Tênis, Calça, Blusa, Acessórios
+const styleCollections = [
   {
-    bar: 'bg-accent',
-    text: 'text-accent',
-    corner: 'bg-accent',
+    id: 'tenis',
+    name: 'TÊNIS',
+    subtitle: 'Street style',
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80',
+    link: '/categoria/tenis',
   },
   {
-    bar: 'bg-neon',
-    text: 'text-neon',
-    corner: 'bg-neon',
+    id: 'calcas',
+    name: 'CALÇAS',
+    subtitle: 'Estilo destruído',
+    image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80',
+    link: '/categoria/calcas',
   },
   {
-    bar: 'bg-electric',
-    text: 'text-electric',
-    corner: 'bg-electric',
+    id: 'blusas',
+    name: 'BLUSAS',
+    subtitle: 'Dark vibes',
+    image: 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=800&q=80',
+    link: '/categoria/blusas',
+  },
+  {
+    id: 'acessorios',
+    name: 'ACESSÓRIOS',
+    subtitle: 'Detalhes únicos',
+    image: 'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&q=80',
+    link: '/categoria/acessorios',
   },
 ];
 
 export const CategorySection = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
-    <section className="bg-background/40 py-20 md:py-32">
-      <div className="container mx-auto px-4">
-        <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <section className="py-24 bg-background relative">
+      {/* Section Header */}
+      <div className="container mb-16">
+        <div className="flex items-end justify-between">
           <div>
-            <span className="mb-3 block text-xs font-bold uppercase tracking-[0.3em] text-accent">Colecoes</span>
-            <h2 className="font-display text-5xl md:text-6xl lg:text-7xl">
-              EXPLORE POR
-              <br />
-              CATEGORIA
+            <span className="font-gothic text-sm text-accent tracking-[0.3em] uppercase mb-4 block">
+              Coleções
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-foreground tracking-tight">
+              EXPLORE O ESTILO
             </h2>
           </div>
-          <p className="max-w-md text-sm font-light text-muted-foreground md:text-base">
-            Do streetwear ao casual, encontre pecas que definem seu estilo unico.
-          </p>
+          <Link 
+            to="/ofertas" 
+            className="hidden md:flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-body text-sm group"
+          >
+            Ver tudo
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-          {categories.map((category, index) => {
-            const accent = accentStyles[index % accentStyles.length];
-
-            return (
-              <Link
-                key={category.id}
-                to={`/categoria/${category.slug}`}
-                className={cn(
-                  'group panel-surface relative overflow-hidden rounded-2xl animate-fade-in',
-                  index === 0 && 'md:row-span-2 md:aspect-auto aspect-[3/4]',
-                  index !== 0 && 'aspect-[4/3]'
-                )}
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
+      {/* Editorial Grid */}
+      <div className="container">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {styleCollections.map((collection, index) => (
+            <Link
+              key={collection.id}
+              to={collection.link}
+              className="group relative overflow-hidden animate-fade-up"
+              style={{ animationDelay: `${index * 0.1}s` }}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {/* Image Container */}
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <img
-                  src={category.image}
-                  alt={category.name}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  src={collection.image}
+                  alt={collection.name}
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 img-grunge"
                 />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90" />
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-colors duration-500" />
+              </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/55 to-transparent" />
-                <div className={cn('absolute left-0 top-0 h-full w-1', accent.bar)} />
-
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <span className={cn('mb-2 block text-xs font-bold uppercase tracking-[0.2em]', accent.text)}>
-                    {category.productCount} produtos
-                  </span>
-                  <h3 className="mb-3 font-display text-3xl text-primary-foreground md:text-4xl lg:text-5xl">
-                    {category.name.toUpperCase()}
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+                {/* Subtitle */}
+                <span className="font-body text-xs text-muted-foreground tracking-[0.2em] uppercase mb-2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                  {collection.subtitle}
+                </span>
+                
+                {/* Title */}
+                <div className="flex items-end justify-between">
+                  <h3 className="font-display text-2xl md:text-3xl text-foreground group-hover:text-accent transition-colors duration-300">
+                    {collection.name}
                   </h3>
-                  <div className={cn('inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider transition-all group-hover:gap-4', accent.text)}>
-                    Ver Colecao
-                    <ArrowRight size={16} />
+                  
+                  {/* Arrow */}
+                  <div className="w-10 h-10 border border-foreground/20 flex items-center justify-center group-hover:border-accent group-hover:bg-accent transition-all duration-300">
+                    <ArrowUpRight 
+                      size={18} 
+                      className="text-foreground group-hover:text-accent-foreground transition-colors" 
+                    />
                   </div>
                 </div>
+              </div>
 
-                <div className="absolute right-0 top-0 h-16 w-16 overflow-hidden opacity-0 transition-opacity group-hover:opacity-100">
-                  <div className={cn('absolute -right-8 -top-8 h-16 w-16 rotate-45', accent.corner)} />
-                </div>
-              </Link>
-            );
-          })}
+              {/* Index Number */}
+              <div className="absolute top-6 left-6 font-gothic text-sm text-muted-foreground/50">
+                0{index + 1}
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Mobile View All */}
+        <div className="mt-10 md:hidden flex justify-center">
+          <Link 
+            to="/ofertas" 
+            className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-body text-sm"
+          >
+            Ver todas as coleções
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </div>
     </section>

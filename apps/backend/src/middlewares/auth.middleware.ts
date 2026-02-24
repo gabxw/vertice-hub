@@ -1,13 +1,13 @@
 import { Response, NextFunction } from 'express';
 import { supabase } from '../config/supabase';
 import { logger } from '../config/logger';
-import { AuthRequest } from '@/types';
+import { AuthRequest } from '../types';
 import { Role } from '@prisma/client';
 
 /**
  * Authenticate user middleware using Supabase Auth
  */
-export async function authenticate(req: AuthRequest, res: Response, next: NextFunction) {
+export async function authenticate(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
     const authHeader = req.headers.authorization;
 
@@ -20,10 +20,11 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
 
     if (!authHeader) {
       logger.warn('No authorization header found');
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Token de autenticação não fornecido',
       });
+      return;
     }
 
     const [bearer, token] = authHeader.split(' ');
@@ -36,10 +37,11 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
 
     if (bearer !== 'Bearer' || !token) {
       logger.warn('Invalid token format', { bearer, hasToken: !!token });
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Formato de token inválido',
       });
+      return;
     }
 
     // Validar token do Supabase
@@ -47,10 +49,11 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
 
     if (error || !user) {
       logger.warn('Token inválido ou expirado', { error: error?.message });
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Token inválido ou expirado',
       });
+      return;
     }
 
     // Buscar role do usuário (pode estar nos metadados)
@@ -59,19 +62,21 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
     req.user = {
       id: user.id,
       email: user.email!,
+      name: user.user_metadata?.name || user.user_metadata?.full_name,
       role: role,
     };
 
     logger.debug('Usuário autenticado', { 
       userId: user.id, 
       email: user.email,
+      name: user.user_metadata?.name,
       role: role 
     });
 
     next();
   } catch (error) {
     logger.error('Erro na autenticação', { error });
-    return res.status(500).json({
+    res.status(500).json({
       error: 'Internal Server Error',
       message: 'Erro interno no servidor',
     });
@@ -82,12 +87,13 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
  * Authorize user by role
  */
 export function authorize(...roles: Role[]) {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
+  return (req: AuthRequest, res: Response, next: NextFunction): void => {
     if (!req.user) {
-      return res.status(401).json({
+      res.status(401).json({
         error: 'Unauthorized',
         message: 'Usuário não autenticado',
       });
+      return;
     }
 
     if (!roles.includes(req.user.role)) {
@@ -97,10 +103,11 @@ export function authorize(...roles: Role[]) {
         requiredRoles: roles 
       });
       
-      return res.status(403).json({
+      res.status(403).json({
         error: 'Forbidden',
         message: 'Você não tem permissão para acessar este recurso',
       });
+      return;
     }
 
     next();
@@ -110,18 +117,20 @@ export function authorize(...roles: Role[]) {
 /**
  * Optional authentication (doesn't fail if no token)
  */
-export async function optionalAuth(req: AuthRequest, res: Response, next: NextFunction) {
+export async function optionalAuth(req: AuthRequest, _res: Response, next: NextFunction): Promise<void> {
   try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      return next();
+      next();
+      return;
     }
 
     const [bearer, token] = authHeader.split(' ');
 
     if (bearer !== 'Bearer' || !token) {
-      return next();
+      next();
+      return;
     }
 
     const { data: { user }, error } = await supabase.auth.getUser(token);

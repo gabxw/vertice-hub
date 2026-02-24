@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   name: string;
   slug: string;
-  category: 'tenis' | 'calcas' | 'blusas';
+  category: 'tenis' | 'calcas' | 'blusas' | 'acessorios';
   price: number;
   originalPrice?: number;
   images: string[];
@@ -241,5 +241,13 @@ export const categories = [
     description: 'Express yourself',
     image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600',
     productCount: 32,
+  },
+  {
+    id: 'acessorios',
+    name: 'Acessórios',
+    slug: 'acessorios',
+    description: 'Complete seu look com atitude',
+    image: 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600',
+    productCount: 15,
   },
 ];

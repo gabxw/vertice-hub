@@ -1,4 +1,5 @@
-import { X, Plus, Minus, Trash2, ShoppingBag, Truck } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Plus, Minus, Trash2, ShoppingBag, Truck, Shield, Clock, Zap } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -9,6 +10,32 @@ const FREE_SHIPPING_THRESHOLD = 299;
 export const CartDrawer = () => {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalPrice, totalItems } = useCart();
   const remainingForFreeShipping = FREE_SHIPPING_THRESHOLD - totalPrice;
+  
+  // Timer de urgência para checkout
+  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutos em segundos
+  
+  useEffect(() => {
+    if (items.length > 0 && isOpen) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [items.length, isOpen]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
+  // Calcular economia total
+  const totalSavings = items.reduce((sum, item) => {
+    if (item.product.originalPrice) {
+      return sum + (item.product.originalPrice - item.product.price) * item.quantity;
+    }
+    return sum;
+  }, 0);
 
   return (
     <>
@@ -42,6 +69,16 @@ export const CartDrawer = () => {
           </button>
         </div>
 
+        {/* Urgency Timer - só mostra se tiver itens */}
+        {items.length > 0 && timeLeft > 0 && (
+          <div className="px-4 py-2 bg-destructive/10 border-b border-destructive/20 flex items-center justify-center gap-2 text-destructive">
+            <Clock size={16} className="animate-pulse" />
+            <span className="text-sm font-medium">
+              Carrinho reservado por <span className="font-bold">{formatTime(timeLeft)}</span>
+            </span>
+          </div>
+        )}
+
         {/* Free Shipping Progress */}
         {items.length > 0 && (
           <div className="p-4 bg-muted/50 border-b border-border">
@@ -58,9 +95,9 @@ export const CartDrawer = () => {
                 </div>
               </>
             ) : (
-              <div className="flex items-center gap-2 text-success">
+              <div className="flex items-center gap-2 text-green-600">
                 <Truck size={18} />
-                <span className="font-semibold">Parabéns! Você ganhou frete grátis!</span>
+                <span className="font-semibold">🎉 Parabéns! Você ganhou frete grátis!</span>
               </div>
             )}
           </div>
@@ -135,18 +172,45 @@ export const CartDrawer = () => {
         {/* Footer */}
         {items.length > 0 && (
           <div className="border-t border-border p-4 space-y-4 bg-card">
+            {/* Economia */}
+            {totalSavings > 0 && (
+              <div className="flex items-center justify-between text-green-600 bg-green-50 dark:bg-green-950/30 px-3 py-2 rounded-lg">
+                <span className="text-sm font-medium flex items-center gap-1">
+                  <Zap size={14} />
+                  Você está economizando
+                </span>
+                <span className="font-bold">R$ {totalSavings.toFixed(2)}</span>
+              </div>
+            )}
+            
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Subtotal</span>
               <span className="font-bold text-xl">R$ {totalPrice.toFixed(2)}</span>
             </div>
+            
             <Button 
               asChild 
-              className="w-full h-12 text-base font-semibold btn-glow" 
+              className="w-full h-12 text-base font-semibold btn-glow bg-accent hover:bg-accent/90" 
               size="lg"
               onClick={() => setIsOpen(false)}
             >
-              <Link to="/checkout">Finalizar Compra</Link>
+              <Link to="/checkout">
+                Finalizar Compra
+              </Link>
             </Button>
+            
+            {/* Trust badges */}
+            <div className="flex items-center justify-center gap-4 pt-2">
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Shield size={14} />
+                <span>Compra Segura</span>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Truck size={14} />
+                <span>Entrega Rápida</span>
+              </div>
+            </div>
+            
             <button
               onClick={() => setIsOpen(false)}
               className="w-full text-center text-sm text-muted-foreground hover:text-foreground transition-colors"

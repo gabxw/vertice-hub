@@ -1,10 +1,10 @@
-import { prisma } from '@/config/database';
-import { hashPassword, comparePassword } from '@/utils/password';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@/utils/jwt';
-import { generateRandomToken } from '@/utils/helpers';
-import { logger } from '@/config/logger';
+import { prisma } from '../config/database';
+import { hashPassword, comparePassword } from '../utils/password';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt';
+import { generateRandomToken } from '../utils/helpers';
+import { logger } from '../config/logger';
 import { addDays, addHours } from 'date-fns';
-import type { RegisterInput, LoginInput } from '@/validators/auth.validator';
+import type { RegisterInput, LoginInput } from '../validators/auth.validator';
 
 export class AuthService {
   /**

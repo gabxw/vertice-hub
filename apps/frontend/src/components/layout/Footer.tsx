@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Instagram, Twitter, Mail, MapPin, Phone, Truck, Shield, RefreshCw, CreditCard } from 'lucide-react';
 
 const trustBadges = [
-  { icon: Truck, label: 'Frete Gratis +R$299' },
+  { icon: Truck, label: 'Frete Grátis +R$299' },
   { icon: Shield, label: 'Compra Segura' },
   { icon: RefreshCw, label: '30 Dias Troca' },
   { icon: CreditCard, label: '12x Sem Juros' },
@@ -10,14 +10,15 @@ const trustBadges = [
 
 export const Footer = () => {
   return (
-    <footer className="mt-16 border-t border-border/70 bg-primary text-primary-foreground">
-      <div className="border-b border-primary-foreground/10">
+    <footer className="bg-card text-card-foreground border-t border-border">
+      {/* Trust Badges */}
+      <div className="border-b border-border">
         <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {trustBadges.map((badge) => (
-              <div key={badge.label} className="panel-surface flex items-center gap-3 px-4 py-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/15">
-                  <badge.icon className="h-5 w-5 text-accent" />
+              <div key={badge.label} className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-accent/10 flex items-center justify-center">
+                  <badge.icon className="w-5 h-5 text-accent" />
                 </div>
                 <span className="text-xs font-medium uppercase tracking-wider">{badge.label}</span>
               </div>
@@ -26,24 +27,28 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-14">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
+      {/* Main Footer */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          {/* Brand */}
           <div>
-            <h2 className="mb-5 font-display text-4xl tracking-[0.08em]">VERTICE</h2>
-            <p className="mb-6 text-sm font-light leading-relaxed text-primary-foreground/65">
-              Streetwear autentico para quem faz as proprias regras. Atitude, exclusividade e movimento em cada peca.
+            <h2 className="font-display text-4xl tracking-[0.1em] mb-6 text-foreground">
+              VÉRTICE
+            </h2>
+            <p className="text-sm text-muted-foreground mb-6 font-body leading-relaxed">
+              Streetwear autêntico para quem faz suas próprias regras. Atitude, exclusividade e movimento em cada peça.
             </p>
             <div className="flex gap-3">
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10 transition-colors hover:bg-accent hover:text-accent-foreground"
+              <a 
+                href="#" 
+                className="w-10 h-10 bg-muted flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors" 
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
               </a>
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/10 transition-colors hover:bg-accent hover:text-accent-foreground"
+              <a 
+                href="#" 
+                className="w-10 h-10 bg-muted flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors" 
                 aria-label="Twitter"
               >
                 <Twitter size={18} />
@@ -51,92 +56,104 @@ export const Footer = () => {
             </div>
           </div>
 
+          {/* Navigation */}
           <div>
-            <h3 className="mb-6 font-display text-xl tracking-wider">NAVEGACAO</h3>
-            <ul className="space-y-3 text-sm uppercase tracking-wider">
+            <h3 className="font-display text-xl tracking-wider mb-6 text-foreground">NAVEGAÇÃO</h3>
+            <ul className="space-y-3">
               <li>
-                <Link to="/categoria/tenis" className="text-primary-foreground/65 transition-colors hover:text-accent">
-                  Tenis
+                <Link to="/categoria/tenis" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                  Tênis
                 </Link>
               </li>
               <li>
-                <Link to="/categoria/calcas" className="text-primary-foreground/65 transition-colors hover:text-accent">
-                  Calcas
+                <Link to="/categoria/calcas" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                  Calças
                 </Link>
               </li>
               <li>
-                <Link to="/categoria/blusas" className="text-primary-foreground/65 transition-colors hover:text-accent">
+                <Link to="/categoria/blusas" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Blusas
                 </Link>
               </li>
               <li>
-                <Link to="/ofertas" className="text-neon transition-colors hover:text-neon/75">
+                <Link to="/categoria/acessorios" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                  Acessórios
+                </Link>
+              </li>
+              <li>
+                <Link to="/ofertas" className="text-sm text-accent hover:text-accent/80 transition-colors uppercase tracking-wider">
                   Drops
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Institucional */}
           <div>
-            <h3 className="mb-6 font-display text-xl tracking-wider">INSTITUCIONAL</h3>
-            <ul className="space-y-3 text-sm uppercase tracking-wider">
+            <h3 className="font-display text-xl tracking-wider mb-6 text-foreground">INSTITUCIONAL</h3>
+            <ul className="space-y-3">
               <li>
-                <Link to="/sobre" className="text-primary-foreground/65 transition-colors hover:text-accent">
+                <Link to="/sobre" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Quem Somos
                 </Link>
               </li>
               <li>
-                <Link to="/politica-troca" className="text-primary-foreground/65 transition-colors hover:text-accent">
-                  Trocas e Devolucoes
+                <Link to="/trocas-devolucoes" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                  Trocas e Devoluções
                 </Link>
               </li>
               <li>
-                <Link to="/privacidade" className="text-primary-foreground/65 transition-colors hover:text-accent">
+                <Link to="/privacidade" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Privacidade
                 </Link>
               </li>
               <li>
-                <Link to="/termos" className="text-primary-foreground/65 transition-colors hover:text-accent">
+                <Link to="/termos" className="text-sm text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Termos de Uso
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
-            <h3 className="mb-6 font-display text-xl tracking-wider">CONTATO</h3>
-            <ul className="space-y-4 text-sm text-primary-foreground/65">
-              <li className="flex items-center gap-3">
+            <h3 className="font-display text-xl tracking-wider mb-6 text-foreground">CONTATO</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail size={16} className="text-accent" />
                 contato@vertice.com.br
               </li>
-              <li className="flex items-center gap-3">
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone size={16} className="text-accent" />
                 (11) 99999-9999
               </li>
-              <li className="flex items-center gap-3">
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <MapPin size={16} className="text-accent" />
-                Sao Paulo, SP
+                São Paulo, SP
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-primary-foreground/10">
+      {/* Bottom Bar */}
+      <div className="border-t border-border">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-xs uppercase tracking-wider text-primary-foreground/45">� 2026 VERTICE. Todos os direitos reservados.</p>
-            <div className="flex items-center gap-4 text-xs text-primary-foreground/65">
-              <span>Visa</span>
-              <span>Mastercard</span>
-              <span>Pix</span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">
+              © 2024 VÉRTICE. Todos os direitos reservados.
+            </p>
+            <div className="flex items-center gap-4">
+              <img src="https://cdn-icons-png.flaticon.com/128/349/349221.png" alt="Visa" className="h-6 opacity-50" />
+              <img src="https://cdn-icons-png.flaticon.com/128/349/349228.png" alt="Mastercard" className="h-6 opacity-50" />
+              <img src="https://cdn-icons-png.flaticon.com/128/5968/5968144.png" alt="Pix" className="h-6 opacity-50" />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-accent via-neon to-electric" />
+      {/* Accent Line */}
+      <div className="h-1 bg-accent" />
     </footer>
   );
 };

@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { productController } from '@/controllers/product.controller';
-import { validate, validateQuery } from '@/middlewares/validate.middleware';
-import { authenticate, authorize, optionalAuth } from '@/middlewares/auth.middleware';
+import { productController } from '../controllers/product.controller';
+import { validate, validateQuery } from '../middlewares/validate.middleware';
+import { authenticate, authorize } from '../middlewares/auth.middleware';
 import {
   createProductSchema,
   updateProductSchema,
   productQuerySchema,
   createReviewSchema,
-} from '@/validators/product.validator';
+} from '../validators/product.validator';
 
 const router = Router();
 
@@ -31,6 +31,13 @@ router.get('/featured', productController.getFeaturedProducts.bind(productContro
  * @access  Public
  */
 router.get('/new', productController.getNewProducts.bind(productController));
+
+/**
+ * @route   GET /api/v1/products/by-id/:id
+ * @desc    Get product by ID (for admin)
+ * @access  Public
+ */
+router.get('/by-id/:id', productController.getProductById.bind(productController));
 
 /**
  * @route   GET /api/v1/products/:slug

@@ -3,8 +3,8 @@ import { env } from './env';
 
 // Configure PayPal environment
 function environment() {
-  const clientId = env.PAYPAL_CLIENT_ID;
-  const clientSecret = env.PAYPAL_CLIENT_SECRET;
+  const clientId = env.PAYPAL_CLIENT_ID || '';
+  const clientSecret = env.PAYPAL_CLIENT_SECRET || '';
 
   if (env.PAYPAL_MODE === 'production') {
     return new checkoutNodeJssdk.core.LiveEnvironment(clientId, clientSecret);

@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import { cartService } from '@/services/cart.service';
-import { orderService } from '@/services/order.service';
-import { AuthRequest } from '@/types';
-import type { AddToCartInput, UpdateCartItemInput, CreateOrderInput } from '@/validators/cart.validator';
+import { cartService } from '../services/cart.service';
+import { orderService } from '../services/order.service';
+import { AuthRequest } from '../types';
+import type { AddToCartInput, UpdateCartItemInput, CreateOrderInput } from '../validators/cart.validator';
 
 export class CartController {
   /**
@@ -159,7 +159,13 @@ export class CartController {
       console.log('[CREATE ORDER] Body:', JSON.stringify(req.body, null, 2));
       
       // req.user is guaranteed to exist because of authenticate middleware
-      const order = await orderService.createOrder(req.user!.id, req.body);
+      // Pass user email and name for Supabase Auth user sync
+      const order = await orderService.createOrder(
+        req.user!.id, 
+        req.body,
+        req.user!.email,
+        req.user!.name || req.body.shippingAddress?.name
+      );
 
       res.status(201).json({
         success: true,

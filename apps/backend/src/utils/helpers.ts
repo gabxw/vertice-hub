@@ -1,12 +1,11 @@
-import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
-import { PaginationParams, PaginatedResponse } from '@/types';
+import { PaginationParams, PaginatedResponse } from '../types';
 
 /**
- * Generate UUID
+ * Generate UUID using native Node.js crypto
  */
 export function generateUUID(): string {
-  return uuidv4();
+  return crypto.randomUUID();
 }
 
 /**

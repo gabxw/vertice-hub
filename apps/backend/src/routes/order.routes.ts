@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { cartController } from '@/controllers/cart.controller';
-import { validate } from '@/middlewares/validate.middleware';
-import { authenticate } from '@/middlewares/auth.middleware';
-import { createOrderSchema } from '@/validators/cart.validator';
+import { cartController } from '../controllers/cart.controller';
+import { validate } from '../middlewares/validate.middleware';
+import { authenticate } from '../middlewares/auth.middleware';
+import { createOrderSchema } from '../validators/cart.validator';
 
 const router = Router();
 

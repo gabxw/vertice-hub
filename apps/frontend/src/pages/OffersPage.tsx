@@ -1,8 +1,43 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { products } from '@/data/products';
+import { productsApi, Product as ApiProduct } from '@/api/products';
 import { ProductCard } from '@/components/products/ProductCard';
-import { Flame, Clock } from 'lucide-react';
+import { Flame, Clock, Loader2 } from 'lucide-react';
+
+// Mapeamento de categoryId para slug
+const categoryIdToSlug: Record<string, string> = {
+  'cat-1': 'tenis',
+  'cat-2': 'calcas',
+  'cat-3': 'blusas',
+  'cat-4': 'acessorios',
+};
+
+// Converter produto da API para o formato esperado pelo ProductCard
+const convertProduct = (p: ApiProduct) => ({
+  id: p.id,
+  name: p.name,
+  slug: p.slug,
+  category: categoryIdToSlug[p.categoryId] || p.category?.slug || 'blusas',
+  price: Number(p.price),
+  originalPrice: p.originalPrice ? Number(p.originalPrice) : undefined,
+  images: p.images?.map(img => img.url) || [],
+  description: p.description,
+  story: p.story || p.description,
+  benefits: p.benefits?.map(b => b.text) || [],
+  sizes: [...new Set(p.variants?.map(v => v.size) || [])],
+  colors: p.variants?.reduce((acc: { name: string; hex: string }[], v) => {
+    if (!acc.find(c => c.name === v.colorName)) {
+      acc.push({ name: v.colorName, hex: v.colorHex });
+    }
+    return acc;
+  }, []) || [],
+  stock: p.variants?.reduce((sum, v) => sum + v.stock, 0) || 0,
+  rating: Number(p.rating) || 4.5,
+  reviews: p.reviewCount || 0,
+  tags: p.tags?.map(t => t.name) || [],
+  isNew: p.isNew,
+  isBestSeller: p.isBestSeller,
+});
 
 const calculateTimeLeft = () => {
   const endDate = new Date();
@@ -24,13 +59,33 @@ const calculateTimeLeft = () => {
 
 const OffersPage = () => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const offerProducts = products.filter((p) => p.originalPrice);
+  const [products, setProducts] = useState<ReturnType<typeof convertProduct>[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await productsApi.list();
+        // Filtrar produtos com desconto (que têm originalPrice)
+        const allProducts = (response.products || response.data || []);
+        const offerProducts = allProducts
+          .map(convertProduct)
+          .filter((p) => p.originalPrice && p.originalPrice > p.price);
+        setProducts(offerProducts);
+      } catch (err) {
+        console.error('Erro ao carregar ofertas:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
   }, []);
 
   return (
@@ -81,11 +136,21 @@ const OffersPage = () => {
         {/* Products */}
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {offerProducts.map((product, index) => (
-                <ProductCard key={product.id} product={product} index={index} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="flex justify-center items-center py-20">
+                <Loader2 className="w-8 h-8 animate-spin text-accent" />
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground text-lg">Nenhuma oferta disponível no momento.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {products.map((product, index) => (
+                  <ProductCard key={product.id} product={product} index={index} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </main>
