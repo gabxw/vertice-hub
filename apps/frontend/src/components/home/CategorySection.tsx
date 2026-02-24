@@ -6,32 +6,28 @@ const styleCollections = [
     id: 'tenis',
     name: 'TENIS',
     subtitle: 'Bota e sola pesada',
-    image: '/streetwear-90s-hero.jpg',
-    objectPosition: '50% 98%',
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
     link: '/categoria/tenis',
   },
   {
     id: 'calcas',
     name: 'CALCAS',
     subtitle: 'Baggy jeans vintage',
-    image: '/streetwear-90s-hero.jpg',
-    objectPosition: '50% 78%',
+    image: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=80',
     link: '/categoria/calcas',
   },
   {
     id: 'blusas',
     name: 'BLUSAS',
     subtitle: 'Oversized em camada',
-    image: '/streetwear-90s-hero.jpg',
-    objectPosition: '50% 20%',
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80',
     link: '/categoria/blusas',
   },
   {
     id: 'acessorios',
     name: 'ACESSORIOS',
     subtitle: 'Bag, chaveiro e metal',
-    image: '/streetwear-90s-hero.jpg',
-    objectPosition: '50% 36%',
+    image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=900&q=80',
     link: '/categoria/acessorios',
   },
 ];
@@ -68,7 +64,6 @@ export const CategorySection = () => {
                 <img
                   src={collection.image}
                   alt={collection.name}
-                  style={{ objectPosition: collection.objectPosition }}
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 img-grunge"
                 />
 

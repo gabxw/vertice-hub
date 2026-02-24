@@ -68,9 +68,9 @@ export const HeroSection = () => {
             <div className="order-1 lg:order-2 animate-fade-up delay-200">
               <div className="relative aspect-[9/16] max-w-sm mx-auto lg:max-w-none">
                 <img
-                  src="/streetwear-90s-hero.jpg"
-                  alt="Look streetwear 90s com calca baggy e camiseta oversized"
-                  className="w-full h-full object-cover object-center img-grunge"
+                  src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80"
+                  alt="Editorial streetwear 90s"
+                  className="w-full h-full object-cover img-grunge"
                 />
                 <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-accent -z-10" />
 

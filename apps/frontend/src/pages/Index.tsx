@@ -9,7 +9,7 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>VÃ©rtice</title>
+        <title>{'V\u00E9rtice'}</title>
         <meta
           name="description"
           content="Streetwear 90s com identidade urbana, caimento oversized e curadoria autoral."
